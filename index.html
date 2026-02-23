@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>PasaPalabra Pro</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{--bg:#0a0a0f;--card:#13131a;--card2:#1a1a24;--border:#2a2a38;--gold:#f5c842;--gold2:#e8a800;--blue:#4a9eff;--green:#3ecf72;--red:#ff5555;--text:#f0f0f5;--text2:#8888a8;--r:16px;}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden;}
+#app{height:100%;position:relative;}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;transform:translateY(12px);overflow-y:auto;overflow-x:hidden;}
+.screen.active{opacity:1;pointer-events:all;transform:translateY(0);}
+/* HOME */
+.home-top{padding:28px 20px 20px;background:linear-gradient(160deg,#13131a,#0d0d15);border-bottom:1px solid var(--border);}
+.app-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px;}
+.app-title span{color:var(--gold);}
+.app-sub{font-size:12px;color:var(--text2);margin-top:2px;}
+.stats-row{display:flex;gap:10px;margin-top:16px;}
+.stat-box{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;}
+.stat-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--gold);}
+.stat-lbl{font-size:10px;color:var(--text2);margin-top:2px;text-transform:uppercase;letter-spacing:.4px;}
+.streak-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.3);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--gold);margin-top:10px;}
+.home-body{padding:16px;}
+.sec-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:10px;}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;}
+.mc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;}
+.mc:active{transform:scale(.97);}
+.mc-icon{font-size:22px;}
+.mc-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;}
+.mc-desc{font-size:11px;color:var(--text2);line-height:1.4;}
+.mc-badge{position:absolute;top:8px;right:8px;background:var(--gold);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:20px;font-family:'Syne',sans-serif;}
+.deck-list{display:flex;flex-direction:column;gap:7px;margin-bottom:16px;}
+.di{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .15s;}
+.di:active{transform:scale(.98);}
+.di.sel{border-color:var(--gold);background:rgba(245,200,66,.06);}
+.di-icon{font-size:18px;width:28px;text-align:center;}
+.di-name{font-size:13px;font-weight:500;flex:1;}
+.di-ct{font-size:11px;color:var(--text2);}
+.di-chk{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .15s;}
+.di.sel .di-chk{background:var(--gold);border-color:var(--gold);color:#000;}
+.btn-start{width:100%;background:var(--gold);color:#000;border:none;border-radius:12px;padding:14px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;margin-bottom:7px;}
+.btn-start:active{transform:scale(.98);}
+.nav-row{display:flex;gap:7px;margin-bottom:20px;}
+.nav-btn{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px;text-align:center;font-size:12px;color:var(--text2);cursor:pointer;transition:all .15s;}
+.nav-btn:active{background:var(--card2);}
+/* TOPBAR */
+.topbar{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0;}
+.btn-back{width:34px;height:34px;background:var(--card2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all .15s;flex-shrink:0;}
+.btn-back:active{transform:scale(.9);}
+.pw{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.pb{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:3px;transition:width .4s ease;}
+.pt{font-size:12px;color:var(--text2);white-space:nowrap;font-family:'Syne',sans-serif;}
+/* TRAIN */
+.tbody{flex:1;padding:16px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+.dtag{display:inline-flex;align-items:center;gap:5px;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--text2);width:fit-content;}
+.qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;min-height:140px;display:flex;flex-direction:column;justify-content:center;}
+.qlbl{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--text2);margin-bottom:8px;font-family:'Syne',sans-serif;}
+.qtxt{font-size:17px;line-height:1.5;}
+.awrap{display:flex;gap:7px;}
+.ai{flex:1;background:var(--card2);border:2px solid var(--border);border-radius:11px;padding:13px 14px;color:var(--text);font-size:16px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s;}
+.ai:focus{border-color:var(--gold);}
+.ai.ok{border-color:var(--green);background:rgba(62,207,114,.08);}
+.ai.bad{border-color:var(--red);background:rgba(255,85,85,.08);}
+.btn-sub{background:var(--gold);color:#000;border:none;border-radius:11px;padding:13px 18px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;}
+.btn-sub:active{transform:scale(.96);}
+.fb{border-radius:11px;padding:0;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s,opacity .3s;opacity:0;}
+.fb.show{padding:14px;max-height:200px;opacity:1;}
+.fb.ok{background:rgba(62,207,114,.1);border:1px solid rgba(62,207,114,.3);}
+.fb.bad{background:rgba(255,85,85,.1);border:1px solid rgba(255,85,85,.3);}
+.fb-ans{font-size:14px;font-weight:500;}
+/* ANKI buttons */
+.anki-row{display:none;gap:7px;}
+.anki-row.show{display:flex;}
+.abtn{flex:1;border:none;border-radius:11px;padding:11px 6px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.abtn:active{transform:scale(.96);}
+.abtn .al{font-size:10px;font-weight:400;opacity:.75;}
+.ba{background:rgba(255,85,85,.2);color:var(--red);border:1px solid rgba(255,85,85,.3);}
+.bh{background:rgba(245,200,66,.15);color:var(--gold);border:1px solid rgba(245,200,66,.3);}
+.bg{background:rgba(74,158,255,.2);color:var(--blue);border:1px solid rgba(74,158,255,.3);}
+.be{background:rgba(62,207,114,.2);color:var(--green);border:1px solid rgba(62,207,114,.3);}
+.skip-h{text-align:center;font-size:11px;color:var(--text2);cursor:pointer;padding-top:2px;}
+/* VOCAB */
+.vcbody{flex:1;padding:16px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
+.vcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;flex:1;min-height:200px;display:flex;flex-direction:column;cursor:pointer;transition:all .2s;position:relative;}
+.vcard::after{content:'Toca para ver respuesta';position:absolute;bottom:12px;right:14px;font-size:10px;color:var(--text2);opacity:.5;}
+.vcard.flipped::after{display:none;}
+.vc-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--text2);margin-bottom:10px;font-family:'Syne',sans-serif;}
+.vc-front{display:flex;flex-direction:column;flex:1;}
+.vc-back{display:none;flex-direction:column;flex:1;}
+.vcard.flipped .vc-front{display:none;}
+.vcard.flipped .vc-back{display:flex;}
+.vword{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--gold);margin-bottom:6px;}
+.vdef{font-size:14px;line-height:1.6;}
+.vtags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
+.vtag{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:3px 8px;font-size:10px;color:var(--text2);}
+.vib{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin-top:8px;font-size:12px;line-height:1.6;}
+.vib .vl{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:3px;font-family:'Syne',sans-serif;}
+.vib.vsin{border-color:rgba(74,158,255,.3);color:var(--blue);}
+.vib.vtip{border-color:rgba(245,200,66,.3);color:var(--gold);}
+.rae-btn{display:flex;align-items:center;justify-content:center;gap:7px;background:linear-gradient(135deg,#003a6b,#005a9e);border:1px solid #0070c9;color:#fff;padding:11px;border-radius:11px;text-decoration:none;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;margin-top:8px;}
+.vrate-row{display:flex;gap:7px;flex-shrink:0;}
+.vrb{flex:1;border:none;border-radius:11px;padding:13px 6px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;}
+.vrb:active{transform:scale(.96);}
+.vr-no{background:rgba(255,85,85,.2);color:var(--red);border:1px solid rgba(255,85,85,.3);}
+.vr-rev{background:rgba(245,200,66,.15);color:var(--gold);border:1px solid rgba(245,200,66,.3);}
+.vr-si{background:rgba(62,207,114,.2);color:var(--green);border:1px solid rgba(62,207,114,.3);}
+/* ROSCO */
+.rosco-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:12px;gap:10px;overflow:hidden;}
+#rosco-svg{width:260px;height:260px;flex-shrink:0;}
+.r-def{font-size:12px;color:var(--text2);text-align:center;max-width:280px;min-height:36px;line-height:1.5;}
+.rinput-wrap{display:flex;gap:7px;width:100%;max-width:320px;}
+.ri{flex:1;background:var(--card2);border:2px solid var(--border);border-radius:11px;padding:13px 14px;color:var(--text);font-size:17px;font-family:'Syne',sans-serif;font-weight:700;text-transform:uppercase;outline:none;transition:border-color .15s;}
+.ri:focus{border-color:var(--gold);}
+.rsub{background:var(--gold);color:#000;border:none;border-radius:11px;padding:13px 18px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
+.rpasa{width:100%;max-width:320px;background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:11px;color:var(--text2);font-family:'Syne',sans-serif;font-size:13px;cursor:pointer;text-align:center;}
+.rstats{display:flex;gap:20px;}
+.rst .v{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;text-align:center;}
+.rst .l{font-size:10px;color:var(--text2);text-align:center;}
+/* SVG letters */
+.rl{cursor:pointer;}
+.rl circle{transition:fill .15s,stroke .15s;}
+/* STATS */
+.bstat{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;}
+.bstat-icon{font-size:28px;}
+.bstat-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--gold);}
+.bstat-lbl{font-size:12px;color:var(--text2);}
+.dp{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:7px;}
+.dp-h{display:flex;justify-content:space-between;margin-bottom:7px;}
+.dp-n{font-size:13px;}
+.dp-p{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--gold);}
+.dpbar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.dpfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:3px;transition:width .6s ease;}
+/* IMPORT */
+.imp-field{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:7px;display:block;}
+.imp-field:focus{border-color:var(--gold);}
+.btn-act{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:13px;color:var(--text);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:7px;text-align:center;}
+.btn-act:active{background:var(--border);}
+.btn-act.pri{background:var(--gold);color:#000;border-color:var(--gold);}
+.btn-act.dan{color:var(--red);border-color:rgba(255,85,85,.3);}
+hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
+/* SUMMARY */
+#summary{justify-content:center;align-items:center;text-align:center;gap:14px;padding:24px;}
+.sum-e{font-size:56px;}
+.sum-t{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;}
+.sum-row{display:flex;gap:14px;}
+.sum-s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;}
+.sum-sv{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--gold);}
+.sum-sl{font-size:11px;color:var(--text2);}
+
+/* AI DECKS */
+.ai-deck-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.ai-more-btn{background:rgba(74,158,255,.2);color:var(--blue);border:1px solid rgba(74,158,255,.3);border-radius:8px;padding:6px 10px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.ai-del-btn{background:rgba(255,85,85,.15);color:var(--red);border:1px solid rgba(255,85,85,.3);border-radius:8px;padding:6px 8px;font-size:12px;cursor:pointer;}
+.ai-gen-area{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.ai-gen-area textarea,.ai-gen-area input{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:8px;display:block;}
+.ai-gen-area textarea:focus,.ai-gen-area input:focus{border-color:var(--gold);}
+.topic-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;}
+.chip{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:12px;color:var(--text2);cursor:pointer;transition:all .15s;}
+.chip:active{background:var(--border);}
+</style>
+
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PP Pro">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="theme-color" content="#f5c842">
+</head>
+<body>
+<div id="app">
+
+<!-- HOME -->
+<div class="screen active" id="home">
+  <div class="home-top">
+    <div class="app-title">Pasa<span>Palabra</span> Pro</div>
+    <div class="app-sub">Entrena como los mejores concursantes</div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-val" id="h-v">0</div><div class="stat-lbl">Vistas</div></div>
+      <div class="stat-box"><div class="stat-val" id="h-a">0%</div><div class="stat-lbl">Acierto</div></div>
+      <div class="stat-box"><div class="stat-val" id="h-p">0</div><div class="stat-lbl">Pendientes</div></div>
+    </div>
+    <div class="streak-badge">🔥 Racha: <span id="h-r">0</span> días</div>
+  </div>
+  <div class="home-body">
+    <div class="sec-title">Modo de estudio</div>
+    <div class="mode-grid">
+      <div class="mc" onclick="startMode('srs')"><div class="mc-icon">🧠</div><div class="mc-name">Repaso SRS</div><div class="mc-desc">Algoritmo Anki — solo lo urgente</div><div class="mc-badge">SMART</div></div>
+      <div class="mc" onclick="startMode('rapido')"><div class="mc-icon">⚡</div><div class="mc-name">Rápido</div><div class="mc-desc">20 preguntas de tus mazos</div></div>
+      <div class="mc" onclick="startVocab()"><div class="mc-icon">📖</div><div class="mc-name">Vocabulario RAE</div><div class="mc-desc">Definiciones exactas del DLE</div></div>
+      <div class="mc" onclick="startRosco()"><div class="mc-icon">🟡</div><div class="mc-name">El Rosco</div><div class="mc-desc">Simula la prueba final</div></div>
+    </div>
+    <div class="sec-title">Mazos activos</div>
+    <div id="deck-list" class="deck-list"></div>
+    <div class="nav-row">
+      <div class="nav-btn" onclick="goTo('stats')">📊 Estadísticas</div>
+      <div class="nav-btn" onclick="goTo('ai-decks')">🤖 IA</div><div class="nav-btn" onclick="goTo('imp')">⚙️ Más</div>
+    </div>
+  </div>
+</div>
+
+<!-- TRAIN -->
+<div class="screen" id="train">
+  <div class="topbar">
+    <div class="btn-back" onclick="goTo('home')">←</div>
+    <div class="pw"><div class="pb" id="t-pb"></div></div>
+    <div class="pt" id="t-ct">0/0</div>
+  </div>
+  <div class="tbody">
+    <div class="dtag" id="t-dk">📚 Mazo</div>
+    <div class="qcard">
+      <div class="qlbl" id="t-lbl">PREGUNTA</div>
+      <div class="qtxt" id="t-q">...</div>
+    </div>
+    <div class="awrap">
+      <input class="ai" id="t-ai" placeholder="Tu respuesta..." onkeydown="if(event.key==='Enter')subAns()">
+      <button class="btn-sub" id="t-sub" onclick="subAns()">→</button>
+    </div>
+    <div class="fb" id="t-fb"><div class="fb-ans" id="t-fb-a"></div></div>
+    <div class="anki-row" id="t-anki">
+      <button class="abtn ba" onclick="rateQ(0)">Otra vez<span class="al">&lt;1min</span></button>
+      <button class="abtn bh" onclick="rateQ(1)">Difícil<span class="al">~6min</span></button>
+      <button class="abtn bg" onclick="rateQ(2)">Bien<span class="al">~10min</span></button>
+      <button class="abtn be" onclick="rateQ(3)">Fácil<span class="al">4 días</span></button>
+    </div>
+    <div class="skip-h" onclick="skipQ()">⏭ Saltar</div>
+  </div>
+</div>
+
+<!-- VOCAB -->
+<div class="screen" id="vocab">
+  <div class="topbar">
+    <div class="btn-back" onclick="goTo('home')">←</div>
+    <div class="pw"><div class="pb" id="v-pb"></div></div>
+    <div class="pt" id="v-ct">0/0</div>
+  </div>
+  <div class="vcbody">
+    <div class="vcard" id="vcard" onclick="flipCard()">
+      <div class="vc-front">
+        <div class="vc-lbl">DEFINICIÓN — ¿QUÉ PALABRA ES?</div>
+        <div class="vdef" id="v-fd"></div>
+        <div class="vtags" id="v-tags"></div>
+      </div>
+      <div class="vc-back">
+        <div class="vc-lbl">RESPUESTA</div>
+        <div class="vword" id="v-w"></div>
+        <div class="vdef" id="v-bd"></div>
+        <div class="vib vsin" id="v-sin" style="display:none"><div class="vl">Sinónimos RAE</div><span id="v-sin-t"></span></div>
+        <div class="vib" id="v-ex" style="display:none"><div class="vl">Ejemplo</div><span id="v-ex-t"></span></div>
+        <div class="vib vtip" id="v-tip" style="display:none"><div class="vl">💡 Para memorizar</div><span id="v-tip-t"></span></div>
+        <a class="rae-btn" id="v-rae" href="#" target="_blank">📖 Ver definición completa en la RAE</a>
+      </div>
+    </div>
+    <div class="vrate-row" id="v-rate" style="display:none">
+      <button class="vrb vr-no" onclick="rateV('no')">❌ No la sé</button>
+      <button class="vrb vr-rev" onclick="rateV('rev')">🔄 Repasar</button>
+      <button class="vrb vr-si" onclick="rateV('si')">✅ La sé</button>
+    </div>
+  </div>
+</div>
+
+<!-- ROSCO -->
+<div class="screen" id="rosco">
+  <div class="topbar">
+    <div class="btn-back" onclick="stopRosco()">←</div>
+    <div class="pt" id="r-sc" style="font-size:12px;color:var(--text2)">0✅ 0❌</div>
+    <div style="flex:1"></div>
+    <div class="pt" id="r-ti" style="font-family:Syne,sans-serif;font-size:18px;font-weight:700;color:var(--gold)">2:30</div>
+  </div>
+  <div class="rosco-body">
+    <svg id="rosco-svg" viewBox="0 0 260 260"></svg>
+    <div class="r-def" id="r-def">Elige una letra</div>
+    <div class="rinput-wrap">
+      <input class="ri" id="r-in" placeholder="..." onkeydown="if(event.key==='Enter')subRosco()" autocomplete="off" autocorrect="off" spellcheck="false">
+      <button class="rsub" onclick="subRosco()">→</button>
+    </div>
+    <button class="rpasa" onclick="pasaR()">⏭ PASA</button>
+    <div class="rstats">
+      <div class="rst"><div class="v" id="r-c" style="color:var(--green)">0</div><div class="l">✅</div></div>
+      <div class="rst"><div class="v" id="r-w" style="color:var(--red)">0</div><div class="l">❌</div></div>
+      <div class="rst"><div class="v" id="r-p">26</div><div class="l">⏳</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="screen" id="stats">
+  <div class="topbar"><div class="btn-back" onclick="goTo('home')">←</div><span style="font-family:Syne,sans-serif;font-weight:700;flex:1">Estadísticas</span></div>
+  <div style="padding:16px;overflow-y:auto;">
+    <div class="bstat"><div class="bstat-icon">🎯</div><div><div class="bstat-val" id="st-t">0</div><div class="bstat-lbl">Preguntas respondidas</div></div></div>
+    <div class="bstat"><div class="bstat-icon">✅</div><div><div class="bstat-val" id="st-p">0%</div><div class="bstat-lbl">Tasa de acierto</div></div></div>
+    <div class="bstat"><div class="bstat-icon">🔥</div><div><div class="bstat-val" id="st-r">0</div><div class="bstat-lbl">Días de racha</div></div></div>
+    <div class="sec-title" style="margin-top:14px">Por mazo</div>
+    <div id="st-dk"></div>
+  </div>
+</div>
+
+<!-- IMPORT -->
+<div class="screen" id="imp">
+  <div class="topbar"><div class="btn-back" onclick="goTo('home')">←</div><span style="font-family:Syne,sans-serif;font-weight:700;flex:1">Añadir vocabulario</span></div>
+  <div style="padding:16px;overflow-y:auto;">
+    <div class="sec-title">➕ Nueva palabra RAE</div>
+    <input class="imp-field" id="iw" placeholder="Palabra (ej: Quimera)">
+    <textarea class="imp-field" id="id2" rows="3" placeholder="Definición exacta de la RAE..." style="resize:vertical"></textarea>
+    <input class="imp-field" id="isin" placeholder="Sinónimos (opcional)">
+    <input class="imp-field" id="iex" placeholder="Frase de ejemplo...">
+    <input class="imp-field" id="itip" placeholder="Truco para memorizar...">
+    <button class="btn-act pri" onclick="addWord()">💾 Guardar</button>
+    <hr>
+    <button class="btn-act" onclick="exportD()">📤 Exportar progreso</button>
+    <div style="font-size:12px;color:var(--text2);margin:10px 0 6px">Importar progreso:</div>
+    <textarea class="imp-field" id="ijson" rows="3" placeholder="Pega aquí el JSON..."></textarea>
+    <button class="btn-act" onclick="importD()">📥 Importar</button>
+    <hr>
+    <button class="btn-act dan" onclick="if(confirm('¿Borrar todo el progreso?'))resetP()">🗑️ Reiniciar progreso</button>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="screen" id="summary">
+  <div class="sum-e" id="sum-e">🎉</div>
+  <div class="sum-t" id="sum-t">¡Completado!</div>
+  <div class="sum-row">
+    <div class="sum-s"><div class="sum-sv" id="sum-c">0</div><div class="sum-sl">Correctas</div></div>
+    <div class="sum-s"><div class="sum-sv" id="sum-w" style="color:var(--red)">0</div><div class="sum-sl">Errores</div></div>
+  </div>
+  <button class="btn-start" style="max-width:260px" onclick="goTo('home')">Volver al inicio</button>
+</div>
+
+</div>
+<!-- AI DECKS -->
+<div class="screen" id="ai-decks">
+  <div class="topbar"><div class="btn-back" onclick="goTo('home')">←</div><span style="font-family:Syne,sans-serif;font-weight:700;flex:1">🤖 Mazos Infinitos con IA</span></div>
+  <div style="padding:16px;overflow-y:auto;flex:1;">
+    <div class="ai-gen-area">
+      <div class="sec-title" style="margin-bottom:10px">Nuevo mazo sobre...</div>
+      <div class="topic-chips" id="topic-chips">
+        <div class="chip" onclick="setTopic('Historia Medieval')">⚔️ Historia Medieval</div>
+        <div class="chip" onclick="setTopic('Anatomía Humana')">🫀 Anatomía</div>
+        <div class="chip" onclick="setTopic('Cocina Española')">🍳 Cocina española</div>
+        <div class="chip" onclick="setTopic('Astronomía')">🔭 Astronomía</div>
+        <div class="chip" onclick="setTopic('Música Clásica')">🎼 Música clásica</div>
+        <div class="chip" onclick="setTopic('Futbolistas Históricos')">⚽ Futbolistas</div>
+        <div class="chip" onclick="setTopic('Filosofía Griega')">🏛️ Filosofía griega</div>
+        <div class="chip" onclick="setTopic('Países del Mundo')">🌍 Países</div>
+        <div class="chip" onclick="setTopic('Cine Español')">🎬 Cine español</div>
+        <div class="chip" onclick="setTopic('Biología y Naturaleza')">🌿 Biología</div>
+      </div>
+      <input id="ai-topic" placeholder="O escribe cualquier tema..." style="font-size:15px;">
+      <button class="btn-start" id="ai-create-btn" onclick="createAIDeck()" style="margin-bottom:0">✨ Generar 50 preguntas</button>
+    </div>
+    <div class="sec-title">Tus mazos IA</div>
+    <div id="ai-deck-list"></div>
+  </div>
+</div>
+
+
+
+<script>
+
+// ═══ DATA ═══
+const DECKS={"Cultura General":{icon:"🌍"},"Literatura":{icon:"📚"},"Geografía":{icon:"🗺️"},"Historia":{icon:"⚔️"},"Historia del Arte":{icon:"🖼️"},"Ciencia y Naturaleza":{icon:"🔬"},"Cine, TV y Espectáculos":{icon:"📺"},"Deportes":{icon:"🏅"},"Historia EEUU":{icon:"🇺🇸"},"Premios Nobel":{icon:"🏆"},"Mitología":{icon:"⚡"}};
+const VOCAB=[
+{id:"v01",word:"Apostasía",definition_ES:"1. f. Acción y efecto de apostatar.",sinónimos:"abjuración, retractación, renuncia.",example_sentence:"Su apostasía escandalizó a la comunidad.",memory_tip:"Apo- (alejarse). Alejarse de la fe.",topic_tags:["religión"]},
+{id:"v02",word:"Catarsis",definition_ES:"1. f. Entre los antiguos griegos, purificación ritual. 2. f. Efecto purificador que causa la tragedia en los espectadores. 3. f. Purificación interior por una experiencia profunda. 4. f. Biol. Expulsión de sustancias nocivas.",sinónimos:"purificación, limpieza, purga.",example_sentence:"La obra produjo una catarsis colectiva.",memory_tip:"Kátharsis (purga en griego).",topic_tags:["filosofía","teatro"]},
+{id:"v03",word:"Epifanía",definition_ES:"1. f. Manifestación, aparición o revelación. 2. f. Festividad el 6 de enero, adoración de los Reyes Magos.",sinónimos:"Reyes (acep. 2).",example_sentence:"La epifanía le llegó de golpe.",memory_tip:"Epi (sobre) + phainein (mostrarse). Algo que aparece.",topic_tags:["religión"]},
+{id:"v04",word:"Jactancia",definition_ES:"1. f. Alabanza propia, arrogante y presuntuosa.",sinónimos:"arrogancia, fanfarronería, vanagloria, presunción.",example_sentence:"Su jactancia alejó a todos.",memory_tip:"Jactarse = presumir.",topic_tags:["lengua"]},
+{id:"v05",word:"Quimera",definition_ES:"1. f. Monstruo mitológico con cabeza de león, vientre de cabra y cola de dragón. 2. f. Lo que se imagina como posible sin serlo. 3. f. Biol. Organismo con células genéticamente distintas.",sinónimos:"ilusión, fantasía, sueño.",example_sentence:"Ganar sin estudiar era una quimera.",memory_tip:"Monstruo imposible de la mitología.",topic_tags:["mitología","lengua"]},
+{id:"v06",word:"Gnoseología",definition_ES:"1. f. Fil. Teoría del conocimiento.",sinónimos:"epistemología.",example_sentence:"La gnoseología estudia los límites del conocer.",memory_tip:"Gnosis (conocimiento) + logos.",topic_tags:["filosofía"]},
+{id:"v07",word:"Hedonismo",definition_ES:"1. m. Doctrina que proclama el placer como fin supremo. 2. m. Tendencia a la búsqueda del placer.",sinónimos:"epicureísmo.",example_sentence:"Su hedonismo le impedía sacrificarse.",memory_tip:"Hedoné (placer en griego).",topic_tags:["filosofía"]},
+{id:"v08",word:"Iconoclasta",definition_ES:"1. adj. Que rechaza la autoridad de maestros y normas. 2. adj. Que destruía las imágenes sagradas.",sinónimos:"heterodoxo, disidente, rebelde.",example_sentence:"Su actitud iconoclasta rompía con todo.",memory_tip:"Ikon (imagen) + klastes (destructor).",topic_tags:["arte","historia"]},
+{id:"v09",word:"Nihilismo",definition_ES:"1. m. Negación de todo principio religioso, político y social. 2. m. Fil. Negación de toda creencia.",sinónimos:"",example_sentence:"El nihilismo niega todo sentido.",memory_tip:"Nihil (nada en latín).",topic_tags:["filosofía"]},
+{id:"v10",word:"Ontología",definition_ES:"1. f. Parte de la metafísica que trata del ser en general.",sinónimos:"",example_sentence:"La ontología pregunta qué significa existir.",memory_tip:"Onto (ser) + logos.",topic_tags:["filosofía"]},
+{id:"v11",word:"Paroxismo",definition_ES:"1. m. Exaltación extrema de los afectos y pasiones. 2. m. Med. Exacerbación brusca de una enfermedad.",sinónimos:"exaltación, frenesí, arrebato.",example_sentence:"El paroxismo de alegría fue desbordante.",memory_tip:"Para + oxys (agudo). El punto más agudo.",topic_tags:["lengua"]},
+{id:"v12",word:"Resiliencia",definition_ES:"1. f. Capacidad de adaptación frente a un agente perturbador. 2. f. Fís. Capacidad de un material elástico para absorber energía.",sinónimos:"",example_sentence:"La resiliencia de los supervivientes fue admirable.",memory_tip:"Resilire (rebotar). Como un muelle.",topic_tags:["psicología"]},
+{id:"v13",word:"Sorites",definition_ES:"1. m. Fil. Razonamiento de una serie de silogismos truncados.",sinónimos:"",example_sentence:"El sorites del montón: ¿cuántos granos hacen un montón?",memory_tip:"Soros (montón en griego).",topic_tags:["filosofía"]},
+{id:"v14",word:"Tautología",definition_ES:"1. f. Repetición de un mismo pensamiento en distintas formas. 2. f. Fil. Fórmula lógica verdadera para todos los valores de verdad.",sinónimos:"pleonasmo, redundancia.",example_sentence:"'Subir arriba' es una tautología.",memory_tip:"Tauto (lo mismo) + logos.",topic_tags:["lengua"]},
+{id:"v15",word:"Marasmo",definition_ES:"1. m. Suspensión, paralización, inmovilidad moral o física. 2. m. Med. Desnutrición grave del lactante.",sinónimos:"parálisis, estancamiento, atonía.",example_sentence:"El país cayó en un profundo marasmo.",memory_tip:"Marasmos (decaimiento en griego).",topic_tags:["lengua"]},
+{id:"v16",word:"Lascivia",definition_ES:"1. f. Propensión a los deleites carnales.",sinónimos:"lujuria, sensualidad, impudicia, lubricidad.",example_sentence:"La lascivia corrompió sus costumbres.",memory_tip:"Lascivia (libertinaje en latín).",topic_tags:["lengua"]},
+{id:"v17",word:"Ambages",definition_ES:"1. m. pl. Rodeos de palabras. U. m. en la loc. adv. sin ambages.",sinónimos:"rodeos, circunloquios, evasivas.",example_sentence:"Te lo digo sin ambages: no funciona.",memory_tip:"Sin ambages = sin rodeos.",topic_tags:["lengua"]},
+{id:"v18",word:"Diatriba",definition_ES:"1. f. Discurso o escrito violento e injurioso contra alguien o algo.",sinónimos:"invectiva, filípica, ataque.",example_sentence:"Su diatriba duró más de una hora.",memory_tip:"Ataque verbal muy agresivo.",topic_tags:["lengua"]},
+{id:"v19",word:"Fetiche",definition_ES:"1. m. Ídolo al que se atribuyen poderes sobrenaturales. 2. m. Objeto para alejar el mal o traer buena suerte.",sinónimos:"amuleto, talismán.",example_sentence:"Llevaba su fetiche como protección.",memory_tip:"Feitiço (hechizo en portugués).",topic_tags:["lengua"]},
+{id:"v20",word:"Giste",definition_ES:"1. m. Espuma de la cerveza.",sinónimos:"",example_sentence:"El giste cubría el borde del vaso.",memory_tip:"La espuma de la cerveza. Clásica de Pasapalabra.",topic_tags:["lengua"]},
+{id:"v21",word:"Crisálida",definition_ES:"1. f. Zool. Pupa de los lepidópteros envuelta en el capullo.",sinónimos:"pupa, capullo.",example_sentence:"La mariposa emerge de la crisálida.",memory_tip:"Chrysallís (dorado en griego). Crisálida → mariposa.",topic_tags:["biología"]},
+{id:"v22",word:"Acéfalo",definition_ES:"1. adj. Sin cabeza. 2. adj. Dicho de una colectividad: Sin jefe.",sinónimos:"",example_sentence:"El partido quedó acéfalo.",memory_tip:"A- (sin) + kephalé (cabeza).",topic_tags:["lengua"]},
+{id:"v23",word:"Batracio",definition_ES:"1. adj. Zool. Anfibio. Apl. a animales, u. t. c. s. m.",sinónimos:"anfibio.",example_sentence:"La rana es el batracio más conocido.",memory_tip:"Batrachos (rana en griego).",topic_tags:["biología"]},
+{id:"v24",word:"Cenáculo",definition_ES:"1. m. Sala de la Última Cena. 2. m. Grupo de personas que se reúnen con fines literarios o artísticos.",sinónimos:"",example_sentence:"El cenáculo literario se reunía los martes.",memory_tip:"Cenaaculum (comedor en latín).",topic_tags:["religión","lengua"]},
+{id:"v25",word:"Dédalo",definition_ES:"1. m. Laberinto, lugar del que es difícil salir. 2. m. Confusión, enredo.",sinónimos:"laberinto, enredo, confusión.",example_sentence:"Se perdió en el dédalo de callejuelas.",memory_tip:"Dédalo construyó el laberinto de Creta.",topic_tags:["mitología","lengua"]},
+{id:"v26",word:"Estoicismo",definition_ES:"1. m. Doctrina de los estoicos. 2. m. Fortaleza sobre las propias emociones.",sinónimos:"firmeza, entereza, serenidad, imperturbabilidad.",example_sentence:"Afrontó la tragedia con estoicismo.",memory_tip:"Marco Aurelio, Zenón: dominar las pasiones.",topic_tags:["filosofía"]},
+{id:"v27",word:"Hipérbole",definition_ES:"1. f. Ret. Figura que aumenta o disminuye excesivamente aquello de lo que se habla.",sinónimos:"exageración.",example_sentence:"'Te lo he dicho mil veces' es una hipérbole.",memory_tip:"Hyper (exceso) + bolé (lanzamiento).",topic_tags:["lengua"]},
+{id:"v28",word:"Incólume",definition_ES:"1. adj. Sano y salvo, sin lesión ni menoscabo.",sinónimos:"intacto, ileso, indemne.",example_sentence:"Salió incólume del accidente.",memory_tip:"In- + culpa/daño. Sin daño.",topic_tags:["lengua"]},
+{id:"v29",word:"Lacónico",definition_ES:"1. adj. Breve, conciso, compendioso.",sinónimos:"breve, conciso, escueto, sucinto.",example_sentence:"Su respuesta fue lacónica: 'No'.",memory_tip:"De Laconia (Esparta). Los espartanos hablaban poco.",topic_tags:["lengua"]},
+{id:"v30",word:"Misántropo",definition_ES:"1. adj. Que siente aversión al trato humano. U. t. c. s.",sinónimos:"huraño, insociable, arisco.",example_sentence:"El viejo misántropo rechazaba toda visita.",memory_tip:"Misos (odio) + anthropos (hombre).",topic_tags:["lengua"]},
+{id:"v31",word:"Necrópolis",definition_ES:"1. f. Cementerio de gran extensión con monumentos funerarios. 2. f. Arqueol. Conjunto de sepulturas antiguas.",sinónimos:"cementerio, camposanto.",example_sentence:"La necrópolis romana fue descubierta en las obras.",memory_tip:"Nekros (muerto) + polis (ciudad).",topic_tags:["lengua"]},
+{id:"v32",word:"Ominoso",definition_ES:"1. adj. Azaroso, de mal agüero, abominable, vitando.",sinónimos:"nefasto, funesto, aciago, abominable.",example_sentence:"Un silencio ominoso precedió a la tormenta.",memory_tip:"Ominosus (de mal agüero en latín).",topic_tags:["lengua"]},
+{id:"v33",word:"Palimpsesto",definition_ES:"1. m. Manuscrito antiguo que conserva huellas de una escritura anterior borrada.",sinónimos:"",example_sentence:"El pergamino era un palimpsesto con tres textos.",memory_tip:"Palin (de nuevo) + psao (raspar). Raspado y reutilizado.",topic_tags:["historia"]},
+{id:"v34",word:"Rapsoda",definition_ES:"1. m. y f. En la Antigua Grecia, persona que recitaba poemas épicos. 2. m. y f. Poeta popular ambulante.",sinónimos:"bardo, aedo, juglar.",example_sentence:"Homero fue el rapsoda más célebre.",memory_tip:"Rhaptein (coser) + ode (canto). El que cose cantos.",topic_tags:["lengua","historia"]},
+{id:"v35",word:"Sibarita",definition_ES:"1. adj. Que vive con lujo y se da a los placeres con refinamiento. U. t. c. s.",sinónimos:"hedonista, epicúreo, voluptuoso.",example_sentence:"Era un sibarita que solo bebía grandes reservas.",memory_tip:"De Síbaris, ciudad griega del lujo.",topic_tags:["lengua"]},
+{id:"v36",word:"Taumaturgo",definition_ES:"1. m. y f. Persona que hace o dice que hace milagros.",sinónimos:"mago, teurgo.",example_sentence:"El curandero se hacía pasar por taumaturgo.",memory_tip:"Thauma (maravilla) + ergon (obra).",topic_tags:["religión","lengua"]},
+{id:"v37",word:"Ubérrimo",definition_ES:"1. adj. Muy abundante y fértil.",sinónimos:"abundante, fértil, fecundo, pródigo.",example_sentence:"La vega ubérrima producía tres cosechas.",memory_tip:"Superlativo de uber (fértil). Lo más fértil.",topic_tags:["lengua"]},
+{id:"v38",word:"Vejatorio",definition_ES:"1. adj. Que causa humillación o vergüenza.",sinónimos:"humillante, degradante, denigrante, ofensivo.",example_sentence:"El trato vejatorio fue denunciado.",memory_tip:"Vejar = humillar. Vejatorio = que humilla.",topic_tags:["lengua"]},
+{id:"v39",word:"Xilografía",definition_ES:"1. f. Arte de grabar en madera. 2. f. Impresión con planchas de madera grabada.",sinónimos:"grabado en madera.",example_sentence:"Los primeros libros se imprimieron con xilografía.",memory_tip:"Xylon (madera) + graphia (escritura).",topic_tags:["arte"]},
+{id:"v40",word:"Abyecto",definition_ES:"1. adj. Despreciable, vil en extremo.",sinónimos:"vil, ruin, indigno, despreciable, rastrero.",example_sentence:"Su comportamiento abyecto lo condenó.",memory_tip:"Ab- + jectus (lanzado). Lo más bajo.",topic_tags:["lengua"]},
+{id:"v41",word:"Bienhechor",definition_ES:"1. adj. Que hace bien a otro. U. t. c. s.",sinónimos:"benefactor, protector, filántropo.",example_sentence:"El bienhechor anónimo pagó la restauración.",memory_tip:"Bien + hacer.",topic_tags:["lengua"]},
+{id:"v42",word:"Caterva",definition_ES:"1. f. Multitud de personas o cosas de poca importancia o de la misma especie.",sinónimos:"tropel, muchedumbre, turba, hatajo.",example_sentence:"Una caterva de periodistas esperaba.",memory_tip:"Caterva (tropa en latín). Grupo numeroso.",topic_tags:["lengua"]},
+{id:"v43",word:"Demagogo",definition_ES:"1. m. y f. Político que capta la voluntad del pueblo con halagos. 2. m. y f. Hist. Jefe popular en la Antigüedad.",sinónimos:"populista, agitador.",example_sentence:"El demagogo prometía sin explicar.",memory_tip:"Demos (pueblo) + agogós (conductor).",topic_tags:["política"]},
+{id:"v44",word:"Egregio",definition_ES:"1. adj. Insigne, ilustre.",sinónimos:"ilustre, insigne, preclaro, eminente, notable.",example_sentence:"El egregio maestro recibió la medalla.",memory_tip:"Egregius (que sobresale del rebaño).",topic_tags:["lengua"]},
+{id:"v45",word:"Gregario",definition_ES:"1. adj. Que vive en rebaño. 2. adj. Que sigue las ideas ajenas servilmente. 3. adj. Que forma parte del grupo sin sobresalir.",sinónimos:"subordinado, seguidor.",example_sentence:"Los lobos son animales gregarios.",memory_tip:"Gregarius (de rebaño). El que va con el grupo.",topic_tags:["lengua","biología"]},
+{id:"v46",word:"Hagiógrafo",definition_ES:"1. m. y f. Escritor de vidas de santos.",sinónimos:"",example_sentence:"El hagiógrafo dedicó su vida a documentar milagros.",memory_tip:"Hagios (santo) + graphos (escritor).",topic_tags:["religión"]},
+{id:"v47",word:"Misiva",definition_ES:"1. f. Carta o mensaje que se envía a alguien.",sinónimos:"carta, epístola, mensaje.",example_sentence:"Le envió una misiva que nunca llegó.",memory_tip:"Missiva (enviada en latín).",topic_tags:["lengua"]},
+{id:"v48",word:"Níveo",definition_ES:"1. adj. poét. Que es blanco como la nieve.",sinónimos:"blanco, nivoso.",example_sentence:"Su nívea piel contrastaba con el negro.",memory_tip:"Niveus (de nieve en latín).",topic_tags:["lengua"]},
+{id:"v49",word:"Zopenco",definition_ES:"1. adj. coloq. Bruto y tonto. U. t. c. s.",sinónimos:"zoquete, torpe, necio, bruto.",example_sentence:"No seas zopenco y lee las instrucciones.",memory_tip:"Coloquial para alguien torpe y bruto.",topic_tags:["lengua"]},
+{id:"v50",word:"Kénosis",definition_ES:"1. f. Rel. Acto por el que el Hijo de Dios se despojó de su condición divina para asumir la condición humana.",sinónimos:"",example_sentence:"La kénosis es central en la cristología.",memory_tip:"Kenosis (vaciamiento en griego).",topic_tags:["teología"]},
+];
+const QQ=[
+{id:"cg01",dk:"Cultura General",q:"Con la J: alabanza propia, arrogante y presuntuosa",a:"jactancia",aa:[]},
+{id:"cg02",dk:"Cultura General",q:"Con la P: manuscrito antiguo con huellas de escritura anterior borrada",a:"palimpsesto",aa:[]},
+{id:"cg03",dk:"Cultura General",q:"Con la G: que vive en rebaño o sigue las ideas ajenas",a:"gregario",aa:[]},
+{id:"cg04",dk:"Cultura General",q:"Con la U: muy abundante y fértil",a:"ubérrimo",aa:["uberrimo"]},
+{id:"cg05",dk:"Cultura General",q:"Con la O: parte de la metafísica que trata del ser en general",a:"ontología",aa:["ontologia"]},
+{id:"cg06",dk:"Cultura General",q:"Con la E: insigne, ilustre",a:"egregio",aa:[]},
+{id:"cg07",dk:"Cultura General",q:"Con la I: que destruía imágenes sagradas o rechaza la autoridad",a:"iconoclasta",aa:[]},
+{id:"cg08",dk:"Cultura General",q:"Con la D: discurso violento e injurioso contra alguien",a:"diatriba",aa:[]},
+{id:"cg09",dk:"Cultura General",q:"Con la A: acción de abandonar públicamente la fe religiosa",a:"apostasía",aa:["apostasia"]},
+{id:"cg10",dk:"Cultura General",q:"Con la C: multitud de personas de poca importancia",a:"caterva",aa:[]},
+{id:"cg11",dk:"Cultura General",q:"Con la L: breve y conciso en el modo de hablar",a:"lacónico",aa:["laconico"]},
+{id:"cg12",dk:"Cultura General",q:"Con la G: espuma de la cerveza",a:"giste",aa:[]},
+{id:"cg13",dk:"Cultura General",q:"¿Cuántos huesos tiene el cuerpo humano adulto?",a:"206",aa:["doscientos seis"]},
+{id:"cg14",dk:"Cultura General",q:"¿Cuántos planetas tiene el sistema solar?",a:"8",aa:["ocho"]},
+{id:"cg15",dk:"Cultura General",q:"¿Cuál es el metal más abundante en la corteza terrestre?",a:"aluminio",aa:[]},
+{id:"cg16",dk:"Cultura General",q:"Con la T: repetición de un mismo pensamiento en distintas formas",a:"tautología",aa:["tautologia"]},
+{id:"cg17",dk:"Cultura General",q:"Con la M: suspensión o paralización total en lo moral o físico",a:"marasmo",aa:[]},
+{id:"cg18",dk:"Cultura General",q:"Con la R: capacidad de adaptación frente a un agente perturbador",a:"resiliencia",aa:[]},
+{id:"cg19",dk:"Cultura General",q:"Con la C: pupa de los lepidópteros envuelta en capullo",a:"crisálida",aa:["crisalida"]},
+{id:"cg20",dk:"Cultura General",q:"Con la N: sin cabeza o sin jefe (adjetivo)",a:"acéfalo",aa:["acefalo"]},
+{id:"lit01",dk:"Literatura",q:"¿Quién escribió el Quijote?",a:"Cervantes",aa:["miguel de cervantes"]},
+{id:"lit02",dk:"Literatura",q:"¿Cómo se llama el escudero de Don Quijote?",a:"Sancho Panza",aa:["sancho"]},
+{id:"lit03",dk:"Literatura",q:"¿Quién escribió Romeo y Julieta?",a:"Shakespeare",aa:["william shakespeare"]},
+{id:"lit04",dk:"Literatura",q:"¿Quién escribió 'La Regenta'?",a:"Clarín",aa:["leopoldo alas"]},
+{id:"lit05",dk:"Literatura",q:"¿A qué generación pertenece Lorca?",a:"Generación del 27",aa:["del 27"]},
+{id:"lit06",dk:"Literatura",q:"¿Quién escribió 'En busca del tiempo perdido'?",a:"Proust",aa:["marcel proust"]},
+{id:"lit07",dk:"Literatura",q:"¿Quién escribió 'Fortunata y Jacinta'?",a:"Pérez Galdós",aa:["galdós"]},
+{id:"lit08",dk:"Literatura",q:"¿Quién escribió '1984'?",a:"Orwell",aa:["george orwell"]},
+{id:"lit09",dk:"Literatura",q:"¿De qué autor es 'Cien años de soledad'?",a:"García Márquez",aa:["gabriel garcía márquez"]},
+{id:"lit10",dk:"Literatura",q:"Con la R: en Grecia antigua, persona que recitaba poemas épicos",a:"rapsoda",aa:[]},
+{id:"lit11",dk:"Literatura",q:"¿Quién escribió 'La Odisea'?",a:"Homero",aa:[]},
+{id:"lit12",dk:"Literatura",q:"¿Quién escribió 'Luces de bohemia'?",a:"Valle-Inclán",aa:["ramón del valle-inclán"]},
+{id:"lit13",dk:"Literatura",q:"¿Quién escribió 'El proceso'?",a:"Kafka",aa:["franz kafka"]},
+{id:"lit14",dk:"Literatura",q:"¿Quién escribió 'La casa de Bernarda Alba'?",a:"Lorca",aa:["garcía lorca"]},
+{id:"lit15",dk:"Literatura",q:"¿De qué autor es 'Crimen y castigo'?",a:"Dostoievski",aa:[]},
+{id:"lit16",dk:"Literatura",q:"¿De qué autor es 'Rayuela'?",a:"Cortázar",aa:["julio cortázar"]},
+{id:"lit17",dk:"Literatura",q:"¿Quién escribió 'Las flores del mal'?",a:"Baudelaire",aa:["charles baudelaire"]},
+{id:"lit18",dk:"Literatura",q:"¿Quién escribió 'Platero y yo'?",a:"Juan Ramón Jiménez",aa:["juan ramón"]},
+{id:"lit19",dk:"Literatura",q:"¿Quién escribió 'El árbol de la ciencia'?",a:"Pío Baroja",aa:["baroja"]},
+{id:"lit20",dk:"Literatura",q:"Con la S: en filosofía, serie de silogismos truncados",a:"sorites",aa:[]},
+{id:"geo01",dk:"Geografía",q:"¿Cuál es la capital de Australia?",a:"Canberra",aa:[]},
+{id:"geo02",dk:"Geografía",q:"¿Cuál es el río más largo del mundo?",a:"Nilo",aa:["río nilo"]},
+{id:"geo03",dk:"Geografía",q:"¿Cuál es la capital de Canadá?",a:"Ottawa",aa:[]},
+{id:"geo04",dk:"Geografía",q:"¿Cuál es la montaña más alta del mundo?",a:"Everest",aa:["monte everest"]},
+{id:"geo05",dk:"Geografía",q:"¿Cuál es el país más grande del mundo?",a:"Rusia",aa:[]},
+{id:"geo06",dk:"Geografía",q:"¿Cuál es la capital de Nueva Zelanda?",a:"Wellington",aa:[]},
+{id:"geo07",dk:"Geografía",q:"¿Cuál es el río más largo de España?",a:"Tajo",aa:["río tajo"]},
+{id:"geo08",dk:"Geografía",q:"¿Cuál es el mar más salado del mundo?",a:"Mar Muerto",aa:[]},
+{id:"geo09",dk:"Geografía",q:"¿Cuántos países forman América del Sur?",a:"12",aa:["doce"]},
+{id:"geo10",dk:"Geografía",q:"¿Cuál es la isla más grande del mundo?",a:"Groenlandia",aa:[]},
+{id:"geo11",dk:"Geografía",q:"¿Cuál es la comunidad autónoma más grande de España?",a:"Castilla y León",aa:[]},
+{id:"geo12",dk:"Geografía",q:"¿Cuál es el pico más alto de la Península Ibérica?",a:"Mulhacén",aa:["mulhacen"]},
+{id:"geo13",dk:"Geografía",q:"¿Cuál es el país más pequeño del mundo?",a:"Vaticano",aa:["ciudad del vaticano"]},
+{id:"geo14",dk:"Geografía",q:"¿Cuál es el lago más profundo del mundo?",a:"Baikal",aa:["lago baikal"]},
+{id:"geo15",dk:"Geografía",q:"¿En qué provincia nace el río Ebro?",a:"Cantabria",aa:[]},
+{id:"geo16",dk:"Geografía",q:"¿Cuántos países tiene África?",a:"54",aa:["cincuenta y cuatro"]},
+{id:"geo17",dk:"Geografía",q:"¿Cuál es la capital de Kazajistán?",a:"Astana",aa:["nur-sultán"]},
+{id:"geo18",dk:"Geografía",q:"¿Cuál es la capital de Bielorrusia?",a:"Minsk",aa:[]},
+{id:"geo19",dk:"Geografía",q:"¿Cuál es la capital de Fiyi?",a:"Suva",aa:[]},
+{id:"geo20",dk:"Geografía",q:"¿Cuál es el desierto cálido más grande del mundo?",a:"Sahara",aa:[]},
+{id:"his01",dk:"Historia",q:"¿En qué año estalló la Revolución Francesa?",a:"1789",aa:[]},
+{id:"his02",dk:"Historia",q:"¿En qué año terminó la Guerra Civil Española?",a:"1939",aa:[]},
+{id:"his03",dk:"Historia",q:"¿En qué año comenzó la Primera Guerra Mundial?",a:"1914",aa:[]},
+{id:"his04",dk:"Historia",q:"¿En qué año cayó el Imperio Romano de Occidente?",a:"476",aa:[]},
+{id:"his05",dk:"Historia",q:"¿En qué año llegó Colón a América?",a:"1492",aa:[]},
+{id:"his06",dk:"Historia",q:"¿Quién fue el primer emperador de Roma?",a:"Augusto",aa:["césar augusto","octavio"]},
+{id:"his07",dk:"Historia",q:"¿En qué año se firmó la Carta Magna?",a:"1215",aa:[]},
+{id:"his08",dk:"Historia",q:"¿En qué año cayó el Muro de Berlín?",a:"1989",aa:[]},
+{id:"his09",dk:"Historia",q:"¿En qué año se promulgó la Constitución española vigente?",a:"1978",aa:[]},
+{id:"his10",dk:"Historia",q:"¿Quién dirigió la URSS durante la Segunda Guerra Mundial?",a:"Stalin",aa:[]},
+{id:"his11",dk:"Historia",q:"¿En qué año se publicó el Manifiesto Comunista?",a:"1848",aa:[]},
+{id:"his12",dk:"Historia",q:"¿En qué año se fundó la ONU?",a:"1945",aa:[]},
+{id:"his13",dk:"Historia",q:"¿Cuántos años duró la dictadura de Franco?",a:"36",aa:["treinta y seis"]},
+{id:"his14",dk:"Historia",q:"¿En qué año se produjo la Revolución Rusa?",a:"1917",aa:[]},
+{id:"his15",dk:"Historia",q:"¿Quién fue asesinado en la Bastilla en la Revolución Francesa?",a:"ninguno",aa:[]},
+{id:"his16",dk:"Historia",q:"¿Cuántos años duró la guerra de los Cien Años?",a:"116",aa:["ciento dieciséis"]},
+{id:"his17",dk:"Historia",q:"¿Cómo se llamó el período de transición política española tras Franco?",a:"Transición",aa:["la transición"]},
+{id:"his18",dk:"Historia",q:"¿Quién fue el último rey visigodo de España?",a:"Rodrigo",aa:["don rodrigo"]},
+{id:"his19",dk:"Historia",q:"¿En qué año se firmó la Declaración de Independencia de EE.UU.?",a:"1776",aa:[]},
+{id:"his20",dk:"Historia",q:"¿Quién fue el primer presidente de los Estados Unidos?",a:"George Washington",aa:["washington"]},
+{id:"art01",dk:"Historia del Arte",q:"¿Quién pintó 'La Gioconda'?",a:"Leonardo da Vinci",aa:["leonardo"]},
+{id:"art02",dk:"Historia del Arte",q:"¿Quién pintó 'Las Meninas'?",a:"Velázquez",aa:["diego velázquez"]},
+{id:"art03",dk:"Historia del Arte",q:"¿Quién esculpió 'El David'?",a:"Miguel Ángel",aa:["michelangelo"]},
+{id:"art04",dk:"Historia del Arte",q:"¿Quién diseñó la Sagrada Familia de Barcelona?",a:"Gaudí",aa:["antonio gaudí"]},
+{id:"art05",dk:"Historia del Arte",q:"¿Quién pintó 'El grito'?",a:"Munch",aa:["edvard munch"]},
+{id:"art06",dk:"Historia del Arte",q:"¿Quién pintó 'La persistencia de la memoria' con los relojes blandos?",a:"Dalí",aa:["salvador dalí"]},
+{id:"art07",dk:"Historia del Arte",q:"¿En qué ciudad está el Partenón?",a:"Atenas",aa:[]},
+{id:"art08",dk:"Historia del Arte",q:"¿Quién pintó 'Los girasoles'?",a:"Van Gogh",aa:["vincent van gogh"]},
+{id:"art09",dk:"Historia del Arte",q:"¿De qué material está hecha la Venus de Milo?",a:"Mármol",aa:["marmol"]},
+{id:"art10",dk:"Historia del Arte",q:"Con la X: arte de grabar en madera",a:"xilografía",aa:["xilografia"]},
+{id:"art11",dk:"Historia del Arte",q:"¿Quién pintó el techo de la Capilla Sixtina?",a:"Miguel Ángel",aa:["michelangelo"]},
+{id:"art12",dk:"Historia del Arte",q:"¿Quién pintó 'Guernica'?",a:"Picasso",aa:["pablo picasso"]},
+{id:"art13",dk:"Historia del Arte",q:"¿En qué país está el Taj Mahal?",a:"India",aa:[]},
+{id:"art14",dk:"Historia del Arte",q:"¿Quién pintó 'La ronda de noche'?",a:"Rembrandt",aa:[]},
+{id:"art15",dk:"Historia del Arte",q:"¿Qué estilo arquitectónico tiene arcos apuntados?",a:"Gótico",aa:["estilo gótico"]},
+{id:"art16",dk:"Historia del Arte",q:"¿En qué museo están 'Las Meninas'?",a:"Museo del Prado",aa:["el prado","prado"]},
+{id:"art17",dk:"Historia del Arte",q:"¿A qué movimiento pertenecen Braque y Picasso en sus inicios?",a:"Cubismo",aa:[]},
+{id:"art18",dk:"Historia del Arte",q:"¿Cómo se llama la escultura de Rodin del hombre pensando?",a:"El pensador",aa:["le penseur"]},
+{id:"art19",dk:"Historia del Arte",q:"¿En qué ciudad surgió el movimiento impresionista?",a:"París",aa:["paris"]},
+{id:"art20",dk:"Historia del Arte",q:"¿Quién es considerado padre del arte abstracto?",a:"Kandinsky",aa:[]},
+{id:"sci01",dk:"Ciencia y Naturaleza",q:"¿Qué científico formuló la teoría de la relatividad?",a:"Einstein",aa:["albert einstein"]},
+{id:"sci02",dk:"Ciencia y Naturaleza",q:"¿Cuántos elementos tiene la tabla periódica?",a:"118",aa:["ciento dieciocho"]},
+{id:"sci03",dk:"Ciencia y Naturaleza",q:"¿Qué molécula transporta el oxígeno en la sangre?",a:"Hemoglobina",aa:[]},
+{id:"sci04",dk:"Ciencia y Naturaleza",q:"¿Cuánto tarda la luz en llegar del Sol a la Tierra?",a:"8 minutos",aa:["ocho minutos"]},
+{id:"sci05",dk:"Ciencia y Naturaleza",q:"Con la B: anfibio según la RAE",a:"batracio",aa:[]},
+{id:"sci06",dk:"Ciencia y Naturaleza",q:"¿Cuál es el elemento más abundante en el universo?",a:"Hidrógeno",aa:["hidrogeno"]},
+{id:"sci07",dk:"Ciencia y Naturaleza",q:"¿Cómo se llama la galaxia donde está el Sistema Solar?",a:"Vía Láctea",aa:["la vía láctea"]},
+{id:"sci08",dk:"Ciencia y Naturaleza",q:"¿Cuál es el símbolo químico del oro?",a:"Au",aa:[]},
+{id:"sci09",dk:"Ciencia y Naturaleza",q:"¿Cuál es el gas más abundante en la atmósfera?",a:"Nitrógeno",aa:["nitrogeno"]},
+{id:"sci10",dk:"Ciencia y Naturaleza",q:"Con la Q: organismo con células genéticamente distintas (biología)",a:"quimera",aa:[]},
+{id:"sci11",dk:"Ciencia y Naturaleza",q:"¿Qué ácido contiene la información genética?",a:"ADN",aa:["ácido desoxirribonucleico","dna"]},
+{id:"sci12",dk:"Ciencia y Naturaleza",q:"¿A qué velocidad viaja la luz?",a:"300.000 km/s",aa:["trescientos mil kilómetros por segundo"]},
+{id:"sci13",dk:"Ciencia y Naturaleza",q:"¿Cómo se llama el punto de máxima proximidad al Sol?",a:"Perihelio",aa:[]},
+{id:"sci14",dk:"Ciencia y Naturaleza",q:"Con la C: expulsión de sustancias nocivas al organismo (medicina)",a:"catarsis",aa:[]},
+{id:"sci15",dk:"Ciencia y Naturaleza",q:"¿Cómo se llama el proceso de división celular?",a:"Mitosis",aa:["meiosis"]},
+{id:"sci16",dk:"Ciencia y Naturaleza",q:"¿Cuál es el punto de ebullición del agua al nivel del mar?",a:"100 grados",aa:["100"]},
+{id:"sci17",dk:"Ciencia y Naturaleza",q:"¿Qué unidad mide la frecuencia de las ondas?",a:"Hercio",aa:["hertz","hz"]},
+{id:"sci18",dk:"Ciencia y Naturaleza",q:"Con la R: capacidad de adaptación frente a adversidad",a:"resiliencia",aa:[]},
+{id:"sci19",dk:"Ciencia y Naturaleza",q:"¿Quién formuló la ley de la gravedad universal?",a:"Newton",aa:["isaac newton"]},
+{id:"sci20",dk:"Ciencia y Naturaleza",q:"¿Qué es un púlsar?",a:"estrella de neutrones",aa:["pulsar"]},
+{id:"cin01",dk:"Cine, TV y Espectáculos",q:"¿Quién dirigió 'Schindler's List'?",a:"Spielberg",aa:["steven spielberg"]},
+{id:"cin02",dk:"Cine, TV y Espectáculos",q:"¿Quién interpretó a James Bond por primera vez?",a:"Sean Connery",aa:["connery"]},
+{id:"cin03",dk:"Cine, TV y Espectáculos",q:"¿En qué año se estrenó 'El Padrino'?",a:"1972",aa:[]},
+{id:"cin04",dk:"Cine, TV y Espectáculos",q:"¿Quién dirigió 'Pulp Fiction'?",a:"Tarantino",aa:["quentin tarantino"]},
+{id:"cin05",dk:"Cine, TV y Espectáculos",q:"¿En qué ciudad nació Freddie Mercury?",a:"Zanzíbar",aa:["zanzibar"]},
+{id:"cin06",dk:"Cine, TV y Espectáculos",q:"¿Cuántas sinfonías compuso Beethoven?",a:"9",aa:["nueve"]},
+{id:"cin07",dk:"Cine, TV y Espectáculos",q:"¿Cómo se llama la ópera de Mozart sobre Don Juan?",a:"Don Giovanni",aa:[]},
+{id:"cin08",dk:"Cine, TV y Espectáculos",q:"¿Quién dirigió '2001: Una odisea del espacio'?",a:"Kubrick",aa:["stanley kubrick"]},
+{id:"cin09",dk:"Cine, TV y Espectáculos",q:"¿Qué película ganó la Palma de Oro en Cannes 2019?",a:"Parásitos",aa:["parasite"]},
+{id:"cin10",dk:"Cine, TV y Espectáculos",q:"¿Quién protagonizó 'Forrest Gump'?",a:"Tom Hanks",aa:["hanks"]},
+{id:"cin11",dk:"Cine, TV y Espectáculos",q:"¿De qué país es originario el flamenco?",a:"España",aa:[]},
+{id:"cin12",dk:"Cine, TV y Espectáculos",q:"¿Cómo se llamaba el grupo de los Beatles antes?",a:"The Quarrymen",aa:["quarrymen"]},
+{id:"cin13",dk:"Cine, TV y Espectáculos",q:"¿Quién compuso 'Las cuatro estaciones'?",a:"Vivaldi",aa:["antonio vivaldi"]},
+{id:"cin14",dk:"Cine, TV y Espectáculos",q:"¿Cómo se llama el instrumento más grande de cuerda pulsada en orquesta?",a:"Arpa",aa:[]},
+{id:"cin15",dk:"Cine, TV y Espectáculos",q:"¿Quién ganó el Nobel de Literatura en 2016 siendo músico?",a:"Bob Dylan",aa:["dylan"]},
+{id:"cin16",dk:"Cine, TV y Espectáculos",q:"¿Cuántos oros olímpicos tiene Michael Phelps?",a:"23",aa:["veintitrés"]},
+{id:"cin17",dk:"Cine, TV y Espectáculos",q:"¿Qué película barrió los Oscar 2023 con 7 estatuillas?",a:"Todo a la vez en todas partes",aa:["everything everywhere all at once"]},
+{id:"cin18",dk:"Cine, TV y Espectáculos",q:"¿Quién ganó el Oscar a Mejor Actor por 'Forrest Gump'?",a:"Tom Hanks",aa:["hanks"]},
+{id:"cin19",dk:"Cine, TV y Espectáculos",q:"¿Cuántos Balones de Oro tiene Lionel Messi?",a:"8",aa:["ocho"]},
+{id:"cin20",dk:"Cine, TV y Espectáculos",q:"¿En qué año ganó España su primer Mundial de fútbol?",a:"2010",aa:[]},
+{id:"dep01",dk:"Deportes",q:"¿Cuántos jugadores tiene un equipo de fútbol?",a:"11",aa:["once"]},
+{id:"dep02",dk:"Deportes",q:"¿En qué ciudad se celebraron los JJ.OO. de 1992?",a:"Barcelona",aa:[]},
+{id:"dep03",dk:"Deportes",q:"¿Cuántos Grand Slams ha ganado Rafael Nadal?",a:"22",aa:["veintidós"]},
+{id:"dep04",dk:"Deportes",q:"¿Qué selección ha ganado más Mundiales de fútbol?",a:"Brasil",aa:[]},
+{id:"dep05",dk:"Deportes",q:"¿Cuántos metros mide un maratón?",a:"42.195",aa:["42 kilómetros","42195"]},
+{id:"dep06",dk:"Deportes",q:"¿Cuántas etapas tiene el Tour de Francia?",a:"21",aa:["veintiuna"]},
+{id:"dep07",dk:"Deportes",q:"¿Cuántos puntos vale un triple en baloncesto?",a:"3",aa:["tres"]},
+{id:"dep08",dk:"Deportes",q:"¿Cuántos campeonatos tiene Schumacher en F1?",a:"7",aa:["siete"]},
+{id:"dep09",dk:"Deportes",q:"¿En qué superficie se juega Wimbledon?",a:"Hierba",aa:["césped"]},
+{id:"dep10",dk:"Deportes",q:"¿Quién tiene el récord mundial de los 100 metros lisos?",a:"Usain Bolt",aa:["bolt"]},
+{id:"dep11",dk:"Deportes",q:"¿Cuántos puntos vale un ensayo en rugby?",a:"5",aa:["cinco"]},
+{id:"dep12",dk:"Deportes",q:"¿Cómo se llama el estadio del FC Barcelona?",a:"Camp Nou",aa:["spotify camp nou"]},
+{id:"dep13",dk:"Deportes",q:"¿Qué ciclista español ganó el Tour 5 veces seguidas?",a:"Induráin",aa:["miguel induráin"]},
+{id:"dep14",dk:"Deportes",q:"¿Cuántos asaltos tiene un combate de boxeo profesional?",a:"12",aa:["doce"]},
+{id:"dep15",dk:"Deportes",q:"¿Cuántos aros tiene la bandera olímpica?",a:"5",aa:["cinco"]},
+{id:"dep16",dk:"Deportes",q:"¿Cada cuántos años se celebran los JJ.OO. de verano?",a:"4",aa:["cuatro"]},
+{id:"dep17",dk:"Deportes",q:"¿Cuántos oros olímpicos tiene Michael Phelps?",a:"23",aa:["veintitrés"]},
+{id:"dep18",dk:"Deportes",q:"¿Cuál es el torneo de golf más antiguo del mundo?",a:"The Open Championship",aa:["british open","the open"]},
+{id:"dep19",dk:"Deportes",q:"¿Cuántos Balones de Oro tiene Messi?",a:"8",aa:["ocho"]},
+{id:"dep20",dk:"Deportes",q:"¿Cuántos lados tiene un hexágono?",a:"6",aa:["seis"]},
+{id:"usa01",dk:"Historia EEUU",q:"¿En qué año se firmó la Declaración de Independencia?",a:"1776",aa:[]},
+{id:"usa02",dk:"Historia EEUU",q:"¿Quién fue asesinado en el Teatro Ford en 1865?",a:"Lincoln",aa:["abraham lincoln"]},
+{id:"usa03",dk:"Historia EEUU",q:"¿Cuántos estados tiene EE.UU.?",a:"50",aa:["cincuenta"]},
+{id:"usa04",dk:"Historia EEUU",q:"¿En qué año comenzó la Guerra de Secesión?",a:"1861",aa:[]},
+{id:"usa05",dk:"Historia EEUU",q:"¿Quién fue el primer presidente afroamericano de EE.UU.?",a:"Obama",aa:["barack obama"]},
+{id:"usa06",dk:"Historia EEUU",q:"¿Qué evento llevó a EE.UU. a la Segunda Guerra Mundial?",a:"Pearl Harbor",aa:[]},
+{id:"usa07",dk:"Historia EEUU",q:"¿Quién fue asesinado en Dallas en 1963?",a:"Kennedy",aa:["john f. kennedy","jfk"]},
+{id:"usa08",dk:"Historia EEUU",q:"¿Cómo se llama el escándalo que obligó a Nixon a dimitir?",a:"Watergate",aa:[]},
+{id:"usa09",dk:"Historia EEUU",q:"¿Quién pronunció 'I Have a Dream'?",a:"Martin Luther King",aa:["luther king","mlk"]},
+{id:"usa10",dk:"Historia EEUU",q:"¿En qué año llegaron los primeros astronautas a la Luna?",a:"1969",aa:[]},
+{id:"usa11",dk:"Historia EEUU",q:"¿Cómo se llama la enmienda que abolió la esclavitud?",a:"Decimotercera enmienda",aa:["13ª enmienda","enmienda 13"]},
+{id:"usa12",dk:"Historia EEUU",q:"¿Cómo se llamó la prohibición del alcohol en EE.UU.?",a:"Ley Seca",aa:["prohibición"]},
+{id:"usa13",dk:"Historia EEUU",q:"¿En qué año fue el crack de la Bolsa que inició la Gran Depresión?",a:"1929",aa:[]},
+{id:"usa14",dk:"Historia EEUU",q:"¿Quién ordenó las bombas atómicas sobre Japón?",a:"Truman",aa:["harry truman"]},
+{id:"usa15",dk:"Historia EEUU",q:"¿En qué año se hundió el Titanic?",a:"1912",aa:[]},
+{id:"usa16",dk:"Historia EEUU",q:"¿En qué estado está Hollywood?",a:"California",aa:[]},
+{id:"usa17",dk:"Historia EEUU",q:"¿Quién compró Luisiana a Francia?",a:"Thomas Jefferson",aa:["jefferson"]},
+{id:"usa18",dk:"Historia EEUU",q:"¿Cuántos presidentes ha tenido EE.UU. hasta 2024?",a:"46",aa:["cuarenta y seis"]},
+{id:"usa19",dk:"Historia EEUU",q:"¿Cómo se llama el discurso de Lincoln en Gettysburg?",a:"Gettysburg Address",aa:["discurso de gettysburg"]},
+{id:"usa20",dk:"Historia EEUU",q:"¿Contra qué país luchó EE.UU. en la guerra de Vietnam?",a:"Vietnam del Norte",aa:["vietnam"]},
+{id:"nob01",dk:"Premios Nobel",q:"¿Quién fue el primer español en ganar el Nobel de Literatura?",a:"Echegaray",aa:["josé echegaray"]},
+{id:"nob02",dk:"Premios Nobel",q:"¿Quién ganó el Nobel de la Paz en 1993 junto con De Klerk?",a:"Mandela",aa:["nelson mandela"]},
+{id:"nob03",dk:"Premios Nobel",q:"¿Quién descubrió la penicilina?",a:"Fleming",aa:["alexander fleming"]},
+{id:"nob04",dk:"Premios Nobel",q:"¿Cuántos Nobeles ha ganado Marie Curie?",a:"2",aa:["dos"]},
+{id:"nob05",dk:"Premios Nobel",q:"¿Qué español ganó el Nobel de Literatura en 1989?",a:"Camilo José Cela",aa:["cela"]},
+{id:"nob06",dk:"Premios Nobel",q:"¿Quién fue la persona más joven en ganar el Nobel de la Paz?",a:"Malala",aa:["malala yousafzai"]},
+{id:"nob07",dk:"Premios Nobel",q:"¿Quién ganó el Nobel de Física en 1921 por el efecto fotoeléctrico?",a:"Einstein",aa:[]},
+{id:"nob08",dk:"Premios Nobel",q:"¿Qué poeta chileno ganó el Nobel en 1971?",a:"Pablo Neruda",aa:["neruda"]},
+{id:"nob09",dk:"Premios Nobel",q:"¿Quién fundó la Cruz Roja y ganó el primer Nobel de la Paz?",a:"Henry Dunant",aa:["dunant"]},
+{id:"nob10",dk:"Premios Nobel",q:"¿Quién ganó el Nobel de Literatura en 2016?",a:"Bob Dylan",aa:["dylan"]},
+{id:"nob11",dk:"Premios Nobel",q:"¿Qué español ganó el Nobel de Medicina en 1906?",a:"Santiago Ramón y Cajal",aa:["ramón y cajal","cajal"]},
+{id:"nob12",dk:"Premios Nobel",q:"¿Quién creó el Premio Nobel?",a:"Alfred Nobel",aa:["nobel"]},
+{id:"nob13",dk:"Premios Nobel",q:"¿Quién ganó el Nobel de Literatura en 1982?",a:"García Márquez",aa:["gabriel garcía márquez"]},
+{id:"nob14",dk:"Premios Nobel",q:"¿En qué ciudad se entrega el Nobel de la Paz?",a:"Oslo",aa:[]},
+{id:"nob15",dk:"Premios Nobel",q:"¿En qué año se creó el Nobel de Economía?",a:"1968",aa:[]},
+{id:"nob16",dk:"Premios Nobel",q:"¿Qué organización recibió el Nobel de la Paz en 1977?",a:"Amnistía Internacional",aa:["amnesty international"]},
+{id:"nob17",dk:"Premios Nobel",q:"¿Qué español ganó el Nobel de Literatura en 1977?",a:"Vicente Aleixandre",aa:["aleixandre"]},
+{id:"nob18",dk:"Premios Nobel",q:"¿Qué escritora polaca ganó el Nobel de Literatura en 2018?",a:"Olga Tokarczuk",aa:["tokarczuk"]},
+{id:"nob19",dk:"Premios Nobel",q:"¿Con qué Nobel se reconoció el descubrimiento del ADN?",a:"Nobel de Medicina",aa:["fisiología y medicina"]},
+{id:"nob20",dk:"Premios Nobel",q:"¿Quién ganó el Nobel de Física junto a Marie Curie en 1903?",a:"Pierre Curie",aa:["curie"]},
+{id:"mit01",dk:"Mitología",q:"¿Quién es el dios griego del mar?",a:"Poseidón",aa:["neptuno"]},
+{id:"mit02",dk:"Mitología",q:"¿Cómo se llama el mensajero de los dioses griegos?",a:"Hermes",aa:["mercurio"]},
+{id:"mit03",dk:"Mitología",q:"¿Quién es la diosa griega del amor?",a:"Afrodita",aa:["venus"]},
+{id:"mit04",dk:"Mitología",q:"¿Cómo se llama el héroe griego que mató al Minotauro?",a:"Teseo",aa:[]},
+{id:"mit05",dk:"Mitología",q:"¿Quién es el dios griego del sol?",a:"Apolo",aa:[]},
+{id:"mit06",dk:"Mitología",q:"Con la D: laberinto o confusión (mitología)",a:"dédalo",aa:["dedalo"]},
+{id:"mit07",dk:"Mitología",q:"¿Cómo se llama el río de los muertos en la mitología griega?",a:"Estigia",aa:["estige"]},
+{id:"mit08",dk:"Mitología",q:"¿Quién encadenó a Prometeo?",a:"Zeus",aa:[]},
+{id:"mit09",dk:"Mitología",q:"¿Cómo se llama el dios nórdico del trueno?",a:"Thor",aa:[]},
+{id:"mit10",dk:"Mitología",q:"¿Cómo se llama el perro guardián del Hades?",a:"Cerbero",aa:[]},
+{id:"mit11",dk:"Mitología",q:"Con la Q: monstruo con cabeza de león y cola de dragón",a:"quimera",aa:[]},
+{id:"mit12",dk:"Mitología",q:"¿Quién es el dios griego de la guerra?",a:"Ares",aa:["marte"]},
+{id:"mit13",dk:"Mitología",q:"¿Cómo se llama la ninfa que se enamoró de Narciso?",a:"Eco",aa:[]},
+{id:"mit14",dk:"Mitología",q:"¿Cómo se llama el rey que todo lo tocaba se convertía en oro?",a:"Midas",aa:["rey midas"]},
+{id:"mit15",dk:"Mitología",q:"¿Quién es la diosa griega de la sabiduría?",a:"Atenea",aa:["minerva"]},
+{id:"mit16",dk:"Mitología",q:"¿Cómo se llaman los gemelos que fundaron Roma?",a:"Rómulo y Remo",aa:["romulo y remo"]},
+{id:"mit17",dk:"Mitología",q:"¿Qué héroe griego completó doce trabajos?",a:"Hércules",aa:["heracles"]},
+{id:"mit18",dk:"Mitología",q:"¿Cómo se llama el barquero del Hades?",a:"Caronte",aa:[]},
+{id:"mit19",dk:"Mitología",q:"¿Quién es el dios griego del vino?",a:"Dioniso",aa:["baco"]},
+{id:"mit20",dk:"Mitología",q:"Con la E: manifestación o revelación; festividad del 6 de enero",a:"epifanía",aa:["epifania"]},
+];
+// ═══ ROSCO QUESTIONS ═══
+const RQ={
+A:{d:"Con la A: Sin cabeza o sin jefe",a:"acéfalo"},
+B:{d:"Con la B: Espuma de la cerveza",a:"giste"},
+C:{d:"Con la C: Purificación ritual o liberación interior profunda",a:"catarsis"},
+D:{d:"Con la D: Laberinto, lugar del que es difícil salir",a:"dédalo"},
+E:{d:"Con la E: Insigne, ilustre",a:"egregio"},
+F:{d:"Con la F: Ídolo con poderes sobrenaturales",a:"fetiche"},
+G:{d:"Con la G: Que vive en rebaño o sigue las ideas ajenas",a:"gregario"},
+H:{d:"Con la H: Doctrina que proclama el placer como fin supremo",a:"hedonismo"},
+I:{d:"Con la I: Que rechaza la autoridad de maestros y normas",a:"iconoclasta"},
+J:{d:"Con la J: Alabanza propia, arrogante y presuntuosa",a:"jactancia"},
+K:{d:"Con la K: Acto por el que Dios se despojó de su condición divina",a:"kénosis"},
+L:{d:"Con la L: Breve y conciso en el modo de hablar",a:"lacónico"},
+M:{d:"Con la M: Paralización total en lo moral o físico",a:"marasmo"},
+N:{d:"Con la N: Cementerio de gran extensión con monumentos funerarios",a:"necrópolis"},
+Ñ:{d:"Con la Ñ: Dicho de algo soso, aburrido o sensiblero (coloquial)",a:"ñoño"},
+O:{d:"Con la O: Parte de la metafísica que trata del ser en general",a:"ontología"},
+P:{d:"Con la P: Manuscrito antiguo con huellas de escritura anterior borrada",a:"palimpsesto"},
+Q:{d:"Con la Q: Monstruo con cabeza de león, vientre de cabra y cola de dragón",a:"quimera"},
+R:{d:"Con la R: Capacidad de adaptación frente a un agente perturbador",a:"resiliencia"},
+S:{d:"Con la S: Que vive con lujo y refinamiento",a:"sibarita"},
+T:{d:"Con la T: Persona que hace o dice que hace milagros",a:"taumaturgo"},
+U:{d:"Con la U: Muy abundante y fértil",a:"ubérrimo"},
+V:{d:"Con la V: Que causa humillación o vergüenza",a:"vejatorio"},
+W:{d:"Con la W: (responde con X) Arte de grabar en madera",a:"xilografía"},
+X:{d:"Con la X: Arte de grabar en madera",a:"xilografía"},
+Y:{d:"Con la Y: Que es blanco como la nieve (poético)",a:"níveo"},
+Z:{d:"Con la Z: Bruto y tonto (coloquial)",a:"zopenco"},
+};
+
+
+// ═══ STATE ═══
+const SK='ppro3';
+let S={
+  selectedDecks:Object.keys(DECKS),
+  srs:{},vSRS:{},
+  stats:{streak:0,lastDate:'',seen:0,correct:0},
+  custom:[],
+  settings:{roscoTimer:true},
+  aiDecks:{}  // {deckName: [questions generated by AI]}
+};
+function load(){try{const r=localStorage.getItem(SK);if(r)Object.assign(S,JSON.parse(r));}catch(e){}}
+function save(){try{localStorage.setItem(SK,JSON.stringify(S));}catch(e){}}
+
+// Anki SM2
+function getSRS(id){return S.srs[id]||{iv:1,ease:2.5,due:0,reps:0,lap:0};}
+function rateSRS(id,r){
+  let c=getSRS(id);let{iv,ease,reps,lap}=c;
+  if(r===0){iv=1;lap++;reps=0;ease=Math.max(1.3,ease-.2);}
+  else if(r===1){iv=Math.max(1,Math.round(iv*1.2));ease=Math.max(1.3,ease-.15);}
+  else if(r===2){iv=reps===0?1:reps===1?4:Math.round(iv*ease);reps++;}
+  else{iv=reps===0?1:reps===1?4:Math.round(iv*ease*1.3);ease+=.15;reps++;}
+  S.srs[id]={iv,ease,due:Date.now()+iv*86400000,reps,lap};save();
+}
+function allQ(){return[...QQ,...S.custom.filter(v=>v.a),...Object.values(S.aiDecks).flat()];}
+function getDue(){
+  const now=Date.now(),sel=new Set(S.selectedDecks);
+  return allQ().filter(q=>sel.has(q.dk)&&(getSRS(q.id).due<=now||getSRS(q.id).reps===0))
+    .sort((a,b)=>{const ar=getSRS(a.id).reps===0,br=getSRS(b.id).reps===0;if(ar&&!br)return -1;if(!ar&&br)return 1;return getSRS(a.id).due-getSRS(b.id).due;});
+}
+function norm(s){return(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s]/g,'').trim().replace(/\s+/g,' ');}
+function lev(a,b){if(Math.abs(a.length-b.length)>2)return 99;const m=[];for(let i=0;i<=a.length;i++){m[i]=[i];for(let j=1;j<=b.length;j++)m[i][j]=i===0?j:Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]!==b[j-1]?1:0));}return m[a.length][b.length];}
+function chk(inp,q){const n=norm(inp);if(!n)return false;for(const t of[q.a,...(q.aa||[])].map(norm)){if(n===t||t.length>4&&lev(n,t)<=1)return true;}return false;}
+function shuf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+// ═══ NAV ═══
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='home')renderHome();
+  if(id==='stats')renderStats();
+  if(id==='ai-decks')renderAIDecks();
+}
+
+// ═══ HOME ═══
+function renderHome(){
+  document.getElementById('h-v').textContent=S.stats.seen||0;
+  document.getElementById('h-a').textContent=S.stats.seen>0?Math.round((S.stats.correct/S.stats.seen)*100)+'%':'0%';
+  document.getElementById('h-p').textContent=Math.min(getDue().length,99);
+  document.getElementById('h-r').textContent=S.stats.streak||0;
+  const el=document.getElementById('deck-list');el.innerHTML='';
+  // Built-in decks
+  for(const[name,info]of Object.entries(DECKS)){
+    const sel=S.selectedDecks.includes(name);
+    const cnt=QQ.filter(q=>q.dk===name).length;
+    const d=document.createElement('div');d.className='di'+(sel?' sel':'');
+    d.innerHTML='<div class="di-icon">'+info.icon+'</div><div style="flex:1"><div class="di-name">'+name+'</div><div class="di-ct">'+cnt+' preguntas</div></div><div class="di-chk">'+(sel?'✓':'')+'</div>';
+    d.onclick=()=>{if(sel){if(S.selectedDecks.length>1)S.selectedDecks=S.selectedDecks.filter(x=>x!==name);}else S.selectedDecks.push(name);save();renderHome();};
+    el.appendChild(d);
+  }
+  // AI decks
+  for(const[name,qs]of Object.entries(S.aiDecks)){
+    const sel=S.selectedDecks.includes(name);
+    const d=document.createElement('div');d.className='di'+(sel?' sel':'');
+    d.innerHTML='<div class="di-icon">🤖</div><div style="flex:1"><div class="di-name">'+name+'</div><div class="di-ct">'+qs.length+' preguntas · IA</div></div><div class="di-chk">'+(sel?'✓':'')+'</div>';
+    d.onclick=()=>{if(sel){if(S.selectedDecks.length>1)S.selectedDecks=S.selectedDecks.filter(x=>x!==name);}else S.selectedDecks.push(name);save();renderHome();};
+    el.appendChild(d);
+  }
+}
+
+// ═══ TRAIN ═══
+let tQ=[],tI=0,tC=0,tW=0,tDone=false;
+function startMode(mode){
+  const sel=new Set(S.selectedDecks);
+  let qs;
+  if(mode==='srs'){qs=getDue().slice(0,50);if(!qs.length){alert('¡Todo al día! No hay preguntas pendientes.');return;}}
+  else{qs=shuf(allQ().filter(q=>sel.has(q.dk))).slice(0,50);if(!qs.length){alert('Selecciona al menos un mazo.');return;}}
+  tQ=qs;tI=0;tC=0;tW=0;
+  goTo('train');loadQ();
+}
+function loadQ(){
+  if(tI>=tQ.length){showSum();return;}
+  tDone=false;
+  const q=tQ[tI];
+  document.getElementById('t-dk').textContent=(DECKS[q.dk]?.icon||'🤖')+' '+q.dk;
+  document.getElementById('t-lbl').textContent='PREGUNTA '+(tI+1)+'/'+tQ.length;
+  document.getElementById('t-q').textContent=q.q;
+  const ai=document.getElementById('t-ai');ai.value='';ai.className='ai';ai.disabled=false;
+  document.getElementById('t-sub').style.display='';
+  document.getElementById('t-fb').className='fb';
+  document.getElementById('t-anki').className='anki-row';
+  document.getElementById('t-pb').style.width=(tI/tQ.length*100)+'%';
+  document.getElementById('t-ct').textContent=(tI+1)+'/'+tQ.length;
+  setTimeout(()=>ai.focus(),100);
+}
+function subAns(){
+  if(tDone)return;
+  const q=tQ[tI],val=document.getElementById('t-ai').value.trim();
+  if(!val)return;
+  tDone=true;
+  const ai=document.getElementById('t-ai');ai.disabled=true;
+  document.getElementById('t-sub').style.display='none';
+  const ok=chk(val,q);
+  if(ok){tC++;ai.className='ai ok';}else{tW++;ai.className='ai bad';}
+  const fb=document.getElementById('t-fb');fb.className='fb '+(ok?'ok':'bad')+' show';
+  document.getElementById('t-fb-a').textContent=ok?'✅ ¡Correcto!':'❌ Respuesta: '+q.a;
+  S.stats.seen=(S.stats.seen||0)+1;
+  if(ok)S.stats.correct=(S.stats.correct||0)+1;
+  save();
+  document.getElementById('t-anki').className='anki-row show';
+}
+function rateQ(r){rateSRS(tQ[tI].id,r);tI++;loadQ();}
+function skipQ(){
+  if(!tDone){
+    tDone=true;tW++;
+    const ai=document.getElementById('t-ai');ai.disabled=true;
+    document.getElementById('t-sub').style.display='none';
+    const q=tQ[tI];
+    document.getElementById('t-fb').className='fb bad show';
+    document.getElementById('t-fb-a').textContent='❌ Respuesta: '+q.a;
+    S.stats.seen=(S.stats.seen||0)+1;save();
+    document.getElementById('t-anki').className='anki-row show';
+  }
+}
+function showSum(){
+  const total=tC+tW,pct=total>0?Math.round(tC/total*100):0;
+  const msgs90=['🏆 ¡Brillante! Tu madre estaría orgullosa... si supiera lo que es un palimpsesto','🏆 ¡Sobresaliente! Esto ya no es estudiar, es vocación de concursante'];
+  const msgs70=['🎉 ¡Muy bien! La enfermera de UCI que hay en ti lo da todo','🎉 Notable alto. Con este nivel ya puedes presumir en el turno de noche'];
+  const msgs50=['😊 Aprobado. Sigue así y en tres semanas le explicas la catarsis a tus pacientes','😊 Bien, pero la quimera de llegar al rosco aún está lejos... ¡a estudiar!'];
+  const msgsFail=['💪 Ánimo. Hasta Homero dormitaba. Tú eres la rapsoda del conocimiento','💪 No pasa nada. La resiliencia es exactamente esto — volver a intentarlo'];
+  const pool=pct>=90?msgs90:pct>=70?msgs70:pct>=50?msgs50:msgsFail;
+  const msg=pool[Math.floor(Math.random()*pool.length)];
+  const parts=msg.split(' ');
+  document.getElementById('sum-e').textContent=parts[0];
+  document.getElementById('sum-t').textContent=parts.slice(1).join(' ');
+  document.getElementById('sum-c').textContent=tC;
+  document.getElementById('sum-w').textContent=tW;
+  updStreak();goTo('summary');
+}
+function updStreak(){
+  const today=new Date().toDateString();
+  if(S.stats.lastDate!==today){
+    const yest=new Date(Date.now()-86400000).toDateString();
+    S.stats.streak=S.stats.lastDate===yest?(S.stats.streak||0)+1:1;
+    S.stats.lastDate=today;save();
+  }
+}
+
+// ═══ VOCAB ═══
+let vQ=[],vI=0,vFlip=false;
+function startVocab(){
+  const all=[...VOCAB,...S.custom.filter(v=>v.definition_ES)];
+  vQ=shuf(all).sort((a,b)=>{const o={no:0,rev:1,si:2};return(o[S.vSRS[a.id]]??1)-(o[S.vSRS[b.id]]??1);}).slice(0,50);
+  vI=0;vFlip=false;goTo('vocab');loadV();
+}
+function loadV(){
+  if(vI>=vQ.length){goTo('home');return;}
+  vFlip=false;
+  const v=vQ[vI];
+  document.getElementById('vcard').className='vcard';
+  const def=v.definition_ES||'(Sin definición)';
+  const dot2=def.indexOf('2.');
+  const front=dot2>0?def.slice(0,dot2).trim():def;
+  document.getElementById('v-fd').textContent=front;
+  document.getElementById('v-tags').innerHTML=(v.topic_tags||[]).map(t=>'<span class="vtag">'+t+'</span>').join('');
+  document.getElementById('v-w').textContent=v.word;
+  document.getElementById('v-bd').textContent=def;
+  const sin=document.getElementById('v-sin');
+  if(v.sinónimos&&v.sinónimos.trim()){sin.style.display='block';document.getElementById('v-sin-t').textContent=v.sinónimos;}else sin.style.display='none';
+  const ex=document.getElementById('v-ex');
+  if(v.example_sentence&&v.example_sentence.trim()){ex.style.display='block';document.getElementById('v-ex-t').textContent=v.example_sentence;}else ex.style.display='none';
+  const tip=document.getElementById('v-tip');
+  if(v.memory_tip&&v.memory_tip.trim()){tip.style.display='block';document.getElementById('v-tip-t').textContent=v.memory_tip;}else tip.style.display='none';
+  document.getElementById('v-rae').href='https://dle.rae.es/'+encodeURIComponent(v.word.toLowerCase());
+  document.getElementById('v-rate').style.display='none';
+  document.getElementById('v-pb').style.width=(vI/vQ.length*100)+'%';
+  document.getElementById('v-ct').textContent=(vI+1)+'/'+vQ.length;
+}
+function flipCard(){if(vFlip)return;vFlip=true;document.getElementById('vcard').className='vcard flipped';document.getElementById('v-rate').style.display='flex';}
+function rateV(r){S.vSRS[vQ[vI].id]=r;save();vI++;loadV();}
+
+// ═══ ROSCO ═══
+const LTRS='ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
+let rSt={},rCur='A',rTmr=null,rSec=150;
+function startRosco(){
+  rSt={};LTRS.forEach(l=>rSt[l]='pend');
+  rCur='A';rSec=150;buildRSVG();goTo('rosco');
+  hlLetter('A');showRDef('A');
+  startRTmr();updRStats();
+}
+function buildRSVG(){
+  const svg=document.getElementById('rosco-svg');
+  const cx=130,cy=130,r=112,n=LTRS.length;let h='';
+  for(let i=0;i<n;i++){
+    const a=(i/n)*2*Math.PI-Math.PI/2;
+    const x=(cx+r*Math.cos(a)).toFixed(1),y=(cy+r*Math.sin(a)).toFixed(1),l=LTRS[i];
+    h+=`<g class="rl" id="rl-${l}" onclick="selLetter('${l}')"><circle cx="${x}" cy="${y}" r="12" fill="#1e1e2e" stroke="#2a2a38" stroke-width="1.5" id="rc-${l}"/><text x="${x}" y="${(parseFloat(y)+4).toFixed(1)}" text-anchor="middle" font-size="10" font-family="Syne" font-weight="700" fill="#f0f0f5" id="rt-${l}">${l}</text></g>`;
+  }
+  svg.innerHTML=h;
+}
+function selLetter(l){
+  if(rSt[l]==='ok'||rSt[l]==='bad')return;
+  rCur=l;hlLetter(l);showRDef(l);
+  document.getElementById('r-in').value='';
+  document.getElementById('r-in').focus();
+}
+function hlLetter(cur){
+  LTRS.forEach(l=>{
+    const c=document.getElementById('rc-'+l),t=document.getElementById('rt-'+l);
+    if(!c)return;
+    const s=rSt[l];
+    c.setAttribute('fill',s==='ok'?'#1a3a2a':s==='bad'?'#3a1a1a':s==='pasa'?'#1a1a2a':l===cur?'#2a2a0a':'#1e1e2e');
+    c.setAttribute('stroke',s==='ok'?'#3ecf72':s==='bad'?'#ff5555':s==='pasa'?'#4a9eff':l===cur?'#f5c842':'#2a2a38');
+    c.setAttribute('stroke-width',l===cur?'2.5':'1.5');
+    t.setAttribute('fill',s==='ok'?'#3ecf72':s==='bad'?'#ff5555':s==='pasa'?'#4a9eff':l===cur?'#f5c842':'#f0f0f5');
+  });
+}
+function showRDef(l){document.getElementById('r-def').textContent=RQ[l]?RQ[l].d:'...';}
+function subRosco(){
+  const val=document.getElementById('r-in').value.trim();
+  if(!val||!rCur)return;
+  const q=RQ[rCur];if(!q)return;
+  const ok=norm(val)===norm(q.a)||lev(norm(val),norm(q.a))<=1;
+  rSt[rCur]=ok?'ok':'bad';updRStats();hlLetter(rCur);
+  document.getElementById('r-in').value='';
+  if(!ok){document.getElementById('r-def').textContent='❌ Era: '+q.a;setTimeout(()=>nextRL(),1600);}else nextRL();
+}
+function pasaR(){if(!rCur)return;rSt[rCur]='pasa';hlLetter(rCur);document.getElementById('r-in').value='';nextRL();}
+function nextRL(){
+  const pend=LTRS.filter(l=>rSt[l]==='pend'||rSt[l]==='pasa');
+  if(!pend.length){stopRosco();return;}
+  const nxt=LTRS.find(l=>rSt[l]==='pasa')||pend[0];
+  rCur=nxt;hlLetter(nxt);showRDef(nxt);document.getElementById('r-in').focus();
+}
+function updRStats(){
+  const c=LTRS.filter(l=>rSt[l]==='ok').length,w=LTRS.filter(l=>rSt[l]==='bad').length,p=LTRS.filter(l=>rSt[l]==='pend'||rSt[l]==='pasa').length;
+  document.getElementById('r-c').textContent=c;document.getElementById('r-w').textContent=w;document.getElementById('r-p').textContent=p;
+  document.getElementById('r-sc').textContent=c+'✅ '+w+'❌';
+}
+function startRTmr(){
+  if(rTmr)clearInterval(rTmr);
+  rTmr=setInterval(()=>{
+    rSec--;const m=Math.floor(rSec/60),s=rSec%60;
+    const el=document.getElementById('r-ti');
+    el.textContent=m+':'+(s<10?'0':'')+s;
+    el.style.color=rSec<=30?'var(--red)':'var(--gold)';
+    if(rSec<=0)stopRosco();
+  },1000);
+}
+function stopRosco(){
+  if(rTmr){clearInterval(rTmr);rTmr=null;}
+  const c=LTRS.filter(l=>rSt[l]==='ok').length,w=LTRS.filter(l=>rSt[l]==='bad').length;
+  document.getElementById('sum-e').textContent=c>=22?'🏆':c>=16?'🎉':c>=10?'😊':'💪';
+  document.getElementById('sum-t').textContent='Rosco: '+c+'/'+LTRS.length+' correctas';
+  document.getElementById('sum-c').textContent=c;document.getElementById('sum-w').textContent=w;
+  goTo('summary');
+}
+
+// ═══ STATS ═══
+function renderStats(){
+  document.getElementById('st-t').textContent=S.stats.seen||0;
+  document.getElementById('st-p').textContent=S.stats.seen>0?Math.round((S.stats.correct/S.stats.seen)*100)+'%':'0%';
+  document.getElementById('st-r').textContent=S.stats.streak||0;
+  const el=document.getElementById('st-dk');el.innerHTML='';
+  for(const[name,info]of Object.entries(DECKS)){
+    const qs=QQ.filter(q=>q.dk===name),seen=qs.filter(q=>(S.srs[q.id]?.reps||0)>0).length;
+    const pct=qs.length>0?Math.round(seen/qs.length*100):0;
+    el.innerHTML+=`<div class="dp"><div class="dp-h"><span class="dp-n">${info.icon} ${name}</span><span class="dp-p">${pct}%</span></div><div class="dpbar"><div class="dpfill" style="width:${pct}%"></div></div></div>`;
+  }
+  for(const[name,qs]of Object.entries(S.aiDecks)){
+    const seen=qs.filter(q=>(S.srs[q.id]?.reps||0)>0).length;
+    const pct=qs.length>0?Math.round(seen/qs.length*100):0;
+    el.innerHTML+=`<div class="dp"><div class="dp-h"><span class="dp-n">🤖 ${name}</span><span class="dp-p">${pct}%</span></div><div class="dpbar"><div class="dpfill" style="width:${pct}%"></div></div></div>`;
+  }
+}
+
+// ═══ AI DECK GENERATOR ═══
+function renderAIDecks(){
+  const el=document.getElementById('ai-deck-list');el.innerHTML='';
+  for(const[name,qs]of Object.entries(S.aiDecks)){
+    const d=document.createElement('div');
+    d.className='ai-deck-item';
+    d.innerHTML=`<div style="flex:1"><div style="font-weight:600">${name}</div><div style="font-size:12px;color:var(--text2)">${qs.length} preguntas generadas</div></div><button class="ai-more-btn" onclick="generateMore('${name}')">+50 más</button><button class="ai-del-btn" onclick="deleteDeck('${name}')">🗑️</button>`;
+    el.appendChild(d);
+  }
+  if(!Object.keys(S.aiDecks).length) el.innerHTML='<div style="color:var(--text2);font-size:13px;text-align:center;padding:20px">Aún no hay mazos IA. ¡Crea el primero!</div>';
+}
+
+async function createAIDeck(){
+  const topicEl=document.getElementById('ai-topic');
+  const topic=topicEl.value.trim();
+  if(!topic){alert('Escribe un tema primero.');return;}
+  const btn=document.getElementById('ai-create-btn');
+  btn.textContent='⏳ Generando...';btn.disabled=true;
+  try{
+    const qs=await generateQuestions(topic,50);
+    if(!qs||!qs.length){alert('No se pudo generar. Intenta de nuevo.');return;}
+    S.aiDecks[topic]=(S.aiDecks[topic]||[]).concat(qs);
+    if(!S.selectedDecks.includes(topic))S.selectedDecks.push(topic);
+    save();topicEl.value='';
+    renderAIDecks();renderHome();
+    alert('✅ Mazo "'+topic+'" creado con '+qs.length+' preguntas.');
+  }catch(e){alert('Error: '+e.message);}
+  finally{btn.textContent='✨ Generar mazo';btn.disabled=false;}
+}
+
+async function generateMore(topic){
+  const btn=event.target;btn.textContent='⏳...';btn.disabled=true;
+  try{
+    const existing=S.aiDecks[topic]||[];
+    const qs=await generateQuestions(topic,50,existing);
+    S.aiDecks[topic]=existing.concat(qs);
+    save();renderAIDecks();
+    alert('✅ +'+qs.length+' preguntas añadidas a "'+topic+'"');
+  }catch(e){alert('Error: '+e.message);}
+  finally{btn.textContent='+50 más';btn.disabled=false;}
+}
+
+function deleteDeck(name){
+  if(!confirm('¿Borrar el mazo "'+name+'"?'))return;
+  delete S.aiDecks[name];
+  S.selectedDecks=S.selectedDecks.filter(x=>x!==name);
+  save();renderAIDecks();renderHome();
+}
+
+async function generateQuestions(topic, count, existing=[]){
+  const existingAnswers=existing.map(q=>q.a).join(', ');
+  const prompt=`Eres un experto en el concurso Pasapalabra de Antena 3 (España). Genera exactamente ${count} preguntas de trivia en español sobre el tema: "${topic}".
+
+REGLAS IMPORTANTES:
+- Muchas preguntas deben seguir el formato "Con la [LETRA]: [definición o pista]" igual que en Pasapalabra
+- Las demás pueden ser preguntas directas de cultura general
+- Dificultad variada (fácil, media, difícil)
+- Respuestas cortas (1-4 palabras)
+- NO repitas estas respuestas ya usadas: ${existingAnswers||'ninguna'}
+- Responde SOLO con JSON válido, sin texto adicional, sin markdown
+
+Formato exacto:
+[
+  {"id":"${topic.slice(0,3).toLowerCase().replace(/\s/,'_')}_${Date.now()}_1","dk":"${topic}","q":"Con la A: Capital de Australia","a":"Canberra","aa":[]},
+  {"id":"...","dk":"${topic}","q":"¿Quién...?","a":"respuesta","aa":["alternativa1"]}
+]`;
+
+  const response=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:4000,
+      messages:[{role:'user',content:prompt}]
+    })
+  });
+  if(!response.ok)throw new Error('API error '+response.status);
+  const data=await response.json();
+  const text=data.content?.[0]?.text||'';
+  const clean=text.replace(/```json|```/g,'').trim();
+  const parsed=JSON.parse(clean);
+  // Ensure unique IDs
+  return parsed.map((q,i)=>({...q,id:`${topic.slice(0,4).toLowerCase().replace(/[^a-z]/g,'')}_${Date.now()}_${i}`}));
+}
+
+// ═══ IMPORT / EXPORT ═══
+function addWord(){
+  const w=document.getElementById('iw').value.trim(),d=document.getElementById('id2').value.trim();
+  if(!w||!d){alert('Palabra y definición son obligatorias.');return;}
+  S.custom.push({id:'c'+Date.now(),word:w,definition_ES:d,sinónimos:document.getElementById('isin').value.trim(),example_sentence:document.getElementById('iex').value.trim(),memory_tip:document.getElementById('itip').value.trim(),topic_tags:['personalizado'],dk:'Vocabulario',q:null,a:null,aa:[]});
+  save();['iw','id2','isin','iex','itip'].forEach(i=>document.getElementById(i).value='');
+  alert('✅ "'+w+'" añadida.');
+}
+function exportD(){const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ppro_progreso.json';a.click();}
+function importD(){try{Object.assign(S,JSON.parse(document.getElementById('ijson').value));save();alert('✅ Importado.');goTo('home');}catch(e){alert('Error al importar.');}}
+function resetP(){S.srs={};S.vSRS={};S.stats={streak:0,lastDate:'',seen:0,correct:0};S.aiDecks={};save();renderHome();alert('Progreso reiniciado.');}
+
+function setTopic(t){document.getElementById('ai-topic').value=t;}
+
+// ═══ BOOT ═══
+load();renderHome();
+
+</script>
+</body>
+</html>
