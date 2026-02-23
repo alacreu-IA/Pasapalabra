@@ -69,7 +69,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .fb.show{padding:14px;max-height:200px;opacity:1;}
 .fb.ok{background:rgba(62,207,114,.1);border:1px solid rgba(62,207,114,.3);}
 .fb.bad{background:rgba(255,85,85,.1);border:1px solid rgba(255,85,85,.3);}
-.fb-ans{font-size:14px;font-weight:500;}
+.fb-ans{font-size:14px;font-weight:500;white-space:pre-line;line-height:1.5;}
 /* ANKI buttons */
 .anki-row{display:none;gap:7px;}
 .anki-row.show{display:flex;}
@@ -107,8 +107,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .vr-rev{background:rgba(245,200,66,.15);color:var(--gold);border:1px solid rgba(245,200,66,.3);}
 .vr-si{background:rgba(62,207,114,.2);color:var(--green);border:1px solid rgba(62,207,114,.3);}
 /* ROSCO */
-.rosco-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:12px;gap:10px;overflow:hidden;}
-#rosco-svg{width:260px;height:260px;flex-shrink:0;}
+.rosco-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px;gap:6px;overflow-y:auto;}
+#rosco-svg{width:220px;height:220px;flex-shrink:0;}
 .r-def{font-size:12px;color:var(--text2);text-align:center;max-width:280px;min-height:36px;line-height:1.5;}
 .rinput-wrap{display:flex;gap:7px;width:100%;max-width:320px;}
 .ri{flex:1;background:var(--card2);border:2px solid var(--border);border-radius:11px;padding:13px 14px;color:var(--text);font-size:17px;font-family:'Syne',sans-serif;font-weight:700;text-transform:uppercase;outline:none;transition:border-color .15s;}
@@ -269,7 +269,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
     <div class="pt" id="r-ti" style="font-family:Syne,sans-serif;font-size:18px;font-weight:700;color:var(--gold)">2:30</div>
   </div>
   <div class="rosco-body">
-    <svg id="rosco-svg" viewBox="0 0 260 260"></svg>
+    <svg id="rosco-svg" viewBox="0 0 220 220"></svg>
     <div class="r-def" id="r-def">Elige una letra</div>
     <div class="rinput-wrap">
       <input class="ri" id="r-in" placeholder="..." onkeydown="if(event.key==='Enter')subRosco()" autocomplete="off" autocorrect="off" spellcheck="false">
@@ -771,7 +771,9 @@ function subAns(){
   const ok=chk(val,q);
   if(ok){tC++;ai.className='ai ok';}else{tW++;ai.className='ai bad';}
   const fb=document.getElementById('t-fb');fb.className='fb '+(ok?'ok':'bad')+' show';
-  document.getElementById('t-fb-a').textContent=ok?'✅ ¡Correcto!':'❌ Respuesta: '+q.a;
+  const sinData=VOCAB.find(v=>v.word&&norm(v.word)===norm(q.a));
+  const sinStr=sinData&&sinData.sinónimos?'\n📚 Sinónimos: '+sinData.sinónimos:'';
+  document.getElementById('t-fb-a').textContent=ok?'✅ ¡Correcto!':'❌ Respuesta: '+q.a+(ok?'':sinStr);
   S.stats.seen=(S.stats.seen||0)+1;
   if(ok)S.stats.correct=(S.stats.correct||0)+1;
   save();
@@ -785,7 +787,9 @@ function skipQ(){
     document.getElementById('t-sub').style.display='none';
     const q=tQ[tI];
     document.getElementById('t-fb').className='fb bad show';
-    document.getElementById('t-fb-a').textContent='❌ Respuesta: '+q.a;
+    const sinDataS=VOCAB.find(v=>v.word&&norm(v.word)===norm(q.a));
+    const sinStrS=sinDataS&&sinDataS.sinónimos?'\n📚 Sinónimos: '+sinDataS.sinónimos:'';
+    document.getElementById('t-fb-a').textContent='❌ Respuesta: '+q.a+sinStrS;
     S.stats.seen=(S.stats.seen||0)+1;save();
     document.getElementById('t-anki').className='anki-row show';
   }
@@ -858,7 +862,7 @@ function startRosco(){
 }
 function buildRSVG(){
   const svg=document.getElementById('rosco-svg');
-  const cx=130,cy=130,r=112,n=LTRS.length;let h='';
+  const cx=110,cy=110,r=95,n=LTRS.length;let h='';
   for(let i=0;i<n;i++){
     const a=(i/n)*2*Math.PI-Math.PI/2;
     const x=(cx+r*Math.cos(a)).toFixed(1),y=(cy+r*Math.sin(a)).toFixed(1),l=LTRS[i];
