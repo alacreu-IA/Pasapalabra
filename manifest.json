@@ -2,7 +2,7 @@
   "name": "PasaPalabra Pro",
   "short_name": "PP Pro",
   "description": "Entrena para el Rosco como los mejores concursantes",
-  "start_url": "/",
+  "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0a0a0f",
