@@ -57,7 +57,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .dtag{display:inline-flex;align-items:center;gap:5px;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--text2);width:fit-content;}
 .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;min-height:140px;display:flex;flex-direction:column;justify-content:center;}
 .qlbl{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--text2);margin-bottom:8px;font-family:'Syne',sans-serif;}
-.qtxt{font-size:17px;line-height:1.5;}
+.qtxt{font-size:17px;line-height:1.6;}
 .awrap{display:flex;gap:7px;}
 .ai{flex:1;background:var(--card2);border:2px solid var(--border);border-radius:11px;padding:13px 14px;color:var(--text);font-size:16px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s;}
 .ai:focus{border-color:var(--gold);}
@@ -69,7 +69,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .fb.show{padding:14px;max-height:200px;opacity:1;}
 .fb.ok{background:rgba(62,207,114,.1);border:1px solid rgba(62,207,114,.3);}
 .fb.bad{background:rgba(255,85,85,.1);border:1px solid rgba(255,85,85,.3);}
-.fb-ans{font-size:14px;font-weight:500;white-space:pre-line;line-height:1.5;}
+.fb-ans{font-size:14px;font-weight:500;white-space:pre-line;line-height:1.6;}
 /* ANKI buttons */
 .anki-row{display:none;gap:7px;}
 .anki-row.show{display:flex;}
@@ -92,7 +92,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .vcard.flipped .vc-front{display:none;}
 .vcard.flipped .vc-back{display:flex;}
 .vword{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--gold);margin-bottom:6px;}
-.vdef{font-size:14px;line-height:1.6;}
+.vdef{white-space:pre-line;font-size:14px;line-height:1.6;}
 .vtags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
 .vtag{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:3px 8px;font-size:10px;color:var(--text2);}
 .vib{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin-top:8px;font-size:12px;line-height:1.6;}
@@ -109,7 +109,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 /* ROSCO */
 .rosco-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px;gap:6px;overflow-y:auto;}
 #rosco-svg{width:220px;height:220px;flex-shrink:0;}
-.r-def{font-size:12px;color:var(--text2);text-align:center;max-width:280px;min-height:36px;line-height:1.5;}
+.r-def{font-size:12px;color:var(--text2);text-align:center;max-width:280px;min-height:36px;line-height:1.6;}
 .rinput-wrap{display:flex;gap:7px;width:100%;max-width:320px;}
 .ri{flex:1;background:var(--card2);border:2px solid var(--border);border-radius:11px;padding:13px 14px;color:var(--text);font-size:17px;font-family:'Syne',sans-serif;font-weight:700;text-transform:uppercase;outline:none;transition:border-color .15s;}
 .ri:focus{border-color:var(--gold);}
@@ -159,6 +159,40 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 .topic-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;}
 .chip{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:12px;color:var(--text2);cursor:pointer;transition:all .15s;}
 .chip:active{background:var(--border);}
+
+/* NIVEL BOTE */
+.di.bote{border-color:rgba(255,85,85,.4);background:rgba(255,85,85,.05);}
+/* MANUAL */
+.manual-q-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.mq-inp{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:7px;display:block;}
+.mq-inp:focus{border-color:var(--gold);}
+
+/* ROSCO HISTORY */
+.rh-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.rh-list{display:flex;flex-direction:column;gap:6px;}
+.rh-row{display:flex;align-items:center;gap:8px;}
+.rh-date{font-size:10px;color:var(--text2);width:88px;flex-shrink:0;}
+.rh-bar{flex:1;height:6px;background:var(--card2);border-radius:3px;overflow:hidden;}
+.rh-fill{height:100%;background:var(--blue);border-radius:3px;}
+.rh-score{font-size:12px;font-family:Syne,sans-serif;font-weight:700;width:32px;text-align:right;color:var(--text2);}
+.rh-score.gold{color:var(--gold);}
+.rh-score.green{color:var(--green);}
+#rosco-history{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-top:14px;}
+
+/* TÉRMINOS Y CONDICIONES */
+.tos-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:flex-end;justify-content:center;}
+.tos-overlay.hidden{display:none;}
+.tos-box{background:var(--card);border-radius:20px 20px 0 0;padding:24px 20px 36px;max-height:85vh;overflow-y:auto;width:100%;max-width:480px;}
+.tos-title{font-family:Syne,sans-serif;font-weight:800;font-size:18px;color:var(--gold);margin-bottom:4px;}
+.tos-sub{font-size:11px;color:var(--text2);margin-bottom:16px;}
+.tos-body{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:20px;}
+.tos-body h3{font-family:Syne,sans-serif;font-weight:700;color:var(--text);font-size:13px;margin:14px 0 4px;}
+.tos-body .highlight{color:var(--gold);font-weight:600;}
+.tos-btn{width:100%;padding:16px;background:var(--gold);color:#0a0a0f;border:none;border-radius:12px;font-family:Syne,sans-serif;font-weight:800;font-size:16px;cursor:pointer;margin-bottom:8px;}
+.tos-link{text-align:center;font-size:11px;color:var(--text2);cursor:pointer;text-decoration:underline;display:block;margin-top:8px;}
+/* TOS SCREEN */
+.tos-clause{background:var(--card2);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:12px;line-height:1.7;color:var(--text2);}
+.tos-clause h3{font-family:Syne,sans-serif;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;}
 </style>
 
 <link rel="manifest" href="manifest.json">
@@ -175,7 +209,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 <div class="screen active" id="home">
   <div class="home-top">
     <div class="app-title">Pasa<span>Palabra</span> Pro</div>
-    <div class="app-sub">Entrena como los mejores concursantes</div>
+    <div class="app-sub" id="app-saludo">¡Hola, Noemi! 👩‍⚕️</div>
     <div class="stats-row">
       <div class="stat-box"><div class="stat-val" id="h-v">0</div><div class="stat-lbl">Vistas</div></div>
       <div class="stat-box"><div class="stat-val" id="h-a">0%</div><div class="stat-lbl">Acierto</div></div>
@@ -195,7 +229,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
     <div id="deck-list" class="deck-list"></div>
     <div class="nav-row">
       <div class="nav-btn" onclick="goTo('stats')">📊 Estadísticas</div>
-      <div class="nav-btn" onclick="goTo('ai-decks')">🤖 IA</div><div class="nav-btn" onclick="goTo('imp')">⚙️ Más</div>
+      <div class="nav-btn" onclick="goTo('ai-decks')">🤖 IA</div><div class="nav-btn" onclick="goTo('manual-deck')">Mazo</div><div class="nav-btn" onclick="goTo('imp')">⚙️</div>
     </div>
   </div>
 </div>
@@ -300,6 +334,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 <div class="screen" id="imp">
   <div class="topbar"><div class="btn-back" onclick="goTo('home')">←</div><span style="font-family:Syne,sans-serif;font-weight:700;flex:1">Añadir vocabulario</span></div>
   <div style="padding:16px;overflow-y:auto;">
+    <button class="btn-start" onclick="goTo('tos')" style="margin-bottom:16px;background:linear-gradient(135deg,#1a2a1a,#1e3a1e);border:1px solid var(--green);color:var(--green)">⚖️ Ver Términos y Condiciones</button>
     <div class="sec-title">➕ Nueva palabra RAE</div>
     <input class="imp-field" id="iw" placeholder="Palabra (ej: Quimera)">
     <textarea class="imp-field" id="id2" rows="3" placeholder="Definición exacta de la RAE..." style="resize:vertical"></textarea>
@@ -318,49 +353,117 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 </div>
 
 <!-- SUMMARY -->
-<div class="screen" id="summary">
+<div class="screen" id="summary" style="overflow-y:auto;padding:20px 16px;">
   <div class="sum-e" id="sum-e">🎉</div>
   <div class="sum-t" id="sum-t">¡Completado!</div>
   <div class="sum-row">
     <div class="sum-s"><div class="sum-sv" id="sum-c">0</div><div class="sum-sl">Correctas</div></div>
     <div class="sum-s"><div class="sum-sv" id="sum-w" style="color:var(--red)">0</div><div class="sum-sl">Errores</div></div>
   </div>
-  <button class="btn-start" style="max-width:260px" onclick="goTo('home')">Volver al inicio</button>
+  <div id="sum-btns">
+    <button class="btn-start" style="max-width:260px" onclick="goTo('home')">Volver al inicio</button>
+  </div>
+  <div id="rosco-history"></div>
 </div>
 
-</div>
-<!-- AI DECKS -->
-<div class="screen" id="ai-decks">
-  <div class="topbar"><div class="btn-back" onclick="goTo('home')">←</div><span style="font-family:Syne,sans-serif;font-weight:700;flex:1">🤖 Mazos Infinitos con IA</span></div>
-  <div style="padding:16px;overflow-y:auto;flex:1;">
-    <div class="ai-gen-area">
-      <div class="sec-title" style="margin-bottom:10px">Nuevo mazo sobre...</div>
-      <div class="topic-chips" id="topic-chips">
-        <div class="chip" onclick="setTopic('Historia Medieval')">⚔️ Historia Medieval</div>
-        <div class="chip" onclick="setTopic('Anatomía Humana')">🫀 Anatomía</div>
-        <div class="chip" onclick="setTopic('Cocina Española')">🍳 Cocina española</div>
-        <div class="chip" onclick="setTopic('Astronomía')">🔭 Astronomía</div>
-        <div class="chip" onclick="setTopic('Música Clásica')">🎼 Música clásica</div>
-        <div class="chip" onclick="setTopic('Futbolistas Históricos')">⚽ Futbolistas</div>
-        <div class="chip" onclick="setTopic('Filosofía Griega')">🏛️ Filosofía griega</div>
-        <div class="chip" onclick="setTopic('Países del Mundo')">🌍 Países</div>
-        <div class="chip" onclick="setTopic('Cine Español')">🎬 Cine español</div>
-        <div class="chip" onclick="setTopic('Biología y Naturaleza')">🌿 Biología</div>
-      </div>
-      <input id="ai-topic" placeholder="O escribe cualquier tema..." style="font-size:15px;">
-      <button class="btn-start" id="ai-create-btn" onclick="createAIDeck()" style="margin-bottom:0">✨ Generar 50 preguntas</button>
+
+<!-- TOS OVERLAY — primera vez -->
+<div class="tos-overlay hidden" id="tos-overlay">
+  <div class="tos-box">
+    <div class="tos-title">⚖️ Acuerdo de Licencia y Uso</div>
+    <div class="tos-sub">PasaPalabra Pro · Versión 5.0 · Fecha de entrada en vigor: al pulsar "Acepto"</div>
+    <div class="tos-body">
+      <p>Antes de utilizar esta aplicación, lea detenidamente el presente Acuerdo de Licencia de Usuario Final (en adelante, <strong>"ALUF"</strong>). Al pulsar el botón <em>"Acepto y entiendo"</em>, usted declara haber leído, comprendido y aceptado íntegramente todas las cláusulas aquí recogidas, quedando vinculado/a por las mismas con plena eficacia jurídica conforme al artículo 1254 y siguientes del Código Civil español.</p>
+      <h3>Cláusula 1 — Autoría e Invención</h3>
+      <p>La presente aplicación, denominada <span class="highlight">PasaPalabra Pro</span>, ha sido concebida, diseñada e impulsada intelectualmente por <span class="highlight">Andrea Alacreu Fernández</span> (en adelante, <strong>"la Inventora"</strong>), quien ostenta la titularidad moral e intelectual de la idea originaria, incluyendo su arquitectura pedagógica, metodología de entrenamiento y selección de contenidos. El desarrollo técnico ha sido ejecutado mediante herramientas de inteligencia artificial bajo la dirección y supervisión expresa de la Inventora.</p>
+      <h3>Cláusula 2 — Destinatario y Licencia de Uso</h3>
+      <p>La presente licencia se otorga con carácter personal, intransferible y no exclusivo a <span class="highlight">Noemi Folgado Molina</span> (en adelante, <strong>"la Usuaria"</strong>), para uso estrictamente privado y con finalidad de entrenamiento y preparación para concursos de cultura general, en particular el programa televisivo <em>Pasapalabra</em>.</p>
+      <h3>Cláusula 3 — Contraprestación Económica por Premio 🏆</h3>
+      <p>En contraprestación por el acceso, uso y disfrute de la presente aplicación, así como por la inversión de tiempo, recursos intelectuales y creativos realizados por la Inventora, <strong>la Usuaria se compromete irrevocablemente a abonar a la Inventora</strong> la cantidad equivalente al <span class="highlight">cinco por ciento (5%) del importe íntegro y bruto</span> de cualquier premio económico obtenido en cualquier concurso de televisión, radio, plataforma digital o evento público en el que la Usuaria participe y resulte ganadora, con independencia de:</p>
+      <ul style="padding-left:16px;margin:8px 0">
+        <li>La cuantía total del premio.</li>
+        <li>Las retenciones fiscales aplicables (IRPF u otras).</li>
+        <li>El tiempo transcurrido desde la aceptación de este acuerdo.</li>
+        <li>Que la Usuaria considere que "ya no usa la app".</li>
+      </ul>
+      <p><strong>Queda expresamente excluida</strong> cualquier deducción previa por concepto tributario, de gestión, de representación o de cualquier otra naturaleza. <span class="highlight">El 5% se calcula sobre el bruto, antes de impuestos y antes de cualquier retención.</span></p>
+      <h3>Cláusula 4 — Forma de Pago</h3>
+      <p>El pago deberá efectuarse en un plazo máximo de <strong>30 días naturales</strong> desde la obtención del premio, mediante transferencia bancaria, Bizum, o el método que la Inventora designe en ese momento. El retraso en el pago devengará un interés de demora del 8% anual conforme a la Ley 3/2004 de medidas de lucha contra la morosidad.</p>
+      <h3>Cláusula 5 — Eficacia Jurídica y Jurisdicción</h3>
+      <p>El presente acuerdo tiene plena eficacia contractual entre las partes. En caso de controversia, ambas partes se someten expresamente a la jurisdicción de los Juzgados y Tribunales de Valencia, con renuncia expresa a cualquier otro fuero que pudiera corresponderles. Este acuerdo podrá ser presentado como prueba documental en cualquier procedimiento judicial o arbitral.</p>
+      <h3>Cláusula 6 — Confidencialidad y Buen Rollo</h3>
+      <p>Nada de lo anterior impide que ambas partes celebren el bote juntas con una cena de lujo pagada también con el premio. Esta cláusula tiene el mismo valor jurídico que las anteriores.</p>
     </div>
-    <div class="sec-title">Tus mazos IA</div>
-    <div id="ai-deck-list"></div>
+    <button class="tos-btn" onclick="acceptTOS()">✅ Acepto y entiendo (incluido el 5%)</button>
+    <span class="tos-link" onclick="goTo('tos')">Ver términos completos guardados</span>
   </div>
 </div>
 
+<!-- TOS SCREEN -->
+<div class="screen" id="tos">
+  <div class="topbar">
+    <div class="btn-back" onclick="goTo('home')">←</div>
+    <span style="font-family:Syne,sans-serif;font-weight:700;flex:1">⚖️ Términos y Condiciones</span>
+  </div>
+  <div style="padding:16px;overflow-y:auto;flex:1;">
+    <div class="tos-clause">
+      <h3>Estado de aceptación</h3>
+      <div id="tos-status" style="color:var(--green);font-weight:600">✅ Aceptado</div>
+      <div id="tos-date" style="font-size:11px;margin-top:4px"></div>
+    </div>
+    <div class="tos-clause">
+      <h3>Cláusula 1 — Autoría</h3>
+      PasaPalabra Pro ha sido concebida y diseñada por <strong style="color:var(--gold)">Andrea Alacreu Fernández</strong>, quien ostenta la titularidad moral e intelectual de la idea originaria, arquitectura pedagógica y metodología de entrenamiento.
+    </div>
+    <div class="tos-clause">
+      <h3>Cláusula 2 — Licencia de uso</h3>
+      Licencia personal e intransferible otorgada a <strong style="color:var(--gold)">Noemi Folgado Molina</strong> para uso privado con finalidad de preparación para concursos, en particular <em>Pasapalabra</em>.
+    </div>
+    <div class="tos-clause" style="border:1px solid rgba(245,200,66,.4)">
+      <h3 style="color:var(--gold)">⚖️ Cláusula 3 — El 5% (LA IMPORTANTE)</h3>
+      La Usuaria se compromete irrevocablemente a abonar a la Inventora el <strong style="color:var(--gold);font-size:16px">5% del importe BRUTO</strong> de cualquier premio obtenido en cualquier concurso.<br><br>
+      <strong>Antes de impuestos. Antes de retenciones. Antes de lo que sea.</strong><br><br>
+      Plazo de pago: 30 días naturales desde obtención del premio.
+    </div>
+    <div class="tos-clause">
+      <h3>Cláusula 4 — Interés de demora</h3>
+      El retraso en el pago devengará un interés del 8% anual conforme a la Ley 3/2004 de lucha contra la morosidad.
+    </div>
+    <div class="tos-clause">
+      <h3>Cláusula 5 — Jurisdicción</h3>
+      Juzgados y Tribunales de Valencia. Este acuerdo tiene plena eficacia contractual y puede presentarse como prueba documental en procedimiento judicial o arbitral.
+    </div>
+    <div class="tos-clause">
+      <h3>Cláusula 6 — Buen rollo</h3>
+      Nada de lo anterior impide celebrar el bote juntas con una cena de lujo pagada también con el premio. Misma eficacia jurídica que las demás cláusulas.
+    </div>
+    <button class="btn-act" onclick="exportTOS()">📄 Exportar como prueba documental</button>
+  </div>
+</div>
 
+<!-- MANUAL DECK -->
+<div class="screen" id="manual-deck">
+  <div class="topbar">
+    <div class="btn-back" onclick="goTo('home')">&#8592;</div>
+    <span style="font-family:Syne,sans-serif;font-weight:700;flex:1" id="manual-deck-title">Mi Mazo</span>
+    <div class="nav-btn" style="font-size:11px;padding:8px 10px;" onclick="generateForManual()">IA</div>
+  </div>
+  <div style="padding:14px;overflow-y:auto;flex:1;">
+    <input class="mq-inp" id="mq-q" placeholder="Pregunta (ej: Con la A: Sin cabeza)">
+    <input class="mq-inp" id="mq-a" placeholder="Respuesta correcta">
+    <input class="mq-inp" id="mq-aa" placeholder="Alternativas separadas por coma (opcional)">
+    <button class="btn-start" onclick="addManualQ()" style="margin-bottom:14px">+ Anadir pregunta</button>
+    <div class="sec-title">Preguntas del mazo</div>
+    <div id="manual-q-list"></div>
+  </div>
+</div>
 
 <script>
 
+
+
 // ═══ DATA ═══
-const DECKS={"Cultura General":{icon:"🌍"},"Literatura":{icon:"📚"},"Geografía":{icon:"🗺️"},"Historia":{icon:"⚔️"},"Historia del Arte":{icon:"🖼️"},"Ciencia y Naturaleza":{icon:"🔬"},"Cine, TV y Espectáculos":{icon:"📺"},"Deportes":{icon:"🏅"},"Historia EEUU":{icon:"🇺🇸"},"Premios Nobel":{icon:"🏆"},"Mitología":{icon:"⚡"}};
+const DECKS={"Nivel Bote":{icon:"🔒"},"Cultura General":{icon:"🌍"},"Literatura":{icon:"📚"},"Geografía":{icon:"🗺️"},"Historia":{icon:"⚔️"},"Historia del Arte":{icon:"🖼️"},"Ciencia y Naturaleza":{icon:"🔬"},"Cine, TV y Espectáculos":{icon:"📺"},"Deportes":{icon:"🏅"},"Historia EEUU":{icon:"🇺🇸"},"Premios Nobel":{icon:"🏆"},"Mitología":{icon:"⚡"}};
 const VOCAB=[
 {id:"v01",word:"Apostasía",definition_ES:"1. f. Acción y efecto de apostatar.",sinónimos:"abjuración, retractación, renuncia.",example_sentence:"Su apostasía escandalizó a la comunidad.",memory_tip:"Apo- (alejarse). Alejarse de la fe.",topic_tags:["religión"]},
 {id:"v02",word:"Catarsis",definition_ES:"1. f. Entre los antiguos griegos, purificación ritual. 2. f. Efecto purificador que causa la tragedia en los espectadores. 3. f. Purificación interior por una experiencia profunda. 4. f. Biol. Expulsión de sustancias nocivas.",sinónimos:"purificación, limpieza, purga.",example_sentence:"La obra produjo una catarsis colectiva.",memory_tip:"Kátharsis (purga en griego).",topic_tags:["filosofía","teatro"]},
@@ -666,63 +769,288 @@ Y:{d:"Con la Y: Inhabitado, despoblado; o sin cultivar",a:"yermo"},
 Z:{d:"Con la Z: Bruto y tonto (coloquial)",a:"zopenco"},
 };
 
+// ═══ ROSCO ROTATIVO ═══
+// Pool de definiciones por letra para rotar entre partidas
+const RQ_POOL={
+  A:[{d:"Con la A: Sin cabeza o sin jefe",a:"acéfalo"},{d:"Con la A: Dicho de una planta: Que carece de tallo",a:"acaule"},{d:"Con la A: Que no tiene dueño",a:"abacero"},{d:"Con la A: Privación del habla",a:"afasia"}],
+  B:[{d:"Con la B: Anfibio, según la RAE",a:"batracio"},{d:"Con la B: Adorno de hilos colgantes en telas",a:"borla"},{d:"Con la B: Relativo a la boca",a:"bucal"},{d:"Con la B: Engaño o fraude en tratos",a:"camama"}],
+  C:[{d:"Con la C: Purificación ritual o liberación interior",a:"catarsis"},{d:"Con la C: Arte de cocinar",a:"culinaria"},{d:"Con la C: Figura retórica de repetición al inicio",a:"anáfora"}],
+  D:[{d:"Con la D: Laberinto del que es difícil salir",a:"dédalo"},{d:"Con la D: Relativo a los dientes",a:"dental"},{d:"Con la D: Perteneciente al día",a:"diurno"}],
+  E:[{d:"Con la E: Insigne, ilustre",a:"egregio"},{d:"Con la E: Vago, sutil, vaporoso",a:"etéreo"},{d:"Con la E: Que padece insomnio",a:"estoico"}],
+  F:[{d:"Con la F: Ídolo con poderes sobrenaturales",a:"fetiche"},{d:"Con la F: Instrumento de viento grave de madera",a:"fagot"},{d:"Con la F: Corriente de lava solidificada",a:"colada"}],
+  G:[{d:"Con la G: Que sigue las ideas ajenas",a:"gregario"},{d:"Con la G: Conjunto de personas que comparten algo",a:"gremio"}],
+  H:[{d:"Con la H: Doctrina que proclama el placer como fin",a:"hedonismo"},{d:"Con la H: Persona con siete dedos en cada mano",a:"heptadáctilo"},{d:"Con la H: Relativo a la sangre",a:"hematológico"}],
+  I:[{d:"Con la I: Que rechaza la autoridad y las normas",a:"iconoclasta"},{d:"Con la I: Sin instrucción ni conocimientos",a:"ignaro"},{d:"Con la I: Que no se puede borrar",a:"imborrable"}],
+  J:[{d:"Con la J: Alabanza propia arrogante",a:"jactancia"},{d:"Con la J: Planta gramínea de tallo caña",a:"junco"}],
+  K:[{d:"Con la K: Acto por el que Dios se despojó de lo divino",a:"kénosis"},{d:"Con la K: Unidad de masa del SI",a:"kilogramo"}],
+  L:[{d:"Con la L: Breve y conciso al hablar",a:"lacónico"},{d:"Con la L: Inclinación excesiva al placer sexual",a:"libidinoso"},{d:"Con la L: Que alaba o celebra",a:"laudatorio"}],
+  M:[{d:"Con la M: Paralización total moral o física",a:"marasmo"},{d:"Con la M: Falta de luz o claridad",a:"mohosidad"},{d:"Con la M: Perteneciente a la mañana",a:"matutino"}],
+  N:[{d:"Con la N: Cementerio de gran extensión",a:"necrópolis"},{d:"Con la N: Fenómeno que ocurre de noche",a:"nocturno"},{d:"Con la N: Que es blanco como la nieve",a:"níveo"}],
+  O:[{d:"Con la O: Parte de la metafísica sobre el ser",a:"ontología"},{d:"Con la O: Piedra preciosa de colores cambiantes",a:"ópalo"},{d:"Con la O: Que no deja pasar la luz",a:"opaco"}],
+  P:[{d:"Con la P: Manuscrito antiguo con escritura anterior borrada",a:"palimpsesto"},{d:"Con la P: Pájaro con el pico en forma de cruz",a:"piquituerto"},{d:"Con la P: Tiempo del trabajo de un día",a:"peonada"}],
+  Q:[{d:"Con la Q: Monstruo con cabeza de león y cola de dragón",a:"quimera"},{d:"Con la Q: Relativo a la química",a:"químico"}],
+  R:[{d:"Con la R: Capacidad de adaptación ante perturbaciones",a:"resiliencia"},{d:"Con la R: Arte de hablar con elocuencia",a:"retórica"},{d:"Con la R: Persona que declama poemas épicos",a:"rapsoda"}],
+  S:[{d:"Con la S: Que vive con lujo y refinamiento",a:"sibarita"},{d:"Con la S: Con mucha grasa o gordura",a:"seboso"},{d:"Con la S: Argumento circular que se prueba a sí mismo",a:"sorites"}],
+  T:[{d:"Con la T: Que hace o dice que hace milagros",a:"taumaturgo"},{d:"Con la T: Planta de flores amarillas usada como colorante",a:"tagete"},{d:"Con la T: Proposición que se repite sin añadir info",a:"tautología"}],
+  U:[{d:"Con la U: Muy abundante y fértil",a:"ubérrimo"},{d:"Con la U: Que está en todas partes al mismo tiempo",a:"ubicuo"}],
+  V:[{d:"Con la V: Que causa humillación o vergüenza",a:"vejatorio"},{d:"Con la V: Que se puede vender",a:"vendible"},{d:"Con la V: Relativo a la vejez",a:"vetusto"}],
+  W:[{d:"Con la W: Bebida alcohólica de origen escocés o irlandés",a:"whisky"},{d:"Con la W: Red informática mundial (anglicismo)",a:"web"}],
+  X:[{d:"Con la X: Arte de grabar en madera",a:"xilografía"},{d:"Con la X: Planta acuática de hojas flotantes",a:"nenúfar"}],
+  Y:[{d:"Con la Y: Inhabitado, despoblado o sin cultivar",a:"yermo"},{d:"Con la Y: Relativo al yo filosófico",a:"yoísmo"}],
+  Z:[{d:"Con la Z: Bruto y tonto (coloquial)",a:"zopenco"},{d:"Con la Z: Calzado de cuero que cubre pie y pierna",a:"zapatón"},{d:"Con la Z: Planta con flores típica de jardines",a:"zinnia"}],
+  Ñ:[{d:"Con la Ñ: Soso, aburrido o sensiblero",a:"ñoño"},{d:"Con la Ñ: Tiempo del trabajo de un día",a:"peonada"}]
+};
+
+// Índices actuales por letra
+let rqIdx={};
+
+function getNextRQ(letter){
+  if(!RQ_POOL[letter]||!RQ_POOL[letter].length)return RQ[letter]||null;
+  if(rqIdx[letter]===undefined)rqIdx[letter]=0;
+  const pool=RQ_POOL[letter];
+  const q=pool[rqIdx[letter]%pool.length];
+  rqIdx[letter]++;
+  return q;
+}
+
+function buildRoscoSet(){
+  // Construye el set actual de preguntas del rosco rotando el pool
+  const set={};
+  LTRS.forEach(l=>{set[l]=getNextRQ(l)||RQ[l];});
+  return set;
+}
+
+
+
+
+
+// ═══ MAZO NIVEL BOTE — Cerrojos RAE ═══
+const CERROJOS=[
+{id:"cz01",dk:"Nivel Bote",q:"Con la A: Dicho de una planta: Que carece de tallo.",a:"acaule",aa:[]},
+{id:"cz02",dk:"Nivel Bote",q:"Con la B: Adorno en bordes de telas consistente en hilos colgantes.",a:"borla",aa:["fleco"]},
+{id:"cz03",dk:"Nivel Bote",q:"Con la C: Engaño o fraude en compras o tratos.",a:"camama",aa:[]},
+{id:"cz04",dk:"Nivel Bote",q:"Con la D: Dicho de un sonido: Que se articula tocando con la lengua los dientes superiores.",a:"dental",aa:[]},
+{id:"cz05",dk:"Nivel Bote",q:"Con la E: Aquello que es vago, sutil, vaporoso.",a:"etéreo",aa:["etereo"]},
+{id:"cz06",dk:"Nivel Bote",q:"Con la F: Instrumento de viento de madera con tubo largo y sonido muy grave.",a:"fagot",aa:[]},
+{id:"cz07",dk:"Nivel Bote",q:"Con la G: Dicho de un animal: Que vive en grupos sin estructura social.",a:"gregario",aa:[]},
+{id:"cz08",dk:"Nivel Bote",q:"Con la H: Dicho de una persona: Que tiene siete dedos en cada mano o pie.",a:"heptadáctilo",aa:["heptadactilo"]},
+{id:"cz09",dk:"Nivel Bote",q:"Con la I: Dicho de una persona: Que no tiene instrucción ni conocimientos.",a:"ignaro",aa:["inculto"]},
+{id:"cz10",dk:"Nivel Bote",q:"Con la J: Planta de la familia de las gramíneas, con tallo caña de dos a tres metros.",a:"junco",aa:["juncos"]},
+{id:"cz11",dk:"Nivel Bote",q:"Con la K: Unidad de masa del SI equivalente a mil gramos.",a:"kilogramo",aa:[]},
+{id:"cz12",dk:"Nivel Bote",q:"Con la L: Dicho de una persona: Que siente inclinación excesiva por los placeres sexuales.",a:"libidinoso",aa:[]},
+{id:"cz13",dk:"Nivel Bote",q:"Con la M: Falta de luz o de claridad.",a:"mohosidad",aa:[]},
+{id:"cz14",dk:"Nivel Bote",q:"Con la N: Dicho de un fenómeno: Que ocurre durante la noche.",a:"nocturno",aa:[]},
+{id:"cz15",dk:"Nivel Bote",q:"Contiene la Ñ: Tiempo empleado en el trabajo de un día.",a:"peonada",aa:[]},
+{id:"cz16",dk:"Nivel Bote",q:"Con la O: Piedra preciosa, variedad del cuarzo, de colores cambiantes.",a:"ópalo",aa:["opalo"]},
+{id:"cz17",dk:"Nivel Bote",q:"Con la P: Dicho de un pájaro: Que tiene el pico en forma de cruz.",a:"piquituerto",aa:[]},
+{id:"cz18",dk:"Nivel Bote",q:"Con la R: Arte de hablar con elocuencia para deleitar, conmover o persuadir.",a:"retórica",aa:["retorica"]},
+{id:"cz19",dk:"Nivel Bote",q:"Con la S: Dicho de una persona: Que tiene mucha grasa o gordura.",a:"seboso",aa:[]},
+{id:"cz20",dk:"Nivel Bote",q:"Con la T: Planta herbácea de flores amarillas usada como colorante.",a:"tagete",aa:[]},
+{id:"cz21",dk:"Nivel Bote",q:"Con la U: Dicho de algo: Que está en todas partes al mismo tiempo.",a:"ubicuo",aa:[]},
+{id:"cz22",dk:"Nivel Bote",q:"Con la V: Que se puede vender.",a:"vendible",aa:["venal"]},
+{id:"cz23",dk:"Nivel Bote",q:"Con la X: Arte de grabar en madera para imprimir.",a:"xilografía",aa:["xilografia"]},
+{id:"cz24",dk:"Nivel Bote",q:"Con la Y: Parte de la filosofía que estudia los valores morales.",a:"yoísmo",aa:[]},
+{id:"cz25",dk:"Nivel Bote",q:"Con la Z: Calzado de cuero que cubre el pie y parte de la pierna.",a:"zapatón",aa:[]},
+];
+
 
 // ═══ STATE ═══
-const SK='ppro3';
+const SK='ppro5';
 let S={
   selectedDecks:Object.keys(DECKS),
   srs:{},vSRS:{},
   stats:{streak:0,lastDate:'',seen:0,correct:0},
   custom:[],
   settings:{roscoTimer:true},
-  aiDecks:{}  // {deckName: [questions generated by AI]}
+  aiDecks:{},
+  todaySeen:new Set(),
+  lastBackup:0,
+  roscoHistory:[],      // [{date, correct, wrong, total, pct}]
+  customRQ:{},          // letras con preguntas personalizadas/IA
+  gagPool:{shown:[],remaining:[]},
+  tosAccepted:false,
+  tosDate:''
 };
-function load(){try{const r=localStorage.getItem(SK);if(r)Object.assign(S,JSON.parse(r));}catch(e){}}
-function save(){try{localStorage.setItem(SK,JSON.stringify(S));}catch(e){}}
+function load(){
+  try{
+    const r=localStorage.getItem(SK);
+    if(r){
+      const d=JSON.parse(r);
+      Object.assign(S,d);
+      // Reconstruct Set from array (JSON doesn't serialize Set)
+      S.todaySeen=new Set(d.todaySeen||[]);
+    }
+  }catch(e){S.todaySeen=new Set();}
+}
+function save(){
+  try{
+    const toStore={...S,todaySeen:[...S.todaySeen]};
+    localStorage.setItem(SK,JSON.stringify(toStore));
+  }catch(e){}
+}
 
-// Anki SM2
+// Reset todaySeen cada día nuevo
+function checkDayReset(){
+  const today=new Date().toDateString();
+  if(S.stats.lastDate!==today){
+    S.todaySeen=new Set();
+  }
+}
+
+// ═══ SRS — intervalos reales según petición de Noemi Folgado Molina ═══
+// r=0 Otra vez → mañana (1 día) — refuerzo cognitivo al día siguiente
+// r=1 Difícil   → 3 días       — esa semana
+// r=2 Bien      → 15 días
+// r=3 Fácil     → 30 días mínimo
 function getSRS(id){return S.srs[id]||{iv:1,ease:2.5,due:0,reps:0,lap:0};}
 function rateSRS(id,r){
-  let c=getSRS(id);let{iv,ease,reps,lap}=c;
-  if(r===0){iv=1;lap++;reps=0;ease=Math.max(1.3,ease-.2);}
-  else if(r===1){iv=Math.max(1,Math.round(iv*1.2));ease=Math.max(1.3,ease-.15);}
-  else if(r===2){iv=reps===0?1:reps===1?4:Math.round(iv*ease);reps++;}
-  else{iv=reps===0?1:reps===1?4:Math.round(iv*ease*1.3);ease+=.15;reps++;}
-  S.srs[id]={iv,ease,due:Date.now()+iv*86400000,reps,lap};save();
+  let c=getSRS(id);
+  let{iv,ease,reps,lap}=c;
+  let days;
+  if(r===0){days=1;lap++;reps=0;ease=Math.max(1.3,ease-0.2);}
+  else if(r===1){days=3;ease=Math.max(1.3,ease-0.15);}
+  else if(r===2){days=reps<2?15:Math.max(15,Math.round(iv*ease));reps++;ease=Math.min(2.8,ease+0.05);}
+  else{days=reps<2?30:Math.max(30,Math.round(iv*ease*1.3));reps++;ease=Math.min(3.0,ease+0.15);}
+  S.srs[id]={iv:days,ease,due:Date.now()+days*86400000,reps,lap};
+  S.todaySeen.add(id);
+  save();
 }
-function allQ(){return[...QQ,...S.custom.filter(v=>v.a),...Object.values(S.aiDecks).flat()];}
+
+function allQ(){
+  return[
+    ...QQ,
+    ...CERROJOS,
+    ...S.custom.filter(v=>v.a&&v.q),
+    ...Object.values(S.aiDecks).flat().filter(v=>v.a&&v.q)
+  ];
+}
+
+// getDue — filtra por fecha Y por no vistos hoy
 function getDue(){
-  const now=Date.now(),sel=new Set(S.selectedDecks);
-  return allQ().filter(q=>sel.has(q.dk)&&(getSRS(q.id).due<=now||getSRS(q.id).reps===0))
-    .sort((a,b)=>{const ar=getSRS(a.id).reps===0,br=getSRS(b.id).reps===0;if(ar&&!br)return -1;if(!ar&&br)return 1;return getSRS(a.id).due-getSRS(b.id).due;});
+  const now=Date.now();
+  const today=new Date().toDateString();
+  const sel=new Set(S.selectedDecks);
+  return allQ()
+    .filter(q=>{
+      if(!sel.has(q.dk))return false;
+      if(S.todaySeen.has(q.id))return false; // NO repetir en mismo día
+      const c=getSRS(q.id);
+      return c.reps===0||c.due<=now;
+    })
+    .sort((a,b)=>{
+      const an=getSRS(a.id).reps===0,bn=getSRS(b.id).reps===0;
+      if(an&&!bn)return -1;if(!an&&bn)return 1;
+      return getSRS(a.id).due-getSRS(b.id).due;
+    });
 }
+
 function norm(s){return(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s]/g,'').trim().replace(/\s+/g,' ');}
 function lev(a,b){if(Math.abs(a.length-b.length)>2)return 99;const m=[];for(let i=0;i<=a.length;i++){m[i]=[i];for(let j=1;j<=b.length;j++)m[i][j]=i===0?j:Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]!==b[j-1]?1:0));}return m[a.length][b.length];}
 function chk(inp,q){const n=norm(inp);if(!n)return false;for(const t of[q.a,...(q.aa||[])].map(norm)){if(n===t||t.length>4&&lev(n,t)<=1)return true;}return false;}
 function shuf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function rnd(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+// ═══ GAGS NOEMI — dinámicos, con gracia real ═══
+const GAGS={
+  excelente:[
+    '🏆 Glasgow 15/15. Nivel de consciencia enciclopédico.',
+    '🏆 RCP exitosa. Esa respuesta ha resucitado la pregunta.',
+    '🏆 Saturación al 100%. Sin O₂ suplementario.',
+    '🏆 Diagnóstico: conocimiento en estadio IV. El bueno.',
+    '🏆 Constantes vitales estables. Noemi, eres la filóloga de la UCI.',
+    '🏆 Sin complicaciones postoperatorias. Texto perfecto.',
+    '🏆 La RAE te debe una cátedra.',
+    '🏆 Roberto Leal está sudando. Tú no.',
+    '🏆 Tu hija algún día aprenderá estas palabras. Tú ya las sabes.',
+    '🏆 Nivel bote desbloqueado. Llama a tu banco.',
+  ],
+  bien:[
+    '🎉 Buen turno, Noemi. La filóloga está despierta.',
+    '🎉 Notable. Como un electro sin arritmias — todo en orden.',
+    '🎉 Tensión arterial del conocimiento: óptima.',
+    '🎉 Tu hija estaría orgullosa... si supiera lo que es un palimpsesto.',
+    '🎉 Casi. Solo falta el bote, pero vas camino de él.',
+    '🎉 Bien documentado. La RAE te debe una beca.',
+    '🎉 Un 70% en Pasapalabra es lo que separa el concursante del ganador.',
+    '🎉 Guardia productiva. El mazo de cerrojos ya tiembla.',
+  ],
+  aprobado:[
+    '😊 Aprobado. En UCI eso ya cuenta para vivir.',
+    '😊 Regular, pero vivo. Sigue.',
+    '😊 Como una vía en el dorso de la mano: funciona, pero hay mejores opciones.',
+    '😊 Sigue así y en tres semanas le explicas la catarsis a tus pacientes.',
+    '😊 Nivel guardia de noche: funcional pero mejorable.',
+    '😊 La resiliencia es exactamente esto: volver al mazo en el siguiente turno.',
+    '😊 Tu hija diría: "Mamá, tú puedes." Tiene razón, pero estudia más.',
+  ],
+  flojo:[
+    '💪 Error de medicación leve. Sin consecuencias. Revisar protocolo.',
+    '💪 Glasgow bajo, pero reversible. Tú puedes con esto y con un turno de 12h.',
+    '💪 Hasta el mejor intensivista tiene noches de guardia malas.',
+    '💪 La RAE tampoco se escribió en un día.',
+    '💪 El palimpsesto también se raspó y volvió a escribirse. Tú igual.',
+    '💪 Como diría tu hija: "Mamá, a estudiar." Tiene toda la razón.',
+    '💪 Diagnóstico: déficit de vocabulario agudo. Tratamiento: 20 minutos de mazo al día.',
+    '💪 No pasa nada. Roberto Leal también falla. Bueno, él no. Pero tú puedes.',
+  ]
+};
+function getGag(pct){
+  // Pool plano: todos los gags mezclados, rota cuando se agotan
+  // Filtra por nivel pero usa pool global para no repetir
+  const bucket=pct>=90?GAGS.excelente:pct>=70?GAGS.bien:pct>=50?GAGS.aprobado:GAGS.flojo;
+  if(!S.gagPool.remaining||!S.gagPool.remaining.length){
+    // Agotar = barajar todos de nuevo
+    const all=[...GAGS.excelente,...GAGS.bien,...GAGS.aprobado,...GAGS.flojo];
+    S.gagPool.remaining=shuf(all);
+    S.gagPool.shown=[];
+  }
+  // Busca el primero del bucket correcto que no se haya mostrado recientemente
+  let idx=S.gagPool.remaining.findIndex(m=>bucket.includes(m));
+  if(idx===-1)idx=0; // fallback: cualquiera
+  const msg=S.gagPool.remaining.splice(idx,1)[0];
+  S.gagPool.shown.push(msg);
+  save();
+  return msg;
+}
+
+const SALUDOS=[
+  '¡Hola, Noemi! 👩‍⚕️',
+  'Turno de estudio, Noemi 📚',
+  '¿Lista para el bote, Noemi? 🏆',
+  'Buenas, filóloga de guardia 👩‍⚕️📖',
+  '¡A por ellos, Noemi! 🎯',
+  'El diccionario te espera, Noemi 📕',
+];
 
 // ═══ NAV ═══
 function goTo(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  const el=document.getElementById(id);
+  if(el)el.classList.add('active');
   if(id==='home')renderHome();
   if(id==='stats')renderStats();
   if(id==='ai-decks')renderAIDecks();
+  if(id==='manual-deck')renderManualDeck();
 }
 
 // ═══ HOME ═══
 function renderHome(){
+  const salEl=document.getElementById('app-saludo');
+  if(salEl)salEl.textContent=rnd(SALUDOS);
   document.getElementById('h-v').textContent=S.stats.seen||0;
   document.getElementById('h-a').textContent=S.stats.seen>0?Math.round((S.stats.correct/S.stats.seen)*100)+'%':'0%';
   document.getElementById('h-p').textContent=Math.min(getDue().length,99);
   document.getElementById('h-r').textContent=S.stats.streak||0;
   const el=document.getElementById('deck-list');el.innerHTML='';
+
   // Built-in decks
   for(const[name,info]of Object.entries(DECKS)){
     const sel=S.selectedDecks.includes(name);
-    const cnt=QQ.filter(q=>q.dk===name).length;
-    const d=document.createElement('div');d.className='di'+(sel?' sel':'');
-    d.innerHTML='<div class="di-icon">'+info.icon+'</div><div style="flex:1"><div class="di-name">'+name+'</div><div class="di-ct">'+cnt+' preguntas</div></div><div class="di-chk">'+(sel?'✓':'')+'</div>';
+    const isNivelBote=name==='Nivel Bote';
+    const cnt=isNivelBote?CERROJOS.length:QQ.filter(q=>q.dk===name).length;
+    const d=document.createElement('div');
+    d.className='di'+(sel?' sel':'')+(isNivelBote?' bote':'');
+    d.innerHTML='<div class="di-icon">'+info.icon+'</div><div style="flex:1"><div class="di-name">'+name+(isNivelBote?' 🔥':'')+'</div><div class="di-ct">'+cnt+' preguntas'+(isNivelBote?' · Dificultad máxima':'')+'</div></div><div class="di-chk">'+(sel?'✓':'')+'</div>';
     d.onclick=()=>{if(sel){if(S.selectedDecks.length>1)S.selectedDecks=S.selectedDecks.filter(x=>x!==name);}else S.selectedDecks.push(name);save();renderHome();};
     el.appendChild(d);
   }
@@ -734,95 +1062,164 @@ function renderHome(){
     d.onclick=()=>{if(sel){if(S.selectedDecks.length>1)S.selectedDecks=S.selectedDecks.filter(x=>x!==name);}else S.selectedDecks.push(name);save();renderHome();};
     el.appendChild(d);
   }
+  // Manual custom decks
+  const manualDecks={};
+  S.custom.filter(v=>v.a&&v.q).forEach(q=>{
+    if(!manualDecks[q.dk])manualDecks[q.dk]=[];
+    manualDecks[q.dk].push(q);
+  });
+  for(const[name,qs]of Object.entries(manualDecks)){
+    if(DECKS[name])continue; // ya está arriba
+    const sel=S.selectedDecks.includes(name);
+    const d=document.createElement('div');d.className='di'+(sel?' sel':'');
+    d.innerHTML='<div class="di-icon">✏️</div><div style="flex:1"><div class="di-name">'+name+'</div><div class="di-ct">'+qs.length+' preguntas · Manual</div></div><div class="di-chk">'+(sel?'✓':'')+'</div>';
+    d.onclick=()=>{if(sel){if(S.selectedDecks.length>1)S.selectedDecks=S.selectedDecks.filter(x=>x!==name);}else S.selectedDecks.push(name);save();renderHome();};
+    el.appendChild(d);
+  }
 }
 
 // ═══ TRAIN ═══
 let tQ=[],tI=0,tC=0,tW=0,tDone=false;
 function startMode(mode){
+  checkDayReset();
   const sel=new Set(S.selectedDecks);
   let qs;
-  if(mode==='srs'){qs=getDue().slice(0,50);if(!qs.length){alert('¡Todo al día! No hay preguntas pendientes.');return;}}
-  else{qs=shuf(allQ().filter(q=>sel.has(q.dk))).slice(0,50);if(!qs.length){alert('Selecciona al menos un mazo.');return;}}
-  tQ=qs;tI=0;tC=0;tW=0;
-  goTo('train');loadQ();
+  if(mode==='srs'){
+    qs=getDue().slice(0,50);
+    if(!qs.length){
+      alert('¡Todo al día, Noemi! 🧠\n\nEl algoritmo SRS está haciendo su trabajo.\nNinguna pregunta vencida hoy.\n\n¿Pruebas el modo Rápido?');
+      return;
+    }
+  } else {
+    // Modo rápido: no repetir lo ya visto hoy
+    qs=shuf(allQ().filter(q=>sel.has(q.dk)&&!S.todaySeen.has(q.id))).slice(0,50);
+    if(!qs.length){
+      alert('Ya has visto todas las preguntas disponibles hoy, Noemi Folgado Molina.\n¡Vuelve mañana o activa más mazos! 💪');
+      return;
+    }
+  }
+  tQ=qs;tI=0;tC=0;tW=0;goTo('train');loadQ();
 }
+
 function loadQ(){
   if(tI>=tQ.length){showSum();return;}
   tDone=false;
   const q=tQ[tI];
-  document.getElementById('t-dk').textContent=(DECKS[q.dk]?.icon||'🤖')+' '+q.dk;
+  const deckIcon=DECKS[q.dk]?.icon||(q.dk==='Nivel Bote'?'🔒':'🤖');
+  document.getElementById('t-dk').textContent=deckIcon+' '+q.dk;
   document.getElementById('t-lbl').textContent='PREGUNTA '+(tI+1)+'/'+tQ.length;
   document.getElementById('t-q').textContent=q.q;
-  const ai=document.getElementById('t-ai');ai.value='';ai.className='ai';ai.disabled=false;
+  const ai=document.getElementById('t-ai');
+  ai.value='';ai.className='ai';ai.disabled=false;
   document.getElementById('t-sub').style.display='';
   document.getElementById('t-fb').className='fb';
   document.getElementById('t-anki').className='anki-row';
   document.getElementById('t-pb').style.width=(tI/tQ.length*100)+'%';
   document.getElementById('t-ct').textContent=(tI+1)+'/'+tQ.length;
-  setTimeout(()=>ai.focus(),100);
+  setTimeout(()=>ai.focus(),80);
 }
+
 function subAns(){
   if(tDone)return;
-  const q=tQ[tI],val=document.getElementById('t-ai').value.trim();
+  const q=tQ[tI];
+  const val=document.getElementById('t-ai').value.trim();
   if(!val)return;
   tDone=true;
   const ai=document.getElementById('t-ai');ai.disabled=true;
   document.getElementById('t-sub').style.display='none';
   const ok=chk(val,q);
   if(ok){tC++;ai.className='ai ok';}else{tW++;ai.className='ai bad';}
-  const fb=document.getElementById('t-fb');fb.className='fb '+(ok?'ok':'bad')+' show';
+  const fb=document.getElementById('t-fb');
+  fb.className='fb '+(ok?'ok':'bad')+' show';
+  // Sinónimos si es vocab RAE
   const sinData=VOCAB.find(v=>v.word&&norm(v.word)===norm(q.a));
-  const sinStr=sinData&&sinData.sinónimos?'\n📚 Sinónimos: '+sinData.sinónimos:'';
-  document.getElementById('t-fb-a').textContent=ok?'✅ ¡Correcto!':'❌ Respuesta: '+q.a+(ok?'':sinStr);
+  const sinStr=sinData&&sinData.sinónimos?'\n📚 Sin.: '+sinData.sinónimos:'';
+  // Link RAE si falla
+  const raeStr=!ok?'\n🔗 dle.rae.es/'+encodeURIComponent(norm(q.a)):'';
+  document.getElementById('t-fb-a').textContent=ok?'✅ ¡Correcto!':'❌ '+q.a+sinStr;
   S.stats.seen=(S.stats.seen||0)+1;
   if(ok)S.stats.correct=(S.stats.correct||0)+1;
+  S.todaySeen.add(q.id);
   save();
   document.getElementById('t-anki').className='anki-row show';
 }
+
 function rateQ(r){rateSRS(tQ[tI].id,r);tI++;loadQ();}
+
 function skipQ(){
-  if(!tDone){
-    tDone=true;tW++;
-    const ai=document.getElementById('t-ai');ai.disabled=true;
-    document.getElementById('t-sub').style.display='none';
-    const q=tQ[tI];
-    document.getElementById('t-fb').className='fb bad show';
-    const sinDataS=VOCAB.find(v=>v.word&&norm(v.word)===norm(q.a));
-    const sinStrS=sinDataS&&sinDataS.sinónimos?'\n📚 Sinónimos: '+sinDataS.sinónimos:'';
-    document.getElementById('t-fb-a').textContent='❌ Respuesta: '+q.a+sinStrS;
-    S.stats.seen=(S.stats.seen||0)+1;save();
-    document.getElementById('t-anki').className='anki-row show';
-  }
+  if(tDone)return;
+  tDone=true;tW++;
+  const q=tQ[tI];
+  const ai=document.getElementById('t-ai');ai.disabled=true;
+  document.getElementById('t-sub').style.display='none';
+  const sinData=VOCAB.find(v=>v.word&&norm(v.word)===norm(q.a));
+  const sinStr=sinData&&sinData.sinónimos?'\n📚 Sin.: '+sinData.sinónimos:'';
+  document.getElementById('t-fb').className='fb bad show';
+  document.getElementById('t-fb-a').textContent='❌ '+q.a+sinStr;
+  S.stats.seen=(S.stats.seen||0)+1;
+  S.todaySeen.add(q.id);
+  save();
+  document.getElementById('t-anki').className='anki-row show';
 }
+
 function showSum(){
   const total=tC+tW,pct=total>0?Math.round(tC/total*100):0;
-  const msgs90=['🏆 ¡Brillante! Tu madre estaría orgullosa... si supiera lo que es un palimpsesto','🏆 ¡Sobresaliente! Esto ya no es estudiar, es vocación de concursante'];
-  const msgs70=['🎉 ¡Muy bien! La enfermera de UCI que hay en ti lo da todo','🎉 Notable alto. Con este nivel ya puedes presumir en el turno de noche'];
-  const msgs50=['😊 Aprobado. Sigue así y en tres semanas le explicas la catarsis a tus pacientes','😊 Bien, pero la quimera de llegar al rosco aún está lejos... ¡a estudiar!'];
-  const msgsFail=['💪 Ánimo. Hasta Homero dormitaba. Tú eres la rapsoda del conocimiento','💪 No pasa nada. La resiliencia es exactamente esto — volver a intentarlo'];
-  const pool=pct>=90?msgs90:pct>=70?msgs70:pct>=50?msgs50:msgsFail;
-  const msg=pool[Math.floor(Math.random()*pool.length)];
+  const msg=getGag(pct);
   const parts=msg.split(' ');
   document.getElementById('sum-e').textContent=parts[0];
   document.getElementById('sum-t').textContent=parts.slice(1).join(' ');
   document.getElementById('sum-c').textContent=tC;
   document.getElementById('sum-w').textContent=tW;
-  updStreak();goTo('summary');
+  // Reset btns to normal (not rosco)
+  const sb=document.getElementById('sum-btns');
+  sb.innerHTML='';
+  const hb=document.createElement('button');
+  hb.className='btn-start';hb.style.maxWidth='260px';
+  hb.textContent='Volver al inicio';hb.onclick=function(){goTo('home');};
+  sb.appendChild(hb);
+  document.getElementById('rosco-history').innerHTML='';
+  updStreak();
+  checkWeeklyBackup();
+  goTo('summary');
 }
+
 function updStreak(){
   const today=new Date().toDateString();
   if(S.stats.lastDate!==today){
     const yest=new Date(Date.now()-86400000).toDateString();
     S.stats.streak=S.stats.lastDate===yest?(S.stats.streak||0)+1:1;
-    S.stats.lastDate=today;save();
+    S.stats.lastDate=today;
+    save();
   }
+}
+
+// ═══ BACKUP SEMANAL AUTOMÁTICO ═══
+function checkWeeklyBackup(){
+  const now=Date.now();
+  const week=7*24*60*60*1000;
+  if(!S.lastBackup||now-S.lastBackup>week){
+    S.lastBackup=now;save();
+    doBackup(true); // silencioso
+  }
+}
+function doBackup(silent){
+  const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(b);
+  const d=new Date().toISOString().slice(0,10);
+  a.download='ppro_noemi_backup_'+d+'.json';
+  a.click();
+  if(!silent)alert('✅ Copia de seguridad descargada: ppro_noemi_backup_'+d+'.json');
 }
 
 // ═══ VOCAB ═══
 let vQ=[],vI=0,vFlip=false;
 function startVocab(){
+  checkDayReset();
   const all=[...VOCAB,...S.custom.filter(v=>v.definition_ES)];
-  vQ=shuf(all).sort((a,b)=>{const o={no:0,rev:1,si:2};return(o[S.vSRS[a.id]]??1)-(o[S.vSRS[b.id]]??1);}).slice(0,50);
+  vQ=shuf(all)
+    .sort((a,b)=>{const o={no:0,rev:1,si:2};return(o[S.vSRS[a.id]]??1)-(o[S.vSRS[b.id]]??1);})
+    .slice(0,50);
   vI=0;vFlip=false;goTo('vocab');loadV();
 }
 function loadV(){
@@ -834,15 +1231,21 @@ function loadV(){
   const dot2=def.indexOf('2.');
   const front=dot2>0?def.slice(0,dot2).trim():def;
   document.getElementById('v-fd').textContent=front;
+  // Format back definition with line breaks between acepciones
+  const fmtDef=def.replace(/\s*(\d+\.\s)/g,'\n$1').trim();
+  document.getElementById('v-bd').textContent=fmtDef;
   document.getElementById('v-tags').innerHTML=(v.topic_tags||[]).map(t=>'<span class="vtag">'+t+'</span>').join('');
   document.getElementById('v-w').textContent=v.word;
-  document.getElementById('v-bd').textContent=def;
+  // (v-bd set above with formatting)
   const sin=document.getElementById('v-sin');
-  if(v.sinónimos&&v.sinónimos.trim()){sin.style.display='block';document.getElementById('v-sin-t').textContent=v.sinónimos;}else sin.style.display='none';
+  if(v.sinónimos&&v.sinónimos.trim()){sin.style.display='block';document.getElementById('v-sin-t').textContent=v.sinónimos;}
+  else sin.style.display='none';
   const ex=document.getElementById('v-ex');
-  if(v.example_sentence&&v.example_sentence.trim()){ex.style.display='block';document.getElementById('v-ex-t').textContent=v.example_sentence;}else ex.style.display='none';
+  if(v.example_sentence&&v.example_sentence.trim()){ex.style.display='block';document.getElementById('v-ex-t').textContent=v.example_sentence;}
+  else ex.style.display='none';
   const tip=document.getElementById('v-tip');
-  if(v.memory_tip&&v.memory_tip.trim()){tip.style.display='block';document.getElementById('v-tip-t').textContent=v.memory_tip;}else tip.style.display='none';
+  if(v.memory_tip&&v.memory_tip.trim()){tip.style.display='block';document.getElementById('v-tip-t').textContent=v.memory_tip;}
+  else tip.style.display='none';
   document.getElementById('v-rae').href='https://dle.rae.es/'+encodeURIComponent(v.word.toLowerCase());
   document.getElementById('v-rate').style.display='none';
   document.getElementById('v-pb').style.width=(vI/vQ.length*100)+'%';
@@ -851,17 +1254,23 @@ function loadV(){
 function flipCard(){if(vFlip)return;vFlip=true;document.getElementById('vcard').className='vcard flipped';document.getElementById('v-rate').style.display='flex';}
 function rateV(r){S.vSRS[vQ[vI].id]=r;save();vI++;loadV();}
 
-// ═══ ROSCO ═══
+// ═══ ROSCO — PASA fix definitivo ═══
 const LTRS='ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
 let rSt={},rCur='A',rTmr=null,rSec=150;
+
+let currentRQ={};
 function startRosco(){
+  currentRQ=buildRoscoSet();
   rSt={};LTRS.forEach(l=>rSt[l]='pend');
-  rCur='A';rSec=150;buildRSVG();goTo('rosco');
+  rCur='A';rSec=150;
+  buildRSVG();goTo('rosco');
   hlLetter('A');showRDef('A');
   startRTmr();updRStats();
+  setTimeout(()=>{const inp=document.getElementById('r-in');if(inp)inp.focus();},400);
 }
 function buildRSVG(){
   const svg=document.getElementById('rosco-svg');
+  if(!svg)return;
   const cx=110,cy=110,r=95,n=LTRS.length;let h='';
   for(let i=0;i<n;i++){
     const a=(i/n)*2*Math.PI-Math.PI/2;
@@ -873,59 +1282,145 @@ function buildRSVG(){
 function selLetter(l){
   if(rSt[l]==='ok'||rSt[l]==='bad')return;
   rCur=l;hlLetter(l);showRDef(l);
-  document.getElementById('r-in').value='';
-  document.getElementById('r-in').focus();
+  const inp=document.getElementById('r-in');
+  if(inp){inp.value='';inp.focus();}
 }
 function hlLetter(cur){
   LTRS.forEach(l=>{
     const c=document.getElementById('rc-'+l),t=document.getElementById('rt-'+l);
     if(!c)return;
     const s=rSt[l];
-    c.setAttribute('fill',s==='ok'?'#1a3a2a':s==='bad'?'#3a1a1a':s==='pasa'?'#1a1a2a':l===cur?'#2a2a0a':'#1e1e2e');
+    c.setAttribute('fill',s==='ok'?'#1a3a2a':s==='bad'?'#3a1a1a':s==='pasa'?'#152030':l===cur?'#2a2a0a':'#1e1e2e');
     c.setAttribute('stroke',s==='ok'?'#3ecf72':s==='bad'?'#ff5555':s==='pasa'?'#4a9eff':l===cur?'#f5c842':'#2a2a38');
     c.setAttribute('stroke-width',l===cur?'2.5':'1.5');
     t.setAttribute('fill',s==='ok'?'#3ecf72':s==='bad'?'#ff5555':s==='pasa'?'#4a9eff':l===cur?'#f5c842':'#f0f0f5');
   });
 }
-function showRDef(l){document.getElementById('r-def').textContent=RQ[l]?RQ[l].d:'...';}
+function showRDef(l){
+  const el=document.getElementById('r-def');
+  const cq=currentRQ[l]||RQ[l];if(el)el.textContent=cq?cq.d:'...';
+}
 function subRosco(){
-  const val=document.getElementById('r-in').value.trim();
+  const inp=document.getElementById('r-in');
+  const val=inp?inp.value.trim():'';
   if(!val||!rCur)return;
-  const q=RQ[rCur];if(!q)return;
+  const q=currentRQ[rCur]||RQ[rCur];if(!q)return;
   const ok=norm(val)===norm(q.a)||lev(norm(val),norm(q.a))<=1;
-  rSt[rCur]=ok?'ok':'bad';updRStats();hlLetter(rCur);
-  document.getElementById('r-in').value='';
-  if(!ok){document.getElementById('r-def').textContent='❌ Era: '+q.a;setTimeout(()=>nextRL(),1600);}else nextRL();
+  rSt[rCur]=ok?'ok':'bad';
+  updRStats();hlLetter(rCur);
+  if(inp)inp.value='';
+  if(!ok){
+    const defEl=document.getElementById('r-def');
+    if(defEl)defEl.textContent='❌ Era: '+q.a;
+    // Vibración haptica si disponible
+    if(navigator.vibrate)navigator.vibrate(80);
+    setTimeout(()=>nextRL(rCur),1600);
+  } else {
+    if(navigator.vibrate)navigator.vibrate([30,20,30]);
+    nextRL(rCur);
+  }
 }
-function pasaR(){if(!rCur)return;rSt[rCur]='pasa';hlLetter(rCur);document.getElementById('r-in').value='';nextRL();}
-function nextRL(){
-  const pend=LTRS.filter(l=>rSt[l]==='pend'||rSt[l]==='pasa');
-  if(!pend.length){stopRosco();return;}
-  const nxt=LTRS.find(l=>rSt[l]==='pasa')||pend[0];
-  rCur=nxt;hlLetter(nxt);showRDef(nxt);document.getElementById('r-in').focus();
+
+// PASA — salta a siguiente en sentido horario, SIEMPRE funciona
+function pasaR(){
+  if(!rCur)return;
+  const from=rCur;
+  rSt[rCur]='pasa';
+  hlLetter(rCur);
+  const inp=document.getElementById('r-in');
+  if(inp)inp.value='';
+  nextRL(from);
 }
+
+// nextRL — busca siguiente disponible en sentido horario desde 'from'
+function nextRL(from){
+  const available=LTRS.filter(l=>rSt[l]==='pend'||rSt[l]==='pasa');
+  if(!available.length){stopRosco();return;}
+  const startIdx=LTRS.indexOf(from||rCur);
+  // Prioridad: pend antes que pasa, en orden horario
+  for(let i=1;i<=LTRS.length;i++){
+    const l=LTRS[(startIdx+i)%LTRS.length];
+    if(rSt[l]==='pend'){rCur=l;hlLetter(l);showRDef(l);const inp=document.getElementById('r-in');if(inp)inp.focus();return;}
+  }
+  for(let i=1;i<=LTRS.length;i++){
+    const l=LTRS[(startIdx+i)%LTRS.length];
+    if(rSt[l]==='pasa'){rCur=l;hlLetter(l);showRDef(l);const inp=document.getElementById('r-in');if(inp)inp.focus();return;}
+  }
+  stopRosco();
+}
+
 function updRStats(){
-  const c=LTRS.filter(l=>rSt[l]==='ok').length,w=LTRS.filter(l=>rSt[l]==='bad').length,p=LTRS.filter(l=>rSt[l]==='pend'||rSt[l]==='pasa').length;
-  document.getElementById('r-c').textContent=c;document.getElementById('r-w').textContent=w;document.getElementById('r-p').textContent=p;
+  const c=LTRS.filter(l=>rSt[l]==='ok').length,
+        w=LTRS.filter(l=>rSt[l]==='bad').length,
+        p=LTRS.filter(l=>rSt[l]==='pend'||rSt[l]==='pasa').length;
+  document.getElementById('r-c').textContent=c;
+  document.getElementById('r-w').textContent=w;
+  document.getElementById('r-p').textContent=p;
   document.getElementById('r-sc').textContent=c+'✅ '+w+'❌';
 }
 function startRTmr(){
   if(rTmr)clearInterval(rTmr);
   rTmr=setInterval(()=>{
-    rSec--;const m=Math.floor(rSec/60),s=rSec%60;
+    rSec--;
+    const m=Math.floor(rSec/60),s=rSec%60;
     const el=document.getElementById('r-ti');
-    el.textContent=m+':'+(s<10?'0':'')+s;
-    el.style.color=rSec<=30?'var(--red)':'var(--gold)';
+    if(el){el.textContent=m+':'+(s<10?'0':'')+s;el.style.color=rSec<=30?'var(--red)':'var(--gold)';}
     if(rSec<=0)stopRosco();
   },1000);
 }
 function stopRosco(){
   if(rTmr){clearInterval(rTmr);rTmr=null;}
-  const c=LTRS.filter(l=>rSt[l]==='ok').length,w=LTRS.filter(l=>rSt[l]==='bad').length;
-  document.getElementById('sum-e').textContent=c>=22?'🏆':c>=16?'🎉':c>=10?'😊':'💪';
-  document.getElementById('sum-t').textContent='Rosco: '+c+'/'+LTRS.length+' correctas';
-  document.getElementById('sum-c').textContent=c;document.getElementById('sum-w').textContent=w;
+  const c=LTRS.filter(l=>rSt[l]==='ok').length,
+        w=LTRS.filter(l=>rSt[l]==='bad').length,
+        p=LTRS.filter(l=>rSt[l]==='pasa').length;
+  const pct=Math.round(c/LTRS.length*100);
+  // Guardar en historial
+  const entry={
+    date:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}),
+    correct:c,wrong:w,pasa:p,total:LTRS.length,pct
+  };
+  S.roscoHistory.unshift(entry);
+  if(S.roscoHistory.length>20)S.roscoHistory.pop(); // max 20 partidas
+  save();
+  // Mostrar resultado con historial
+  showRoscoResult(c,w,p,pct);
+}
+
+function showRoscoResult(c,w,p,pct){
+  const msg=getGag(pct);
+  const parts=msg.split(' ');
+  document.getElementById('sum-e').textContent=parts[0];
+  document.getElementById('sum-t').textContent='Rosco '+c+'/'+LTRS.length+' — '+parts.slice(1).join(' ');
+  document.getElementById('sum-c').textContent=c;
+  document.getElementById('sum-w').textContent=w;
+  // Botones: nuevo rosco + volver
+  const sb2=document.getElementById('sum-btns');
+  sb2.innerHTML='';
+  const rb=document.createElement('button');
+  rb.className='btn-start';rb.style.cssText='max-width:260px;margin-bottom:8px';
+  rb.textContent='Nuevo Rosco';rb.onclick=function(){startRosco();};
+  const hb2=document.createElement('button');
+  hb2.className='btn-act';hb2.style.maxWidth='260px';
+  hb2.textContent='Volver al inicio';hb2.onclick=function(){goTo('home');};
+  sb2.appendChild(rb);sb2.appendChild(hb2);
+  renderRoscoHistory();
   goTo('summary');
+}
+
+function renderRoscoHistory(){
+  let el=document.getElementById('rosco-history');
+  if(!el)return;
+  if(!S.roscoHistory.length){el.innerHTML='';return;}
+  const best=Math.max(...S.roscoHistory.map(r=>r.correct));
+  const avg=Math.round(S.roscoHistory.reduce((a,r)=>a+r.correct,0)/S.roscoHistory.length);
+  let html='<div class="rh-header"><span style="color:var(--gold);font-family:Syne,sans-serif;font-weight:700;font-size:13px">🏆 Historial Rosco</span><span style="font-size:11px;color:var(--text2)">Mejor: '+best+'/27 · Media: '+avg+'/27</span></div>';
+  html+='<div class="rh-list">';
+  S.roscoHistory.slice(0,8).forEach((r,i)=>{
+    const bar=Math.round(r.pct/100*60);
+    html+=`<div class="rh-row"><span class="rh-date">${r.date}</span><div class="rh-bar"><div class="rh-fill" style="width:${bar}px"></div></div><span class="rh-score ${r.correct>=20?'gold':r.correct>=15?'green':''}">${r.correct}/27</span></div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
 }
 
 // ═══ STATS ═══
@@ -934,50 +1429,98 @@ function renderStats(){
   document.getElementById('st-p').textContent=S.stats.seen>0?Math.round((S.stats.correct/S.stats.seen)*100)+'%':'0%';
   document.getElementById('st-r').textContent=S.stats.streak||0;
   const el=document.getElementById('st-dk');el.innerHTML='';
-  for(const[name,info]of Object.entries(DECKS)){
-    const qs=QQ.filter(q=>q.dk===name),seen=qs.filter(q=>(S.srs[q.id]?.reps||0)>0).length;
+  const allDecks={...DECKS};
+  Object.keys(S.aiDecks).forEach(n=>allDecks[n]={icon:'🤖'});
+  for(const[name,info]of Object.entries(allDecks)){
+    const qs=name==='Nivel Bote'?CERROJOS:(S.aiDecks[name]||QQ.filter(q=>q.dk===name));
+    const seen=qs.filter(q=>(S.srs[q.id]?.reps||0)>0).length;
     const pct=qs.length>0?Math.round(seen/qs.length*100):0;
     el.innerHTML+=`<div class="dp"><div class="dp-h"><span class="dp-n">${info.icon} ${name}</span><span class="dp-p">${pct}%</span></div><div class="dpbar"><div class="dpfill" style="width:${pct}%"></div></div></div>`;
   }
-  for(const[name,qs]of Object.entries(S.aiDecks)){
-    const seen=qs.filter(q=>(S.srs[q.id]?.reps||0)>0).length;
-    const pct=qs.length>0?Math.round(seen/qs.length*100):0;
-    el.innerHTML+=`<div class="dp"><div class="dp-h"><span class="dp-n">🤖 ${name}</span><span class="dp-p">${pct}%</span></div><div class="dpbar"><div class="dpfill" style="width:${pct}%"></div></div></div>`;
-  }
+}
+
+// ═══ MAZO MANUAL — Noemi Folgado Molina añade sus propias preguntas ═══
+let currentManualDeck='';
+function renderManualDeck(){
+  const deckName=currentManualDeck||'Mi Mazo';
+  const el=document.getElementById('manual-q-list');
+  if(!el)return;
+  el.innerHTML='';
+  const qs=S.custom.filter(v=>v.a&&v.q&&v.dk===deckName);
+  qs.forEach((q,i)=>{
+    const d=document.createElement('div');
+    d.className='manual-q-item';
+    d.innerHTML=`<div style="flex:1"><div style="font-size:13px">${q.q}</div><div style="font-size:11px;color:var(--gold)">→ ${q.a}</div></div><button class="ai-del-btn" onclick="deleteManualQ('${q.id}')">🗑️</button>`;
+    el.appendChild(d);
+  });
+  if(!qs.length)el.innerHTML='<div style="color:var(--text2);font-size:12px;text-align:center;padding:12px">Sin preguntas aún. ¡Añade la primera!</div>';
+  const titleEl=document.getElementById('manual-deck-title');
+  if(titleEl)titleEl.textContent='✏️ '+deckName;
+}
+function openManualDeck(name){
+  currentManualDeck=name||document.getElementById('new-deck-name').value.trim()||'Mi Mazo';
+  if(!S.selectedDecks.includes(currentManualDeck))S.selectedDecks.push(currentManualDeck);
+  save();
+  goTo('manual-deck');
+}
+function addManualQ(){
+  const q=document.getElementById('mq-q').value.trim();
+  const a=document.getElementById('mq-a').value.trim();
+  const aa=document.getElementById('mq-aa').value.trim();
+  if(!q||!a){alert('Pregunta y respuesta son obligatorias.');return;}
+  S.custom.push({
+    id:'m'+Date.now(),dk:currentManualDeck,
+    q,a,aa:aa?aa.split(',').map(x=>x.trim()).filter(Boolean):[],
+    word:null,definition_ES:null
+  });
+  save();
+  ['mq-q','mq-a','mq-aa'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
+  renderManualDeck();
+  const inp=document.getElementById('mq-q');if(inp)inp.focus();
+}
+function deleteManualQ(id){
+  S.custom=S.custom.filter(q=>q.id!==id);
+  save();renderManualDeck();
+}
+function generateForManual(){
+  // Abre IA con el nombre del mazo prellenado
+  const inp=document.getElementById('ai-topic');
+  if(inp)inp.value=currentManualDeck;
+  goTo('ai-decks');
 }
 
 // ═══ AI DECK GENERATOR ═══
 function renderAIDecks(){
   const el=document.getElementById('ai-deck-list');el.innerHTML='';
   for(const[name,qs]of Object.entries(S.aiDecks)){
-    const d=document.createElement('div');
-    d.className='ai-deck-item';
-    d.innerHTML=`<div style="flex:1"><div style="font-weight:600">${name}</div><div style="font-size:12px;color:var(--text2)">${qs.length} preguntas generadas</div></div><button class="ai-more-btn" onclick="generateMore('${name}')">+50 más</button><button class="ai-del-btn" onclick="deleteDeck('${name}')">🗑️</button>`;
+    const d=document.createElement('div');d.className='ai-deck-item';
+    d.innerHTML=`<div style="flex:1"><div style="font-weight:600">${name}</div><div style="font-size:12px;color:var(--text2)">${qs.length} preguntas · IA</div></div><button class="ai-more-btn" onclick="generateMore('${name}',event)">+50 más</button><button class="ai-del-btn" onclick="deleteDeck('${name}')">🗑️</button>`;
     el.appendChild(d);
   }
-  if(!Object.keys(S.aiDecks).length) el.innerHTML='<div style="color:var(--text2);font-size:13px;text-align:center;padding:20px">Aún no hay mazos IA. ¡Crea el primero!</div>';
+  if(!Object.keys(S.aiDecks).length)
+    el.innerHTML='<div style="color:var(--text2);font-size:13px;text-align:center;padding:20px">Aún no hay mazos IA. ¡Crea el primero, Noemi Folgado Molina!</div>';
 }
+function setTopic(t){const inp=document.getElementById('ai-topic');if(inp)inp.value=t;}
 
 async function createAIDeck(){
   const topicEl=document.getElementById('ai-topic');
-  const topic=topicEl.value.trim();
+  const topic=topicEl?topicEl.value.trim():'';
   if(!topic){alert('Escribe un tema primero.');return;}
   const btn=document.getElementById('ai-create-btn');
-  btn.textContent='⏳ Generando...';btn.disabled=true;
+  if(btn){btn.textContent='⏳ Generando...';btn.disabled=true;}
   try{
     const qs=await generateQuestions(topic,50);
     if(!qs||!qs.length){alert('No se pudo generar. Intenta de nuevo.');return;}
     S.aiDecks[topic]=(S.aiDecks[topic]||[]).concat(qs);
     if(!S.selectedDecks.includes(topic))S.selectedDecks.push(topic);
-    save();topicEl.value='';
+    save();if(topicEl)topicEl.value='';
     renderAIDecks();renderHome();
-    alert('✅ Mazo "'+topic+'" creado con '+qs.length+' preguntas.');
-  }catch(e){alert('Error: '+e.message);}
-  finally{btn.textContent='✨ Generar mazo';btn.disabled=false;}
+    alert('✅ Mazo "'+topic+'" creado con '+qs.length+' preguntas.\n¡A tope, Noemi Folgado Molina! 🏆');
+  }catch(e){alert('Error al generar: '+e.message);}
+  finally{if(btn){btn.textContent='✨ Generar 50 preguntas';btn.disabled=false;}}
 }
-
-async function generateMore(topic){
-  const btn=event.target;btn.textContent='⏳...';btn.disabled=true;
+async function generateMore(topic,ev){
+  const btn=ev.target;btn.textContent='⏳...';btn.disabled=true;
   try{
     const existing=S.aiDecks[topic]||[];
     const qs=await generateQuestions(topic,50,existing);
@@ -987,48 +1530,42 @@ async function generateMore(topic){
   }catch(e){alert('Error: '+e.message);}
   finally{btn.textContent='+50 más';btn.disabled=false;}
 }
-
 function deleteDeck(name){
   if(!confirm('¿Borrar el mazo "'+name+'"?'))return;
-  delete S.aiDecks[name];
-  S.selectedDecks=S.selectedDecks.filter(x=>x!==name);
+  delete S.aiDecks[name];S.selectedDecks=S.selectedDecks.filter(x=>x!==name);
   save();renderAIDecks();renderHome();
 }
 
-async function generateQuestions(topic, count, existing=[]){
-  const existingAnswers=existing.map(q=>q.a).join(', ');
-  const prompt=`Eres un experto en el concurso Pasapalabra de Antena 3 (España). Genera exactamente ${count} preguntas de trivia en español sobre el tema: "${topic}".
+async function generateQuestions(topic,count,existing=[]){
+  const existingAnswers=existing.map(q=>q.a).slice(-30).join(', ');
+  const prompt=`Eres el Guionista Jefe y Jefe de Lingüística de Pasapalabra (Antena 3). Generas preguntas de NIVEL BOTE: las más difíciles, las que deciden el concurso.
 
-REGLAS IMPORTANTES:
-- Muchas preguntas deben seguir el formato "Con la [LETRA]: [definición o pista]" igual que en Pasapalabra
-- Las demás pueden ser preguntas directas de cultura general
-- Dificultad variada (fácil, media, difícil)
-- Respuestas cortas (1-4 palabras)
-- NO repitas estas respuestas ya usadas: ${existingAnswers||'ninguna'}
-- Responde SOLO con JSON válido, sin texto adicional, sin markdown
+TEMA: "${topic}" | CANTIDAD: exactamente ${count} preguntas
 
-Formato exacto:
-[
-  {"id":"${topic.slice(0,3).toLowerCase().replace(/\s/,'_')}_${Date.now()}_1","dk":"${topic}","q":"Con la A: Capital de Australia","a":"Canberra","aa":[]},
-  {"id":"...","dk":"${topic}","q":"¿Quién...?","a":"respuesta","aa":["alternativa1"]}
-]`;
+REGLAS ESTRICTAS — NIVEL BOTE:
+1. FUENTE EXCLUSIVA: Acepciones literales del DLE (RAE 23ª edición). Sin Wikipedia, sin paráfrasis.
+2. ESTRUCTURA DLE: Usa "Dicho de una persona: Que...", "Figura retórica que consiste en...", "En botánica, se dice de..."
+3. OBSCURIDAD: Arcaísmos, tecnicismos, cultismos, regionalismos. Palabras que rara vez se oyen pero están en el DLE.
+4. PARTICIPIOS Y ADJETIVOS: El programa siempre pide adjetivos raros, no sustantivos comunes.
+5. FORMATO MIXTO: 60% "Con la [LETRA]:", 40% preguntas directas de alta dificultad.
+6. ANTI-ALUCINACIÓN: Si no conoces la definición exacta del DLE, usa términos que SÍ conozcas con certeza.
+7. NO repitas: ${existingAnswers||'ninguna'}
+8. RESPONDE SOLO JSON VÁLIDO, sin markdown, sin texto extra.
+
+[{"id":"x1","dk":"${topic}","q":"Con la A: Dicho de una planta: Que carece de tallo.","a":"acaule","aa":[]},{"id":"x2","dk":"${topic}","q":"¿Qué instrumento...?","a":"respuesta","aa":["alt"]}]`;
 
   const response=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:4000,
-      messages:[{role:'user',content:prompt}]
-    })
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:6000,messages:[{role:'user',content:prompt}]})
   });
-  if(!response.ok)throw new Error('API error '+response.status);
+  if(!response.ok)throw new Error('API '+response.status);
   const data=await response.json();
   const text=data.content?.[0]?.text||'';
   const clean=text.replace(/```json|```/g,'').trim();
   const parsed=JSON.parse(clean);
-  // Ensure unique IDs
-  return parsed.map((q,i)=>({...q,id:`${topic.slice(0,4).toLowerCase().replace(/[^a-z]/g,'')}_${Date.now()}_${i}`}));
+  const ts=Date.now();
+  return parsed.map((q,i)=>({...q,id:`${topic.slice(0,4).toLowerCase().replace(/[^a-z]/g,'')}${ts}_${i}`}));
 }
 
 // ═══ IMPORT / EXPORT ═══
@@ -1036,17 +1573,111 @@ function addWord(){
   const w=document.getElementById('iw').value.trim(),d=document.getElementById('id2').value.trim();
   if(!w||!d){alert('Palabra y definición son obligatorias.');return;}
   S.custom.push({id:'c'+Date.now(),word:w,definition_ES:d,sinónimos:document.getElementById('isin').value.trim(),example_sentence:document.getElementById('iex').value.trim(),memory_tip:document.getElementById('itip').value.trim(),topic_tags:['personalizado'],dk:'Vocabulario',q:null,a:null,aa:[]});
-  save();['iw','id2','isin','iex','itip'].forEach(i=>document.getElementById(i).value='');
-  alert('✅ "'+w+'" añadida.');
+  save();['iw','id2','isin','iex','itip'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
+  alert('✅ "'+w+'" añadida al vocabulario.');
 }
-function exportD(){const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ppro_progreso.json';a.click();}
-function importD(){try{Object.assign(S,JSON.parse(document.getElementById('ijson').value));save();alert('✅ Importado.');goTo('home');}catch(e){alert('Error al importar.');}}
-function resetP(){S.srs={};S.vSRS={};S.stats={streak:0,lastDate:'',seen:0,correct:0};S.aiDecks={};save();renderHome();alert('Progreso reiniciado.');}
+function exportD(){doBackup(false);}
+function importD(){
+  try{
+    const txt=document.getElementById('ijson').value;
+    const d=JSON.parse(txt);
+    Object.assign(S,d);
+    S.todaySeen=new Set(d.todaySeen||[]);
+    save();alert('✅ Progreso importado correctamente.');goTo('home');
+  }catch(e){alert('Error al importar. Verifica el JSON.');}
+}
+function resetP(){
+  if(!confirm('¿Borrar TODO el progreso? No se puede deshacer.'))return;
+  S.srs={};S.vSRS={};S.todaySeen=new Set();
+  S.stats={streak:0,lastDate:'',seen:0,correct:0};S.aiDecks={};
+  save();renderHome();alert('Progreso reiniciado. ¡A empezar de cero, Noemi! 💪');
+}
 
-function setTopic(t){document.getElementById('ai-topic').value=t;}
 
-// ═══ BOOT ═══
-load();renderHome();
+// ═══ TÉRMINOS Y CONDICIONES ═══
+function checkTOS(){
+  if(!S.tosAccepted){
+    document.getElementById('tos-overlay').classList.remove('hidden');
+  }
+}
+function acceptTOS(){
+  S.tosAccepted=true;
+  S.tosDate=new Date().toLocaleString('es-ES');
+  save();
+  document.getElementById('tos-overlay').classList.add('hidden');
+  // Update TOS screen status
+  const statusEl=document.getElementById('tos-status');
+  const dateEl=document.getElementById('tos-date');
+  if(statusEl)statusEl.textContent='✅ Aceptado — incluyendo el 5% en bruto';
+  if(dateEl)dateEl.textContent='Fecha de aceptación: '+S.tosDate;
+}
+function exportTOS(){
+  const ua=navigator.userAgent;
+  const device=ua.includes('iPhone')?'iPhone':ua.includes('Android')?'Android':ua.includes('iPad')?'iPad':'Ordenador';
+  const browser=ua.includes('Chrome')?'Chrome':ua.includes('Safari')?'Safari':ua.includes('Firefox')?'Firefox':'Navegador web';
+  const txt=`ACUERDO DE LICENCIA DE USUARIO FINAL — PASAPALABRA PRO
+========================================================
+Fecha de aceptación: ${S.tosDate||'No registrada'}
+Aceptado desde: ${device} · ${browser}
+Identificador de sesión: ${SK}-${S.tosDate?btoa(S.tosDate).slice(0,12):'N/A'}
+Versión: 5.0
+
+PARTES DEL ACUERDO
+- LA INVENTORA: Andrea Alacreu Fernández
+- LA USUARIA:   Noemi Folgado Molina
+- Aceptación:   Mediante pulsación del botón "Acepto y entiendo" en la aplicación
+                PasaPalabra Pro, con plena conciencia y voluntariedad.
+
+CLÁUSULA 1 — AUTORÍA
+PasaPalabra Pro ha sido concebida, diseñada e impulsada intelectualmente por Andrea Alacreu Fernández
+(la "Inventora"), quien ostenta la titularidad moral e intelectual de la idea originaria.
+
+CLÁUSULA 2 — LICENCIA DE USO
+Licencia personal e intransferible otorgada a Noemi Folgado Molina (la "Usuaria") para uso privado
+con finalidad de preparación para concursos, en particular Pasapalabra.
+
+CLÁUSULA 3 — CONTRAPRESTACIÓN ECONÓMICA (EL 5%)
+La Usuaria se compromete irrevocablemente a abonar a la Inventora el CINCO POR CIENTO (5%)
+del importe ÍNTEGRO Y BRUTO de cualquier premio económico obtenido en cualquier concurso
+de televisión, radio, plataforma digital o evento público.
+ANTES DE IMPUESTOS. ANTES DE RETENCIONES. ANTES DE CUALQUIER DEDUCCIÓN.
+Plazo de pago: 30 días naturales desde la obtención del premio.
+
+CLÁUSULA 4 — INTERÉS DE DEMORA
+El retraso devengará un interés del 8% anual (Ley 3/2004).
+
+CLÁUSULA 5 — JURISDICCIÓN
+Juzgados y Tribunales de Valencia. Plena eficacia contractual.
+
+CLÁUSULA 6 — BUEN ROLLO
+Celebración conjunta del bote con cena de lujo incluida en el premio.
+
+========================================================
+Este documento fue generado automáticamente por PasaPalabra Pro y puede ser
+presentado como prueba documental en procedimiento judicial o arbitral.`;
+  const b=new Blob([txt],{type:'text/plain'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(b);
+  a.download='PasaPalabraPro_Contrato_5pct_'+new Date().toISOString().slice(0,10)+'.txt';
+  a.click();
+}
+
+// ═══ BOOT — DOMContentLoaded garantiza no pantalla en blanco ═══
+function initApp(){
+  load();
+  checkDayReset();
+  goTo('home');
+  // TOS check after short delay so home renders first
+  setTimeout(checkTOS, 400);
+  // Update TOS screen date if already accepted
+  const dateEl=document.getElementById('tos-date');
+  if(dateEl&&S.tosDate)dateEl.textContent='Fecha de aceptación: '+S.tosDate;
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',initApp);
+}else{
+  initApp();
+}
 
 </script>
 </body>
