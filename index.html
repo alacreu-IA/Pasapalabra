@@ -195,7 +195,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 .tos-clause h3{font-family:Syne,sans-serif;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;}
 </style>
 
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="./manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="PP Pro">
@@ -447,24 +447,32 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
     <div class="btn-back" onclick="goTo('home')">←</div>
     <span style="font-family:Syne,sans-serif;font-weight:700;flex:1">🤖 Mazos con IA</span>
   </div>
-  <div style="padding:14px;overflow-y:auto;flex:1;">
-    <div class="sec-title">Nuevo mazo</div>
-    <input class="imp-field" id="ai-topic" placeholder="Tema (ej: Cine Español, Botánica, Mitología...)">
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
-      <div class="vtag" style="cursor:pointer" onclick="setTopic('Historia Medieval')">Historia Medieval</div>
-      <div class="vtag" style="cursor:pointer" onclick="setTopic('Anatomía')">Anatomía</div>
-      <div class="vtag" style="cursor:pointer" onclick="setTopic('Cocina Española')">Cocina Española</div>
-      <div class="vtag" style="cursor:pointer" onclick="setTopic('Astronomía')">Astronomía</div>
-      <div class="vtag" style="cursor:pointer" onclick="setTopic('Música Clásica')">Música Clásica</div>
-      <div class="vtag" style="cursor:pointer" onclick="setTopic('Botánica y Zoología')">Botánica y Zoología</div>
-      <div class="vtag" style="cursor:pointer" onclick="setTopic('Filosofía Griega')">Filosofía Griega</div>
-      <div class="vtag" style="cursor:pointer" onclick="setTopic('Cine Español')">Cine Español</div>
-      <div class="vtag" style="cursor:pointer" onclick="setTopic('Términos en desuso')">Términos en desuso</div>
-      <div class="vtag" style="cursor:pointer" onclick="setTopic('Instrumentos musicales')">Instrumentos musicales</div>
+  <div style="padding:16px;overflow-y:auto;flex:1;">
+    <!-- EN CONSTRUCCIÓN -->
+    <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid var(--gold);border-radius:16px;padding:24px 20px;text-align:center;margin-bottom:20px;">
+      <div style="font-size:48px;margin-bottom:12px">🚧</div>
+      <div style="font-family:Syne,sans-serif;font-weight:800;font-size:18px;color:var(--gold);margin-bottom:8px">Generación IA</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px">
+        Estamos construyendo el generador automático de preguntas.<br>
+        <strong style="color:var(--text)">Mientras tanto, puedes subir tus propios mazos.</strong>
+      </div>
+      <div style="font-size:11px;color:var(--text2);background:rgba(255,255,255,.05);border-radius:8px;padding:10px;text-align:left">
+        💡 <strong>¿Sabías que?</strong> La app ya tiene más de 600 preguntas integradas de Pasapalabra, El Cazador y programas de cultura general. ¡Explóralas en los mazos!
+      </div>
     </div>
-    <button class="btn-start" id="ai-create-btn" onclick="createAIDeck()">✨ Generar 20 preguntas</button>
+    <!-- SUBIR MAZO MANUAL -->
+    <div class="sec-title">📁 Subir mazo propio</div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.6">
+      Pega las preguntas en este formato:<br>
+      <code style="background:var(--card2);padding:2px 6px;border-radius:4px;font-size:11px">Pregunta | Respuesta | Alternativa1,Alt2</code><br>
+      Una pregunta por línea. La última columna es opcional.
+    </div>
+    <input class="imp-field" id="ai-deck-name-upload" placeholder="Nombre del mazo (ej: Mis preguntas de Historia)">
+    <textarea class="imp-field" id="ai-deck-text" rows="8" placeholder="Con la A: Capital de España | Madrid&#10;Con la B: País más grande del mundo | Rusia | Russia&#10;Con la C: Inventor del teléfono | Bell | Alexander Bell"></textarea>
+    <button class="btn-start" onclick="importTextDeck()" style="margin-bottom:12px">📥 Importar mazo</button>
     <hr>
-    <div class="sec-title">Tus mazos IA</div>
+    <!-- MAZOS IMPORTADOS -->
+    <div class="sec-title">Tus mazos importados</div>
     <div id="ai-deck-list"></div>
   </div>
 </div>
@@ -881,6 +889,504 @@ const CERROJOS=[
 {id:"cz25",dk:"Nivel Bote",q:"Con la Z: Calzado de cuero que cubre el pie y parte de la pierna.",a:"zapatón",aa:[]},
 ];
 
+// ═══ BANCO EXTENDIDO — preguntas históricas Pasapalabra ═══
+const QQ_EXTRA=[
+{id:"xq001",dk:"Cultura General",q:"Con la A: Danza española tradicional de Andalucía",a:"alegría",aa:["alegrias"]},
+{id:"xq002",dk:"Cultura General",q:"Con la B: Instrumento de cuerda pulsada originario de África con mástil muy largo",a:"banjo",aa:[]},
+{id:"xq003",dk:"Cultura General",q:"Con la C: Animal marino más grande del mundo",a:"cachalote",aa:[]},
+{id:"xq004",dk:"Cultura General",q:"Con la D: Disciplina olímpica en que se lanza un objeto circular de metal",a:"disco",aa:[]},
+{id:"xq005",dk:"Cultura General",q:"Con la E: País cuya capital es Tallin",a:"Estonia",aa:["estonia"]},
+{id:"xq006",dk:"Cultura General",q:"Con la F: Danza andaluza declarada Patrimonio de la Humanidad",a:"flamenco",aa:[]},
+{id:"xq007",dk:"Cultura General",q:"Con la G: Pintor español autor de 'Los fusilamientos del 3 de mayo'",a:"Goya",aa:["goya"]},
+{id:"xq008",dk:"Cultura General",q:"Con la H: Elemento químico más pesado que existe en la naturaleza",a:"hafnio",aa:[]},
+{id:"xq009",dk:"Cultura General",q:"Con la I: Isla española del Mediterráneo conocida por su vida nocturna",a:"Ibiza",aa:["ibiza"]},
+{id:"xq010",dk:"Cultura General",q:"Con la J: Deporte de combate japonés que usa el propio peso del rival",a:"judo",aa:[]},
+{id:"xq011",dk:"Cultura General",q:"Con la K: Instrumento africano de cuerdas con calabaza como caja de resonancia",a:"kora",aa:[]},
+{id:"xq012",dk:"Cultura General",q:"Con la L: Lago más profundo del mundo, en Siberia",a:"Lago Baikal",aa:["baikal"]},
+{id:"xq013",dk:"Cultura General",q:"Con la M: Pintura también conocida como La Gioconda",a:"Mona Lisa",aa:["mona lisa","gioconda"]},
+{id:"xq014",dk:"Cultura General",q:"Con la N: Niño prodigio austriaco que compuso más de 600 obras",a:"niño prodigio",aa:["mozart"]},
+{id:"xq015",dk:"Cultura General",q:"Contiene la Ñ: Que resulta soso, aburrido y sensiblero",a:"ñoño",aa:[]},
+{id:"xq016",dk:"Cultura General",q:"Con la O: Instrumento musical de teclas y tubos propio de las iglesias",a:"órgano",aa:["organo"]},
+{id:"xq017",dk:"Cultura General",q:"Con la P: Ciencia que estudia los fósiles",a:"paleontología",aa:["paleontologia"]},
+{id:"xq018",dk:"Cultura General",q:"Con la Q: Capital de Ecuador",a:"Quito",aa:["quito"]},
+{id:"xq019",dk:"Cultura General",q:"Con la R: Renombrado escritor español que creó a Don Quijote",a:"renacimiento",aa:["cervantes","miguel de cervantes"]},
+{id:"xq020",dk:"Cultura General",q:"Con la S: Sol o dios griego del astro rey",a:"Sol",aa:["helios","sol"]},
+{id:"xq021",dk:"Cultura General",q:"Con la T: Técnica japonesa de doblar papel en formas decorativas",a:"tapicería",aa:["origami"]},
+{id:"xq022",dk:"Cultura General",q:"Con la U: Planeta del sistema solar que gira de lado",a:"Urano",aa:["urano"]},
+{id:"xq023",dk:"Cultura General",q:"Con la V: Compositor veneciano de 'Las cuatro estaciones'",a:"Vivaldi",aa:["vivaldi"]},
+{id:"xq024",dk:"Cultura General",q:"Con la W: Compositor alemán del ciclo operístico 'El anillo del Nibelungo'",a:"Wagner",aa:["wagner"]},
+{id:"xq025",dk:"Cultura General",q:"Con la X: Instrumento de percusión con láminas de madera que se golpean",a:"xilófono",aa:["xilofono"]},
+{id:"xq026",dk:"Cultura General",q:"Con la Y: Moneda oficial de Japón",a:"yen",aa:[]},
+{id:"xq027",dk:"Cultura General",q:"Con la Z: Zar que fundó San Petersburgo y modernizó Rusia",a:"zar Pedro",aa:["pedro el grande","zar"]},
+{id:"xq030",dk:"Literatura",q:"Con la A: Personaje de Cervantes cuyo verdadero nombre era Alonso Quijano",a:"Alonso",aa:["alonso quijano","don quijote"]},
+{id:"xq031",dk:"Literatura",q:"Con la B: Obra de Shakespeare en la que el protagonista habla con el fantasma de su padre",a:"Bardo",aa:["hamlet"]},
+{id:"xq032",dk:"Literatura",q:"Con la C: Escritora británica creadora de Hercule Poirot",a:"Christie",aa:["agatha christie"]},
+{id:"xq033",dk:"Literatura",q:"Con la D: Escritor de 'Los tres mosqueteros' y 'El conde de Montecristo'",a:"Dumas",aa:["alejandro dumas"]},
+{id:"xq034",dk:"Literatura",q:"Con la E: Obra de Lope de Vega sobre un pueblo que se rebela contra su señor",a:"El pueblo",aa:["fuenteovejuna"]},
+{id:"xq035",dk:"Literatura",q:"Con la F: Fabulista colombiano Premio Nobel autor de 'Cien años de soledad'",a:"Fabulista",aa:["garcia marquez","gabriel garcia marquez"]},
+{id:"xq036",dk:"Literatura",q:"Con la G: Novela de Wilde sobre un retrato que envejece en lugar de su dueño",a:"Gray",aa:["dorian gray"]},
+{id:"xq037",dk:"Literatura",q:"Con la H: Poeta griego autor de la Ilíada y la Odisea",a:"Homero",aa:["homero"]},
+{id:"xq038",dk:"Literatura",q:"Con la I: Intriga ambientada en un monasterio medieval de Umberto Eco",a:"Intriga",aa:["nombre de la rosa","el nombre de la rosa"]},
+{id:"xq039",dk:"Literatura",q:"Con la J: Personaje de Shakespeare que se enamora de Romeo",a:"Julieta",aa:["julieta"]},
+{id:"xq040",dk:"Literatura",q:"Con la K: Escritor checo autor de 'La metamorfosis'",a:"Kafka",aa:["kafka"]},
+{id:"xq041",dk:"Literatura",q:"Con la L: Poeta granadino autor de 'Bodas de sangre' y 'Romancero gitano'",a:"Lorca",aa:["garcia lorca","federico garcia lorca"]},
+{id:"xq042",dk:"Literatura",q:"Con la M: Mancha, escudero fiel de Don Quijote",a:"Mancha",aa:["sancho panza","sancho"]},
+{id:"xq043",dk:"Literatura",q:"Con la N: Novela de Orwell sobre un estado totalitario donde el Gran Hermano vigila",a:"Novela",aa:["1984"]},
+{id:"xq044",dk:"Literatura",q:"Con la O: Obra de Cela por la que obtuvo el Nobel en 1989",a:"Obra cumbre",aa:["la colmena","camilo jose cela"]},
+{id:"xq045",dk:"Literatura",q:"Con la P: Pablo poeta chileno Nobel autor de 'Veinte poemas de amor'",a:"Pablo Neruda",aa:["neruda","pablo neruda"]},
+{id:"xq046",dk:"Literatura",q:"Con la Q: Quijote, obra maestra de Cervantes considerada la primera novela moderna",a:"Quijote",aa:["don quijote","el quijote"]},
+{id:"xq047",dk:"Literatura",q:"Con la R: Raskolnikov, protagonista de 'Crimen y castigo' de Dostoievski",a:"Raskolnikov",aa:["dostoievski","raskolnikov"]},
+{id:"xq048",dk:"Literatura",q:"Con la S: Sherlock Holmes, personaje de Conan Doyle que vive en Baker Street",a:"Sherlock Holmes",aa:["sherlock","holmes"]},
+{id:"xq049",dk:"Literatura",q:"Con la T: Tristeza en los poemas de Rubén Darío, máximo exponente del modernismo",a:"Tristeza",aa:["dario","ruben dario"]},
+{id:"xq050",dk:"Literatura",q:"Con la V: Verne, escritor francés de 'Viaje al centro de la Tierra'",a:"Verne",aa:["julio verne"]},
+{id:"xq060",dk:"Geografía",q:"Con la A: Amazonas, río más caudaloso y largo del mundo",a:"Amazonas",aa:["amazonas"]},
+{id:"xq061",dk:"Geografía",q:"Con la B: Barcelona, ciudad española donde está la Sagrada Familia",a:"Barcelona",aa:["barcelona"]},
+{id:"xq062",dk:"Geografía",q:"Con la C: Cordillera más larga del mundo, en América del Sur",a:"Cordillera de los Andes",aa:["andes"]},
+{id:"xq063",dk:"Geografía",q:"Con la D: Desierto más extenso del mundo, en el norte de África",a:"Desierto del Sahara",aa:["sahara"]},
+{id:"xq064",dk:"Geografía",q:"Con la E: Estado africano con más pirámides del mundo, no es Egipto",a:"Estado del Sudán",aa:["sudan"]},
+{id:"xq065",dk:"Geografía",q:"Con la F: Finlandia, país nórdico cuya capital es Helsinki",a:"Finlandia",aa:["helsinki","finlandia"]},
+{id:"xq066",dk:"Geografía",q:"Con la G: Groenlandia, isla más grande del mundo",a:"Groenlandia",aa:["groenlandia"]},
+{id:"xq067",dk:"Geografía",q:"Con la H: Himalaya, cordillera donde está la montaña más alta del mundo",a:"Himalaya",aa:["everest","himalaya"]},
+{id:"xq068",dk:"Geografía",q:"Con la I: Isla de Pascua, territorio chileno en el Pacífico con estatuas gigantes",a:"Isla de Pascua",aa:["isla de pascua"]},
+{id:"xq069",dk:"Geografía",q:"Con la J: Jordania, país cuya capital es Ammán",a:"Jordania",aa:["amman","jordania"]},
+{id:"xq070",dk:"Geografía",q:"Con la L: Lago Victoria, el más grande de África",a:"Lago Victoria",aa:["victoria"]},
+{id:"xq071",dk:"Geografía",q:"Con la M: Marrakech, ciudad marroquí famosa por su zoco",a:"Marrakech",aa:["marrakech"]},
+{id:"xq072",dk:"Geografía",q:"Con la N: Nilo, río que recorre Egipto y Sudán",a:"Nilo",aa:["nilo","egipto"]},
+{id:"xq073",dk:"Geografía",q:"Con la O: Oslo, capital de Noruega",a:"Oslo",aa:["oslo"]},
+{id:"xq074",dk:"Geografía",q:"Con la P: País más pequeño del mundo",a:"País Vaticano",aa:["vaticano"]},
+{id:"xq075",dk:"Geografía",q:"Con la Q: Qosqo, ciudad peruana cercana a Machu Picchu",a:"Qosqo",aa:["cuzco","cusco","qosqo"]},
+{id:"xq076",dk:"Geografía",q:"Con la R: Río más largo de la Península Ibérica",a:"Río Tajo",aa:["tajo"]},
+{id:"xq077",dk:"Geografía",q:"Con la S: Sahara, desierto más grande del mundo",a:"Sahara",aa:["sahara"]},
+{id:"xq078",dk:"Geografía",q:"Con la T: Turquía, país euroasiático cuya capital es Ankara",a:"Turquía",aa:["turquia"]},
+{id:"xq079",dk:"Geografía",q:"Con la U: Uruguay, país sudamericano con capital en Montevideo",a:"Uruguay",aa:["uruguay"]},
+{id:"xq080",dk:"Geografía",q:"Con la V: Venecia, ciudad italiana famosa por sus canales y góndolas",a:"Venecia",aa:["venecia"]},
+{id:"xq090",dk:"Historia",q:"Con la A: Austerlitz, batalla de 1805 en que Napoleón derrotó a Austria y Rusia",a:"Austerlitz",aa:["austerlitz"]},
+{id:"xq091",dk:"Historia",q:"Con la B: Barcelona acogió los Juegos Olímpicos en este año",a:"Barcelona 92",aa:["1992"]},
+{id:"xq092",dk:"Historia",q:"Con la C: Colón llegó a América gracias a la financiación de la Corona española",a:"Colón",aa:["cristobal colon"]},
+{id:"xq093",dk:"Historia",q:"Con la D: Documento de 1215 que limitó el poder del rey inglés Juan Sin Tierra",a:"Decreto",aa:["magna carta"]},
+{id:"xq094",dk:"Historia",q:"Con la E: Estado cristiano de Oriente con capital en Constantinopla",a:"Estado Bizantino",aa:["bizantino"]},
+{id:"xq095",dk:"Historia",q:"Con la F: Faraón que mandó construir el templo de Abu Simbel",a:"Faraón Ramsés",aa:["ramses","ramses ii"]},
+{id:"xq096",dk:"Historia",q:"Con la G: General cartaginés que cruzó los Alpes con elefantes",a:"General Aníbal",aa:["anibal"]},
+{id:"xq097",dk:"Historia",q:"Con la H: Hitler, dictador que invadió Polonia en 1939",a:"Hitler",aa:["hitler","adolf hitler"]},
+{id:"xq098",dk:"Historia",q:"Con la I: Imperio derrotado en la batalla de Lepanto en 1571",a:"Imperio Otomano",aa:["otomano"]},
+{id:"xq099",dk:"Historia",q:"Con la J: Julio, mes en que comenzó la Revolución Francesa",a:"Julio",aa:["julio"]},
+{id:"xq100",dk:"Historia",q:"Con la L: Lugar de EEUU donde asesinaron al presidente Kennedy",a:"Local",aa:["dallas"]},
+{id:"xq101",dk:"Historia",q:"Con la M: Muro de Berlín, que cayó en 1989",a:"Muro de Berlín",aa:["berlin","muro de berlin"]},
+{id:"xq102",dk:"Historia",q:"Con la N: Napoleón, general desterrado a Santa Elena tras Waterloo",a:"Napoleón",aa:["napoleon"]},
+{id:"xq103",dk:"Historia",q:"Con la O: Origen de la escritura, la civilización sumeria de Mesopotamia",a:"Origen",aa:["sumeria","sumerios"]},
+{id:"xq104",dk:"Historia",q:"Con la P: Portugal, donde ocurrió la Revolución de los Claveles en 1974",a:"Portugal",aa:["portugal"]},
+{id:"xq105",dk:"Historia",q:"Con la R: Roma, civilización que construyó el Coliseo y el Panteón",a:"Roma",aa:["roma"]},
+{id:"xq106",dk:"Historia",q:"Con la S: Segunda guerra más larga de la historia entre Inglaterra y Francia",a:"Segunda guerra",aa:["guerra de los cien años"]},
+{id:"xq107",dk:"Historia",q:"Con la T: Tratado de Versalles, que puso fin a la Primera Guerra Mundial",a:"Tratado de Versalles",aa:["versalles"]},
+{id:"xq108",dk:"Historia",q:"Con la V: Vladímir Lenin, líder de la Revolución rusa de 1917",a:"Vladímir",aa:["lenin","vladimir"]},
+{id:"xq120",dk:"Ciencia y Naturaleza",q:"Con la A: Átomo más simple y abundante del universo, número atómico 1",a:"Átomo de hidrógeno",aa:["hidrogeno"]},
+{id:"xq121",dk:"Ciencia y Naturaleza",q:"Con la B: Bar o pascal, unidad de presión atmosférica",a:"Bar",aa:["bar","pascal"]},
+{id:"xq122",dk:"Ciencia y Naturaleza",q:"Con la C: Covalente, tipo de enlace en que los átomos comparten electrones",a:"Covalente",aa:["covalente"]},
+{id:"xq123",dk:"Ciencia y Naturaleza",q:"Con la D: Doble Nobel, científica polaca que ganó el Nobel en Física y Química",a:"Doble Nobel",aa:["marie curie","curie"]},
+{id:"xq124",dk:"Ciencia y Naturaleza",q:"Con la E: Einstein descubrió que la energía y la masa son equivalentes",a:"Einstein",aa:["einstein"]},
+{id:"xq125",dk:"Ciencia y Naturaleza",q:"Con la F: Fotón o electrón, partícula con carga negativa",a:"Fotón",aa:["electron","electrón"]},
+{id:"xq126",dk:"Ciencia y Naturaleza",q:"Con la G: Gas más abundante en la atmósfera terrestre con un 78%",a:"Gas nitrógeno",aa:["nitrogeno"]},
+{id:"xq127",dk:"Ciencia y Naturaleza",q:"Con la H: Hipótesis sobre cómo las plantas producen glucosa con luz solar",a:"Hipótesis",aa:["fotosintesis"]},
+{id:"xq128",dk:"Ciencia y Naturaleza",q:"Con la I: Incus, uno de los tres huesos más pequeños del oído humano",a:"Incus",aa:["incus","estribo","martillo","yunque"]},
+{id:"xq129",dk:"Ciencia y Naturaleza",q:"Con la L: Límite de cromosomas en las células humanas somáticas",a:"Límite cromosómico",aa:["46"]},
+{id:"xq130",dk:"Ciencia y Naturaleza",q:"Con la M: Máxima expresión de la física moderna, teoría de la relatividad",a:"Máxima",aa:["einstein"]},
+{id:"xq131",dk:"Ciencia y Naturaleza",q:"Con la N: Neptuno, planeta más lejano del Sol",a:"Neptuno",aa:["neptuno"]},
+{id:"xq132",dk:"Ciencia y Naturaleza",q:"Con la O: Oxígeno, gas que producen las plantas en la fotosíntesis",a:"Oxígeno",aa:["oxigeno"]},
+{id:"xq133",dk:"Ciencia y Naturaleza",q:"Con la P: Periódica, tabla que organiza todos los elementos químicos",a:"Periódica",aa:["tabla periodica"]},
+{id:"xq134",dk:"Ciencia y Naturaleza",q:"Con la R: Relación entre masa y energía descubierta por Einstein",a:"Relatividad",aa:["relatividad","e mc2"]},
+{id:"xq135",dk:"Ciencia y Naturaleza",q:"Con la S: Ser vivo con el corazón más grande del mundo",a:"Ser más grande",aa:["ballena azul","ballena"]},
+{id:"xq136",dk:"Ciencia y Naturaleza",q:"Con la T: Temperatura normal del cuerpo humano en grados Celsius",a:"Temperatura basal",aa:["37"]},
+{id:"xq137",dk:"Ciencia y Naturaleza",q:"Con la V: Velocidad de la luz en kilómetros por segundo",a:"Velocidad máxima",aa:["300000","300.000"]},
+{id:"xq150",dk:"Cine y TV",q:"Con la A: Almodóvar, director manchego de 'Mujeres al borde de un ataque de nervios'",a:"Almodóvar",aa:["almodovar","pedro almodovar"]},
+{id:"xq151",dk:"Cine y TV",q:"Con la B: Bond, personaje de Ian Fleming interpretado en 2006 por Daniel Craig",a:"Bond",aa:["daniel craig","craig","james bond"]},
+{id:"xq152",dk:"Cine y TV",q:"Con la C: Coppola, director de 'El padrino' y 'Apocalypse Now'",a:"Coppola",aa:["ford coppola","francis coppola"]},
+{id:"xq153",dk:"Cine y TV",q:"Con la D: Director de 'Psicosis' conocido como el maestro del suspense",a:"Director Hitchcock",aa:["hitchcock","alfred hitchcock"]},
+{id:"xq154",dk:"Cine y TV",q:"Con la E: E.T., película de Spielberg sobre un niño y un extraterrestre",a:"E.T.",aa:["et","e.t."]},
+{id:"xq155",dk:"Cine y TV",q:"Con la F: Famoso actor español Oscar por 'No es país para viejos'",a:"Famoso actor",aa:["bardem","javier bardem"]},
+{id:"xq156",dk:"Cine y TV",q:"Con la G: Gran saga cinematográfica protagonizada por Harry el mago",a:"Gran saga",aa:["harry potter"]},
+{id:"xq157",dk:"Cine y TV",q:"Con la H: Hitchcock, director de 'Psicosis' y 'Los pájaros'",a:"Hitchcock",aa:["alfred hitchcock"]},
+{id:"xq158",dk:"Cine y TV",q:"Con la I: Iceberg que hundió al barco protagonista de la película de Cameron",a:"Iceberg",aa:["titanic"]},
+{id:"xq159",dk:"Cine y TV",q:"Con la J: James Downey Jr., actor que interpreta a Tony Stark en Marvel",a:"James",aa:["robert downey jr","downey"]},
+{id:"xq160",dk:"Cine y TV",q:"Con la L: Lord of the Rings, dirigida por el neozelandés Peter Jackson",a:"Lord",aa:["peter jackson","jackson","el señor de los anillos"]},
+{id:"xq161",dk:"Cine y TV",q:"Con la M: Mar y aventura: película de Pixar sobre un pez payaso",a:"Mar",aa:["buscando a nemo","nemo"]},
+{id:"xq162",dk:"Cine y TV",q:"Con la N: Noche onírica, película de Nolan sobre sueños dentro de sueños",a:"Noche",aa:["inception"]},
+{id:"xq163",dk:"Cine y TV",q:"Con la O: Oscar, premio más importante del cine americano",a:"Oscar",aa:["oscar"]},
+{id:"xq164",dk:"Cine y TV",q:"Con la P: Perón, el apellido de la protagonista del musical 'Evita'",a:"Perón",aa:["peron","evita"]},
+{id:"xq165",dk:"Cine y TV",q:"Con la R: Ruido de espadas en la Roma antigua: película de Ridley Scott con Crowe",a:"Ruido",aa:["gladiator","gladiador"]},
+{id:"xq166",dk:"Cine y TV",q:"Con la S: Sinfonías de Hollywood: compositor de 'La guerra de las galaxias'",a:"Sinfonías",aa:["john williams","williams"]},
+{id:"xq167",dk:"Cine y TV",q:"Con la T: Trilogía de los Wachowski con pastilla roja y pastilla azul",a:"The Matrix",aa:["matrix"]},
+{id:"xq168",dk:"Cine y TV",q:"Con la V: Vader, villano de Star Wars padre de Luke Skywalker",a:"Vader",aa:["darth vader"]},
+{id:"xq180",dk:"Deportes",q:"Con la A: Arte marcial en el que se usan los puños con guantes",a:"Arte del boxeo",aa:["boxeo"]},
+{id:"xq181",dk:"Deportes",q:"Con la B: Balón de Oro más veces ganado por el mismo jugador",a:"Balón de Oro",aa:["messi","leo messi"]},
+{id:"xq182",dk:"Deportes",q:"Con la C: Corredor jamaicano campeón olímpico en 100 y 200 metros",a:"Corredor",aa:["usain bolt","bolt"]},
+{id:"xq183",dk:"Deportes",q:"Con la D: Deportista suizo con más títulos de Grand Slam en tenis",a:"Deportista suizo",aa:["federer","roger federer"]},
+{id:"xq184",dk:"Deportes",q:"Con la E: Estadio del Real Madrid en el paseo de la Castellana",a:"Estadio",aa:["bernabeu","santiago bernabeu"]},
+{id:"xq185",dk:"Deportes",q:"Con la F: Fondismo nórdico combinado con tiro: deporte olímpico de invierno",a:"Fondismo",aa:["biatlon","biatlón"]},
+{id:"xq186",dk:"Deportes",q:"Con la G: Goles y Once: número de jugadores en campo en fútbol",a:"Guardia de los once",aa:["once","11"]},
+{id:"xq187",dk:"Deportes",q:"Con la H: H2O: deporte acuático con gorros de colores",a:"Hockey acuático",aa:["waterpolo"]},
+{id:"xq188",dk:"Deportes",q:"Con la I: Imparable selección con 5 estrellas mundialistas",a:"Invencibles",aa:["brasil","brazil"]},
+{id:"xq189",dk:"Deportes",q:"Con la J: Juego de mesa chino convertido en deporte olímpico con raqueta pequeña",a:"Juego de mesa",aa:["ping pong","tenis de mesa"]},
+{id:"xq190",dk:"Deportes",q:"Con la L: Leyenda de la arcilla: tenista español más laureado en Roland Garros",a:"Leyenda",aa:["nadal","rafael nadal"]},
+{id:"xq191",dk:"Deportes",q:"Con la M: Madrid no, esta ciudad española fue sede olímpica en 1992",a:"Mediterránea",aa:["barcelona"]},
+{id:"xq192",dk:"Deportes",q:"Con la N: Número de jugadores de un equipo de baloncesto en la cancha",a:"Nómina",aa:["cinco","5"]},
+{id:"xq193",dk:"Deportes",q:"Con la O: Olimpiadas, evento deportivo cada cuatro años",a:"Olimpiadas",aa:["olimpiadas","juegos olimpicos"]},
+{id:"xq194",dk:"Deportes",q:"Con la P: Pádel, deporte con pala en pistas cerradas",a:"Pádel",aa:["padel"]},
+{id:"xq195",dk:"Deportes",q:"Con la R: Rugby, deporte de equipo con balón ovalado originario de Inglaterra",a:"Rugby",aa:["rugby"]},
+{id:"xq196",dk:"Deportes",q:"Con la S: Snowboard, deporte de invierno con tabla en la nieve",a:"Snowboard",aa:["snowboard"]},
+{id:"xq197",dk:"Deportes",q:"Con la T: Tenis, deporte de raqueta en pistas de tierra batida o hierba",a:"Tenis",aa:["tenis"]},
+{id:"xq210",dk:"Historia del Arte",q:"Con la A: Arte del pintor holandés Van Gogh que se cortó una oreja",a:"Arte",aa:["van gogh"]},
+{id:"xq211",dk:"Historia del Arte",q:"Con la B: Buonarroti, escultor italiano autor del David y la Capilla Sixtina",a:"Buonarroti",aa:["miguel angel","michelangelo"]},
+{id:"xq212",dk:"Historia del Arte",q:"Con la C: Colonia Güell, primer proyecto de Gaudí antes de la Sagrada Familia",a:"Colonia",aa:["gaudi","antonio gaudi"]},
+{id:"xq213",dk:"Historia del Arte",q:"Con la D: Dalí, pintor surrealista catalán conocido por sus relojes blandos",a:"Dalí",aa:["dali","salvador dali"]},
+{id:"xq214",dk:"Historia del Arte",q:"Con la E: Expresionismo, estilo que distorsiona la realidad para expresar emociones",a:"Expresionismo",aa:["expresionismo"]},
+{id:"xq215",dk:"Historia del Arte",q:"Con la F: Frida Kahlo, pintora mexicana de autorretratos con turbante",a:"Frida",aa:["frida kahlo","kahlo"]},
+{id:"xq216",dk:"Historia del Arte",q:"Con la G: Gran pintor renacentista italiano autor de 'La escuela de Atenas'",a:"Gran maestro",aa:["rafael","rafael sanzio"]},
+{id:"xq217",dk:"Historia del Arte",q:"Con la H: Historia del arte concentrada: museo más visitado del mundo en París",a:"Historia",aa:["louvre"]},
+{id:"xq218",dk:"Historia del Arte",q:"Con la I: Iglesia gótica: estilo medieval con arcos ojivales y vidrieras",a:"Iglesia gótica",aa:["gotico","arte gotico"]},
+{id:"xq219",dk:"Historia del Arte",q:"Con la L: Las tinieblas y la luz: pintor flamenco maestro del claroscuro",a:"Las tinieblas",aa:["rembrandt"]},
+{id:"xq220",dk:"Historia del Arte",q:"Con la M: Munch, pintor noruego autor de 'El grito'",a:"Munch",aa:["munch","edvard munch"]},
+{id:"xq221",dk:"Historia del Arte",q:"Con la N: Naturalismo de la luz: movimiento pictórico que captaba la luz natural",a:"Naturalismo",aa:["impresionismo"]},
+{id:"xq222",dk:"Historia del Arte",q:"Con la O: Obra de Velázquez con la infanta Margarita y varios cortesanos",a:"Obra maestra",aa:["las meninas","meninas"]},
+{id:"xq223",dk:"Historia del Arte",q:"Con la P: Picasso, pintor malagueño cofundador del cubismo",a:"Picasso",aa:["pablo picasso"]},
+{id:"xq224",dk:"Historia del Arte",q:"Con la R: Románico, estilo medieval con arcos de medio punto",a:"Románico",aa:["romanico"]},
+{id:"xq225",dk:"Historia del Arte",q:"Con la S: Sin brazos: escultura griega expuesta en el Louvre",a:"Sin brazos",aa:["venus de milo","venus"]},
+{id:"xq240",dk:"Mitología",q:"Con la A: Apolo, dios griego del Sol la música y las artes",a:"Apolo",aa:["apolo"]},
+{id:"xq241",dk:"Mitología",q:"Con la B: Barquero que transportaba las almas al inframundo griego",a:"Barquero",aa:["caronte"]},
+{id:"xq242",dk:"Mitología",q:"Con la C: Circe, hechicera griega que convertía hombres en cerdos",a:"Circe",aa:["circe"]},
+{id:"xq243",dk:"Mitología",q:"Con la D: Dios menor griego hijo de Zeus conocido por sus doce trabajos",a:"Dios menor",aa:["hercules","heracles"]},
+{id:"xq244",dk:"Mitología",q:"Con la E: El Olimpo, morada de los dioses en la mitología griega",a:"El Olimpo",aa:["olimpo"]},
+{id:"xq245",dk:"Mitología",q:"Con la F: Fragua de Hefesto, dios griego del fuego y la metalurgia",a:"Fragua",aa:["hefesto"]},
+{id:"xq246",dk:"Mitología",q:"Con la G: Goliat, gigante filisteo derrotado por David con una honda",a:"Goliat",aa:["goliat"]},
+{id:"xq247",dk:"Mitología",q:"Con la H: Hades, dios griego del inframundo",a:"Hades",aa:["hades"]},
+{id:"xq248",dk:"Mitología",q:"Con la I: Ícaro, personaje que voló demasiado cerca del Sol con alas de cera",a:"Ícaro",aa:["icaro"]},
+{id:"xq249",dk:"Mitología",q:"Con la L: Laberinto donde vivía el Minotauro en la mitología griega",a:"Laberinto",aa:["minotauro"]},
+{id:"xq250",dk:"Mitología",q:"Con la M: Mensajero de los dioses con alas en los talones",a:"Mensajero",aa:["hermes","mercurio"]},
+{id:"xq251",dk:"Mitología",q:"Con la N: Náyade, ninfa griega de los bosques",a:"Náyade",aa:["nayade","driada"]},
+{id:"xq252",dk:"Mitología",q:"Con la O: Odiseo, héroe que tardó 10 años en volver de la guerra de Troya",a:"Odiseo",aa:["odiseo","ulises"]},
+{id:"xq253",dk:"Mitología",q:"Con la P: Pandora, personaje que abrió la caja de la que salieron todos los males",a:"Pandora",aa:["pandora"]},
+{id:"xq254",dk:"Mitología",q:"Con la Q: Quimera, monstruo con cabeza de león y cola de dragón",a:"Quimera",aa:["quimera"]},
+{id:"xq255",dk:"Mitología",q:"Con la R: Rey Midas, cuyo tacto convertía todo en oro",a:"Rey Midas",aa:["midas"]},
+{id:"xq256",dk:"Mitología",q:"Con la S: Serpiente de cien cabezas que custodiaba el jardín de las Hespérides",a:"Serpiente",aa:["hidra","ladon"]},
+{id:"xq257",dk:"Mitología",q:"Con la T: Talón de Aquiles, su único punto débil",a:"Talón",aa:["aquiles"]},
+{id:"xq258",dk:"Mitología",q:"Con la U: Utopía sumergida según Platón",a:"Utopía",aa:["atlantida"]},
+{id:"xq259",dk:"Mitología",q:"Con la V: Venus, diosa romana del amor equivalente a la Afrodita griega",a:"Venus",aa:["venus","afrodita"]},
+{id:"xq260",dk:"Mitología",q:"Con la Z: Zeus, dios supremo del Olimpo en la mitología griega",a:"Zeus",aa:["zeus"]}
+];
+
+const QQ_EXTRA2=[
+{id:"li001",dk:"Literatura",q:"Con la A: Alonso Quijano, nombre real del protagonista de la novela de Cervantes",a:"Alonso",aa:["don quijote","alonso quijano"]},
+{id:"li002",dk:"Literatura",q:"Con la A: Agatha Christie, escritora británica creadora de Hércule Poirot",a:"Agatha",aa:["agatha christie"]},
+{id:"li003",dk:"Literatura",q:"Con la A: Arcipreste de Hita, autor del Libro de Buen Amor",a:"Arcipreste",aa:["arcipreste de hita"]},
+{id:"li004",dk:"Literatura",q:"Con la A: Ana Karenina, personaje de la novela de Tolstoi",a:"Ana Karenina",aa:["anna karenina"]},
+{id:"li005",dk:"Literatura",q:"Con la A: Azorín, escritor español de la Generación del 98",a:"Azorín",aa:[]},
+{id:"li006",dk:"Literatura",q:"Con la A: Auden, poeta inglés del siglo XX",a:"Auden",aa:["w.h. auden"]},
+{id:"li007",dk:"Literatura",q:"Con la A: Asimov, escritor de ciencia ficción autor de las Leyes de la Robótica",a:"Asimov",aa:["isaac asimov"]},
+{id:"li008",dk:"Literatura",q:"Con la A: Apollinaire, poeta francés de las vanguardias",a:"Apollinaire",aa:["guillaume apollinaire"]},
+{id:"li009",dk:"Literatura",q:"Con la A: Andersen, escritor danés autor de cuentos como La Sirenita",a:"Andersen",aa:["hans christian andersen"]},
+{id:"li010",dk:"Literatura",q:"Con la A: Aurelio Espinosa, folklorista español de cuentos populares",a:"Aurelio",aa:[]},
+{id:"li011",dk:"Literatura",q:"Con la B: Borges, escritor argentino autor de Ficciones y el Aleph",a:"Borges",aa:["jorge luis borges"]},
+{id:"li012",dk:"Literatura",q:"Con la B: Beckett, dramaturgo irlandés autor de Esperando a Godot",a:"Beckett",aa:["samuel beckett"]},
+{id:"li013",dk:"Literatura",q:"Con la B: Baudelaire, poeta francés autor de Las flores del mal",a:"Baudelaire",aa:["charles baudelaire"]},
+{id:"li014",dk:"Literatura",q:"Con la B: Bulgákov, escritor ruso autor de El maestro y Margarita",a:"Bulgákov",aa:["bulgakov","mijail bulgakov"]},
+{id:"li015",dk:"Literatura",q:"Con la B: Bécquer, poeta romántico español autor de las Rimas",a:"Bécquer",aa:["gustavo adolfo becquer"]},
+{id:"li016",dk:"Literatura",q:"Con la B: Balzac, novelista francés de La comedia humana",a:"Balzac",aa:["honore de balzac"]},
+{id:"li017",dk:"Literatura",q:"Con la B: Byron, poeta inglés del Romanticismo",a:"Byron",aa:["lord byron"]},
+{id:"li018",dk:"Literatura",q:"Con la B: Bukowski, escritor americano conocido por su estilo crudo",a:"Bukowski",aa:["charles bukowski"]},
+{id:"li019",dk:"Literatura",q:"Con la B: Bradbury, autor de Fahrenheit 451",a:"Bradbury",aa:["ray bradbury"]},
+{id:"li020",dk:"Literatura",q:"Con la B: Bioy Casares, escritor argentino autor de La invención de Morel",a:"Bioy Casares",aa:["adolfo bioy casares"]},
+{id:"li021",dk:"Literatura",q:"Con la C: Camus, escritor francés autor de El extranjero y La peste",a:"Camus",aa:["albert camus"]},
+{id:"li022",dk:"Literatura",q:"Con la C: Cervantes, autor del Quijote, considerada la primera novela moderna",a:"Cervantes",aa:["miguel de cervantes"]},
+{id:"li023",dk:"Literatura",q:"Con la C: Christie, reina del crimen en la literatura inglesa",a:"Christie",aa:["agatha christie"]},
+{id:"li024",dk:"Literatura",q:"Con la C: Cortázar, escritor argentino autor de Rayuela",a:"Cortázar",aa:["julio cortazar"]},
+{id:"li025",dk:"Literatura",q:"Con la C: Cela, Premio Nobel español de 1989",a:"Cela",aa:["camilo jose cela"]},
+{id:"li026",dk:"Literatura",q:"Con la C: Conrad, escritor polaco-británico autor de El corazón de las tinieblas",a:"Conrad",aa:["joseph conrad"]},
+{id:"li027",dk:"Literatura",q:"Con la C: Chekhov, dramaturgo ruso autor de El jardín de los cerezos",a:"Chekhov",aa:["anton chekhov"]},
+{id:"li028",dk:"Literatura",q:"Con la C: Calderón de la Barca, dramaturgo barroco español",a:"Calderón",aa:["calderon de la barca"]},
+{id:"li029",dk:"Literatura",q:"Con la C: Capote, escritor americano autor de A sangre fría",a:"Capote",aa:["truman capote"]},
+{id:"li030",dk:"Literatura",q:"Con la C: Carroll, escritor inglés autor de Alicia en el País de las Maravillas",a:"Carroll",aa:["lewis carroll"]},
+{id:"li031",dk:"Literatura",q:"Con la D: Dante, poeta italiano autor de la Divina Comedia",a:"Dante",aa:["dante alighieri"]},
+{id:"li032",dk:"Literatura",q:"Con la D: Dostoievski, autor de Crimen y castigo y Los hermanos Karamazov",a:"Dostoievski",aa:["fyodor dostoievski"]},
+{id:"li033",dk:"Literatura",q:"Con la D: Dickens, escritor victoriano autor de Oliver Twist",a:"Dickens",aa:["charles dickens"]},
+{id:"li034",dk:"Literatura",q:"Con la D: Dumas, escritor francés de Los tres mosqueteros",a:"Dumas",aa:["alejandro dumas"]},
+{id:"li035",dk:"Literatura",q:"Con la D: Delibes, novelista español autor de El camino y Los santos inocentes",a:"Delibes",aa:["miguel delibes"]},
+{id:"li036",dk:"Literatura",q:"Con la D: Defoe, escritor inglés autor de Robinson Crusoe",a:"Defoe",aa:["daniel defoe"]},
+{id:"li037",dk:"Literatura",q:"Con la D: Dylan Thomas, poeta galés del siglo XX",a:"Dylan Thomas",aa:["dylan thomas"]},
+{id:"li038",dk:"Literatura",q:"Con la D: Doyle, creador del detective Sherlock Holmes",a:"Doyle",aa:["arthur conan doyle"]},
+{id:"li039",dk:"Literatura",q:"Con la D: Darío, poeta nicaragüense padre del modernismo",a:"Darío",aa:["ruben dario"]},
+{id:"li040",dk:"Literatura",q:"Con la D: Döblin, novelista alemán de Berlín Alexanderplatz",a:"Döblin",aa:["alfred doblin"]},
+{id:"li041",dk:"Literatura",q:"Con la E: Eco, escritor italiano autor de El nombre de la rosa",a:"Eco",aa:["umberto eco"]},
+{id:"li042",dk:"Literatura",q:"Con la E: Espronceda, poeta romántico español autor de El estudiante de Salamanca",a:"Espronceda",aa:["jose de espronceda"]},
+{id:"li043",dk:"Literatura",q:"Con la E: Esquilo, dramaturgo griego autor de la Orestíada",a:"Esquilo",aa:["esquilo"]},
+{id:"li044",dk:"Literatura",q:"Con la E: Euclides, matemático griego que no es escritor pero escribió Elementos",a:"Euclides",aa:["euclides"]},
+{id:"li045",dk:"Literatura",q:"Con la E: Eurípides, dramaturgo griego autor de Medea",a:"Eurípides",aa:["euripides"]},
+{id:"li046",dk:"Literatura",q:"Con la E: Eliot, novelista victoriana que firmaba como George Eliot",a:"Eliot",aa:["george eliot","mary ann evans"]},
+{id:"li047",dk:"Literatura",q:"Con la E: Eliot, poeta modernista americano-inglés autor de La tierra baldía",a:"Eliot",aa:["T.S. Eliot"]},
+{id:"li048",dk:"Literatura",q:"Con la E: El Lazarillo de Tormes, novela picaresca anónima española del siglo XVI",a:"El Lazarillo",aa:["lazarillo de tormes"]},
+{id:"li049",dk:"Literatura",q:"Con la E: El Burlador de Sevilla, obra donde aparece por primera vez Don Juan",a:"El Burlador",aa:["tirso de molina"]},
+{id:"li050",dk:"Literatura",q:"Con la E: Ercilla, poeta español autor de La Araucana",a:"Ercilla",aa:["alonso de ercilla"]},
+{id:"li051",dk:"Literatura",q:"Con la F: Flaubert, escritor francés autor de Madame Bovary",a:"Flaubert",aa:["gustave flaubert"]},
+{id:"li052",dk:"Literatura",q:"Con la F: Faulkner, novelista americano autor de El sonido y la furia",a:"Faulkner",aa:["william faulkner"]},
+{id:"li053",dk:"Literatura",q:"Con la F: Fitzgerald, autor de El gran Gatsby",a:"Fitzgerald",aa:["f scott fitzgerald"]},
+{id:"li054",dk:"Literatura",q:"Con la F: Frankenstein, novela de Mary Shelley sobre un monstruo creado",a:"Frankenstein",aa:["mary shelley"]},
+{id:"li055",dk:"Literatura",q:"Con la F: Fuentes, escritor mexicano del boom latinoamericano",a:"Fuentes",aa:["carlos fuentes"]},
+{id:"li056",dk:"Literatura",q:"Con la F: Fernández de Moratín, dramaturgo ilustrado español",a:"Fernández",aa:["leandro fernandez de moratin"]},
+{id:"li057",dk:"Literatura",q:"Con la F: Fray Luis de León, poeta renacentista español",a:"Fray Luis",aa:["fray luis de leon"]},
+{id:"li058",dk:"Literatura",q:"Con la F: Forster, novelista inglés autor de Pasaje a la India",a:"Forster",aa:["e.m. forster"]},
+{id:"li059",dk:"Literatura",q:"Con la F: Fuentes, escritor mexicano del boom",a:"Fuentes",aa:["carlos fuentes"]},
+{id:"li060",dk:"Literatura",q:"Con la F: Frost, poeta americano conocido por El camino no tomado",a:"Frost",aa:["robert frost"]},
+{id:"li061",dk:"Literatura",q:"Con la G: García Márquez, autor de Cien años de soledad",a:"García Márquez",aa:["gabriel garcia marquez"]},
+{id:"li062",dk:"Literatura",q:"Con la G: García Lorca, poeta granadino asesinado en 1936",a:"García Lorca",aa:["federico garcia lorca"]},
+{id:"li063",dk:"Literatura",q:"Con la G: Goethe, escritor alemán autor del Fausto",a:"Goethe",aa:["johann wolfgang von goethe"]},
+{id:"li064",dk:"Literatura",q:"Con la G: Gogol, escritor ruso autor de Las almas muertas",a:"Gogol",aa:["nikolai gogol"]},
+{id:"li065",dk:"Literatura",q:"Con la G: Góngora, poeta barroco español creador del culteranismo",a:"Góngora",aa:["luis de gongora"]},
+{id:"li066",dk:"Literatura",q:"Con la G: Greene, novelista inglés autor de El americano impasible",a:"Greene",aa:["graham greene"]},
+{id:"li067",dk:"Literatura",q:"Con la G: Gracián, escritor barroco español autor de El criticón",a:"Gracián",aa:["baltasar gracian"]},
+{id:"li068",dk:"Literatura",q:"Con la G: Grass, escritor alemán autor de El tambor de hojalata",a:"Grass",aa:["gunter grass"]},
+{id:"li069",dk:"Literatura",q:"Con la G: Grimm, hermanos alemanes recopiladores de cuentos populares",a:"Grimm",aa:["hermanos grimm"]},
+{id:"li070",dk:"Literatura",q:"Con la G: Guillén, poeta español de la Generación del 27",a:"Guillén",aa:["jorge guillen"]},
+{id:"li071",dk:"Literatura",q:"Con la H: Homero, poeta griego autor de la Ilíada y la Odisea",a:"Homero",aa:[]},
+{id:"li072",dk:"Literatura",q:"Con la H: Hemingway, escritor americano autor de El viejo y el mar",a:"Hemingway",aa:["ernest hemingway"]},
+{id:"li073",dk:"Literatura",q:"Con la H: Hugo, escritor francés autor de Los miserables",a:"Hugo",aa:["victor hugo"]},
+{id:"li074",dk:"Literatura",q:"Con la H: Huxley, escritor inglés autor de Un mundo feliz",a:"Huxley",aa:["aldous huxley"]},
+{id:"li075",dk:"Literatura",q:"Con la H: Hesse, escritor alemán autor de El lobo estepario",a:"Hesse",aa:["hermann hesse"]},
+{id:"li076",dk:"Literatura",q:"Con la H: Hardy, novelista victoriano inglés",a:"Hardy",aa:["thomas hardy"]},
+{id:"li077",dk:"Literatura",q:"Con la H: Hammett, escritor americano de novela negra creador de Sam Spade",a:"Hammett",aa:["dashiell hammett"]},
+{id:"li078",dk:"Literatura",q:"Con la H: Highsmith, escritora americana creadora del personaje Ripley",a:"Highsmith",aa:["patricia highsmith"]},
+{id:"li079",dk:"Literatura",q:"Con la H: Hoffman, escritor romántico alemán de cuentos fantásticos",a:"Hoffman",aa:["e.t.a. hoffmann"]},
+{id:"li080",dk:"Literatura",q:"Con la H: Hölderlin, poeta romántico alemán",a:"Hölderlin",aa:["holderlin"]},
+{id:"li081",dk:"Literatura",q:"Con la I: Ibsen, dramaturgo noruego padre del teatro moderno",a:"Ibsen",aa:["henrik ibsen"]},
+{id:"li082",dk:"Literatura",q:"Con la I: Ionesco, dramaturgo rumano del teatro del absurdo",a:"Ionesco",aa:["eugene ionesco"]},
+{id:"li083",dk:"Literatura",q:"Con la I: Iriarte, fabulista español del siglo XVIII",a:"Iriarte",aa:["tomas de iriarte"]},
+{id:"li084",dk:"Literatura",q:"Con la I: Irving, escritor americano autor de La leyenda de Sleepy Hollow",a:"Irving",aa:["washington irving"]},
+{id:"li085",dk:"Literatura",q:"Con la I: Isaak Dínesen, escritora danesa autora de Memorias de África",a:"Isaak Dínesen",aa:["karen blixen"]},
+{id:"li086",dk:"Literatura",q:"Con la J: Joyce, escritor irlandés autor del Ulises",a:"Joyce",aa:["james joyce"]},
+{id:"li087",dk:"Literatura",q:"Con la J: Juana Inés de la Cruz, poeta barroca mexicana",a:"Juana Inés",aa:["sor juana ines de la cruz"]},
+{id:"li088",dk:"Literatura",q:"Con la J: Juan Rulfo, escritor mexicano autor de Pedro Páramo",a:"Juan Rulfo",aa:["juan rulfo"]},
+{id:"li089",dk:"Literatura",q:"Con la J: Jiménez, poeta español Premio Nobel autor de Platero y yo",a:"Jiménez",aa:["juan ramon jimenez"]},
+{id:"li090",dk:"Literatura",q:"Con la J: Jarry, escritor francés creador del personaje Ubú",a:"Jarry",aa:["alfred jarry"]},
+{id:"li091",dk:"Literatura",q:"Con la K: Kafka, escritor checo autor de La metamorfosis y El proceso",a:"Kafka",aa:["franz kafka"]},
+{id:"li092",dk:"Literatura",q:"Con la K: Keats, poeta romántico inglés",a:"Keats",aa:["john keats"]},
+{id:"li093",dk:"Literatura",q:"Con la K: Kipling, escritor inglés autor de El libro de la selva",a:"Kipling",aa:["rudyard kipling"]},
+{id:"li094",dk:"Literatura",q:"Con la K: Kundera, escritor checo autor de La insoportable levedad del ser",a:"Kundera",aa:["milan kundera"]},
+{id:"li095",dk:"Literatura",q:"Con la K: Kerouac, escritor americano de la Generación Beat",a:"Kerouac",aa:["jack kerouac"]},
+{id:"li096",dk:"Literatura",q:"Con la L: Lorca, poeta granadino autor del Romancero gitano",a:"Lorca",aa:["garcia lorca","federico garcia lorca"]},
+{id:"li097",dk:"Literatura",q:"Con la L: London, escritor americano autor de La llamada de lo salvaje",a:"London",aa:["jack london"]},
+{id:"li098",dk:"Literatura",q:"Con la L: Lope de Vega, dramaturgo del Siglo de Oro español",a:"Lope de Vega",aa:["lope de vega"]},
+{id:"li099",dk:"Literatura",q:"Con la L: Lewis Carroll, autor de Alicia en el País de las Maravillas",a:"Lewis Carroll",aa:["lewis carroll"]},
+{id:"li100",dk:"Literatura",q:"Con la L: La Fontaine, fabulista francés del siglo XVII",a:"La Fontaine",aa:["jean de la fontaine"]},
+{id:"li101",dk:"Literatura",q:"Con la M: Machado, poeta español de la Generación del 98",a:"Machado",aa:["antonio machado"]},
+{id:"li102",dk:"Literatura",q:"Con la M: Mann, escritor alemán autor de La montaña mágica",a:"Mann",aa:["thomas mann"]},
+{id:"li103",dk:"Literatura",q:"Con la M: Molière, dramaturgo francés del siglo XVII",a:"Molière",aa:["moliere","jean baptiste poquelin"]},
+{id:"li104",dk:"Literatura",q:"Con la M: Márquez, apellido del Nobel colombiano García",a:"Márquez",aa:["gabriel garcia marquez"]},
+{id:"li105",dk:"Literatura",q:"Con la M: Mishima, escritor japonés que se suicidó ritualmente",a:"Mishima",aa:["yukio mishima"]},
+{id:"li106",dk:"Literatura",q:"Con la M: Montaigne, escritor francés inventor del ensayo moderno",a:"Montaigne",aa:["michel de montaigne"]},
+{id:"li107",dk:"Literatura",q:"Con la M: Morrison, escritora americana Premio Nobel",a:"Morrison",aa:["toni morrison"]},
+{id:"li108",dk:"Literatura",q:"Con la M: Maupassant, escritor francés maestro del cuento",a:"Maupassant",aa:["guy de maupassant"]},
+{id:"li109",dk:"Literatura",q:"Con la M: Miller, dramaturgo americano autor de La muerte de un viajante",a:"Miller",aa:["arthur miller"]},
+{id:"li110",dk:"Literatura",q:"Con la M: Melville, escritor americano autor de Moby Dick",a:"Melville",aa:["herman melville"]},
+{id:"li111",dk:"Literatura",q:"Con la N: Neruda, poeta chileno Nobel autor de Veinte poemas de amor",a:"Neruda",aa:["pablo neruda"]},
+{id:"li112",dk:"Literatura",q:"Con la N: Nabokov, escritor ruso-americano autor de Lolita",a:"Nabokov",aa:["vladimir nabokov"]},
+{id:"li113",dk:"Literatura",q:"Con la N: Nietzsche, filósofo alemán que escribió Así habló Zaratustra",a:"Nietzsche",aa:["friedrich nietzsche"]},
+{id:"li114",dk:"Literatura",q:"Con la N: Nerval, poeta francés del Romanticismo",a:"Nerval",aa:["gerard de nerval"]},
+{id:"li115",dk:"Literatura",q:"Con la N: Nothomb, escritora belga de numerosas novelas",a:"Nothomb",aa:["amelie nothomb"]},
+{id:"li116",dk:"Literatura",q:"Con la O: Orwell, autor de 1984 y Rebelión en la granja",a:"Orwell",aa:["george orwell"]},
+{id:"li117",dk:"Literatura",q:"Con la O: Ovidio, poeta latino autor de Las metamorfosis",a:"Ovidio",aa:[]},
+{id:"li118",dk:"Literatura",q:"Con la O: O'Neill, dramaturgo americano Premio Nobel",a:"O'Neill",aa:["eugene o neill"]},
+{id:"li119",dk:"Literatura",q:"Con la O: Onetti, escritor uruguayo del Boom latinoamericano",a:"Onetti",aa:["juan carlos onetti"]},
+{id:"li120",dk:"Literatura",q:"Con la O: Ortega y Gasset, filósofo español autor de La rebelión de las masas",a:"Ortega y Gasset",aa:["ortega y gasset"]},
+{id:"li121",dk:"Literatura",q:"Con la P: Poe, escritor americano maestro del cuento de terror",a:"Poe",aa:["edgar allan poe"]},
+{id:"li122",dk:"Literatura",q:"Con la P: Proust, escritor francés autor de En busca del tiempo perdido",a:"Proust",aa:["marcel proust"]},
+{id:"li123",dk:"Literatura",q:"Con la P: Pushkin, poeta ruso considerado el padre de la literatura rusa",a:"Pushkin",aa:["alexandr pushkin"]},
+{id:"li124",dk:"Literatura",q:"Con la P: Paz, poeta mexicano Premio Nobel autor de El laberinto de la soledad",a:"Paz",aa:["octavio paz"]},
+{id:"li125",dk:"Literatura",q:"Con la P: Petrarca, poeta italiano renacentista que popularizó el soneto",a:"Petrarca",aa:[]},
+{id:"li126",dk:"Literatura",q:"Con la Q: Quevedo, escritor barroco español autor del Buscón",a:"Quevedo",aa:["francisco de quevedo"]},
+{id:"li127",dk:"Literatura",q:"Con la Q: Quijote, protagonista de la obra cumbre de Cervantes",a:"Quijote",aa:["don quijote"]},
+{id:"li128",dk:"Literatura",q:"Con la Q: Quiroga, cuentista uruguayo-argentino autor de Cuentos de la selva",a:"Quiroga",aa:["horacio quiroga"]},
+{id:"li129",dk:"Literatura",q:"Con la Q: Quasimodo, poeta italiano Premio Nobel",a:"Quasimodo",aa:["salvatore quasimodo"]},
+{id:"li130",dk:"Literatura",q:"Con la Q: Quincey, escritor inglés autor de Confesiones de un opiómano",a:"Quincey",aa:["thomas de quincey"]},
+{id:"li131",dk:"Literatura",q:"Con la R: Rabelais, escritor francés autor de Gargantúa y Pantagruel",a:"Rabelais",aa:["francois rabelais"]},
+{id:"li132",dk:"Literatura",q:"Con la R: Racine, dramaturgo francés clásico del siglo XVII",a:"Racine",aa:["jean racine"]},
+{id:"li133",dk:"Literatura",q:"Con la R: Rulfo, escritor mexicano autor de Pedro Páramo",a:"Rulfo",aa:["juan rulfo"]},
+{id:"li134",dk:"Literatura",q:"Con la R: Rimbaud, poeta francés maldito del siglo XIX",a:"Rimbaud",aa:["arthur rimbaud"]},
+{id:"li135",dk:"Literatura",q:"Con la R: Remarque, escritor alemán autor de Sin novedad en el frente",a:"Remarque",aa:["erich maria remarque"]},
+{id:"li136",dk:"Literatura",q:"Con la S: Shakespeare, dramaturgo inglés autor de Hamlet y Romeo y Julieta",a:"Shakespeare",aa:["william shakespeare"]},
+{id:"li137",dk:"Literatura",q:"Con la S: Sartre, filósofo y escritor francés existencialista",a:"Sartre",aa:["jean paul sartre"]},
+{id:"li138",dk:"Literatura",q:"Con la S: Stevenson, escritor escocés autor de La isla del tesoro",a:"Stevenson",aa:["robert louis stevenson"]},
+{id:"li139",dk:"Literatura",q:"Con la S: Sófocles, dramaturgo griego autor de Edipo Rey",a:"Sófocles",aa:["sofocles"]},
+{id:"li140",dk:"Literatura",q:"Con la S: Shelley, escritora inglesa autora de Frankenstein",a:"Shelley",aa:["mary shelley"]},
+{id:"li141",dk:"Literatura",q:"Con la T: Tolkien, escritor inglés autor de El señor de los anillos",a:"Tolkien",aa:["j.r.r. tolkien"]},
+{id:"li142",dk:"Literatura",q:"Con la T: Tolstoi, escritor ruso autor de Guerra y paz y Ana Karenina",a:"Tolstoi",aa:["leon tolstoi"]},
+{id:"li143",dk:"Literatura",q:"Con la T: Tirso de Molina, dramaturgo español que creó a Don Juan",a:"Tirso de Molina",aa:["tirso de molina"]},
+{id:"li144",dk:"Literatura",q:"Con la T: Twain, escritor americano autor de Las aventuras de Tom Sawyer",a:"Twain",aa:["mark twain"]},
+{id:"li145",dk:"Literatura",q:"Con la T: Turguénev, novelista ruso autor de Padres e hijos",a:"Turguénev",aa:["ivan turguenev"]},
+{id:"li146",dk:"Literatura",q:"Con la U: Unamuno, escritor español de la Generación del 98",a:"Unamuno",aa:["miguel de unamuno"]},
+{id:"li147",dk:"Literatura",q:"Con la U: Updike, novelista americano de la saga Conejo",a:"Updike",aa:["john updike"]},
+{id:"li148",dk:"Literatura",q:"Con la U: Uslar Pietri, escritor venezolano del realismo mágico",a:"Uslar Pietri",aa:["arturo uslar pietri"]},
+{id:"li149",dk:"Literatura",q:"Con la U: Ulises, obra maestra de James Joyce",a:"Ulises",aa:["ulises"]},
+{id:"li150",dk:"Literatura",q:"Con la U: Urbina, poeta mexicano del modernismo",a:"Urbina",aa:["luis g urbina"]},
+{id:"li151",dk:"Literatura",q:"Con la V: Vargas Llosa, Nobel peruano autor de La ciudad y los perros",a:"Vargas Llosa",aa:["mario vargas llosa"]},
+{id:"li152",dk:"Literatura",q:"Con la V: Verlaine, poeta simbolista francés",a:"Verlaine",aa:["paul verlaine"]},
+{id:"li153",dk:"Literatura",q:"Con la V: Verne, escritor francés de novela de aventuras y ciencia ficción",a:"Verne",aa:["julio verne"]},
+{id:"li154",dk:"Literatura",q:"Con la V: Voltaire, escritor francés ilustrado autor de Cándido",a:"Voltaire",aa:[]},
+{id:"li155",dk:"Literatura",q:"Con la V: Valle-Inclán, escritor español del esperpento",a:"Valle-Inclán",aa:["ramon del valle inclan"]},
+{id:"li156",dk:"Literatura",q:"Con la W: Woolf, escritora inglesa pionera del flujo de conciencia",a:"Woolf",aa:["virginia woolf"]},
+{id:"li157",dk:"Literatura",q:"Con la W: Whitman, poeta americano autor de Hojas de hierba",a:"Whitman",aa:["walt whitman"]},
+{id:"li158",dk:"Literatura",q:"Con la W: Wilde, escritor irlandés autor de El retrato de Dorian Gray",a:"Wilde",aa:["oscar wilde"]},
+{id:"li159",dk:"Literatura",q:"Con la W: Wells, escritor inglés de ciencia ficción autor de La guerra de los mundos",a:"Wells",aa:["h.g. wells"]},
+{id:"li160",dk:"Literatura",q:"Con la W: Woyzeck, drama inacabado del escritor alemán Büchner",a:"Woyzeck",aa:["buchner"]},
+{id:"li161",dk:"Literatura",q:"Con la X: Xenofonte, escritor e historiador griego discípulo de Sócrates",a:"Xenofonte",aa:["jenofonte"]},
+{id:"li162",dk:"Literatura",q:"Con la X: Xirgu, actriz catalana que estrenó las obras de Lorca",a:"Xirgu",aa:["margarita xirgu"]},
+{id:"li163",dk:"Literatura",q:"Con la Y: Yeats, poeta irlandés Premio Nobel",a:"Yeats",aa:["william butler yeats"]},
+{id:"li164",dk:"Literatura",q:"Con la Y: Yourcenar, primera mujer de la Academia Francesa",a:"Yourcenar",aa:["marguerite yourcenar"]},
+{id:"li165",dk:"Literatura",q:"Con la Y: Yañez, novelista mexicano de Al filo del agua",a:"Yañez",aa:["agustin yanez"]},
+{id:"li166",dk:"Literatura",q:"Con la Z: Zola, escritor francés naturalista autor de Germinal",a:"Zola",aa:["emile zola"]},
+{id:"li167",dk:"Literatura",q:"Con la Z: Zweig, escritor austriaco autor de El mundo de ayer",a:"Zweig",aa:["stefan zweig"]},
+{id:"li168",dk:"Literatura",q:"Con la Z: Zayas, escritora del Siglo de Oro español",a:"Zayas",aa:["maria de zayas"]},
+{id:"li169",dk:"Literatura",q:"Con la Z: Zamacois, novelista español de principios del siglo XX",a:"Zamacois",aa:["eduardo zamacois"]},
+{id:"li170",dk:"Literatura",q:"Con la Z: Zorrilla, escritor español autor del Don Juan Tenorio",a:"Zorrilla",aa:["jose zorrilla"]},
+{id:"mi001",dk:"Mitología",q:"Con la A: Apolo, dios griego del Sol la música y las artes",a:"Apolo",aa:["apolo"]},
+{id:"mi002",dk:"Mitología",q:"Con la A: Afrodita, diosa griega del amor",a:"Afrodita",aa:["afrodita"]},
+{id:"mi003",dk:"Mitología",q:"Con la A: Ares, dios griego de la guerra",a:"Ares",aa:["ares"]},
+{id:"mi004",dk:"Mitología",q:"Con la A: Atenea, diosa griega de la sabiduría",a:"Atenea",aa:["atenea"]},
+{id:"mi005",dk:"Mitología",q:"Con la A: Artemisa, diosa griega de la caza",a:"Artemisa",aa:["artemisa"]},
+{id:"mi006",dk:"Mitología",q:"Con la A: Atlas, titán condenado a sostener el mundo sobre sus hombros",a:"Atlas",aa:[]},
+{id:"mi007",dk:"Mitología",q:"Con la A: Aquiles, guerrero griego invulnerable excepto en el talón",a:"Aquiles",aa:["aquiles"]},
+{id:"mi008",dk:"Mitología",q:"Con la A: Ariadna, princesa que dio el hilo a Teseo para salir del laberinto",a:"Ariadna",aa:["ariadna"]},
+{id:"mi009",dk:"Mitología",q:"Con la A: Andrómeda, princesa encadenada a una roca rescatada por Perseo",a:"Andrómeda",aa:["andromeda"]},
+{id:"mi010",dk:"Mitología",q:"Con la A: Anfitrite, diosa del mar esposa de Poseidón",a:"Anfitrite",aa:["anfitrite"]},
+{id:"mi011",dk:"Mitología",q:"Con la B: Baco, nombre romano del dios griego Dioniso",a:"Baco",aa:["baco"]},
+{id:"mi012",dk:"Mitología",q:"Con la B: Bellerofonte, héroe griego que montó a Pegaso",a:"Bellerofonte",aa:["belerofonte"]},
+{id:"mi013",dk:"Mitología",q:"Con la B: Berecintia, diosa frigia de la naturaleza",a:"Berecintia",aa:["berecintia"]},
+{id:"mi014",dk:"Mitología",q:"Con la B: Basilisco, criatura mitológica cuya mirada mataba",a:"Basilisco",aa:["basilisco"]},
+{id:"mi015",dk:"Mitología",q:"Con la B: Briareo, gigante de cien brazos hijo de Urano y Gea",a:"Briareo",aa:["briareo"]},
+{id:"mi016",dk:"Mitología",q:"Con la C: Circe, hechicera que convirtió a los compañeros de Ulises en cerdos",a:"Circe",aa:["circe"]},
+{id:"mi017",dk:"Mitología",q:"Con la C: Caronte, barquero que transportaba almas al inframundo",a:"Caronte",aa:["caronte"]},
+{id:"mi018",dk:"Mitología",q:"Con la C: Cronos, titán que devoró a sus hijos para evitar ser destronado",a:"Cronos",aa:["cronos"]},
+{id:"mi019",dk:"Mitología",q:"Con la C: Centauro, criatura mitad hombre mitad caballo",a:"Centauro",aa:["centauro"]},
+{id:"mi020",dk:"Mitología",q:"Con la C: Calipso, ninfa que retuvo a Ulises siete años en su isla",a:"Calipso",aa:["calipso"]},
+{id:"mi021",dk:"Mitología",q:"Con la C: Casandra, profetisa troyana a quien nadie creía",a:"Casandra",aa:["casandra"]},
+{id:"mi022",dk:"Mitología",q:"Con la C: Cerbero, perro de tres cabezas que guardaba el inframundo",a:"Cerbero",aa:["cerbero"]},
+{id:"mi023",dk:"Mitología",q:"Con la C: Ciclopea, isla donde vivía Polifemo según la Odisea",a:"Ciclope",aa:["ciclope","polifemo"]},
+{id:"mi024",dk:"Mitología",q:"Con la C: Cloto, la parca que hilaba el hilo de la vida",a:"Cloto",aa:["cloto"]},
+{id:"mi025",dk:"Mitología",q:"Con la C: Cástor, uno de los gemelos Dióscuros junto a Pólux",a:"Cástor",aa:["castor"]},
+{id:"mi026",dk:"Mitología",q:"Con la D: Dioniso, dios griego del vino y el teatro",a:"Dioniso",aa:["dioniso"]},
+{id:"mi027",dk:"Mitología",q:"Con la D: Dafne, ninfa transformada en laurel para escapar de Apolo",a:"Dafne",aa:["dafne"]},
+{id:"mi028",dk:"Mitología",q:"Con la D: Dédalo, artesano que construyó el laberinto del minotauro",a:"Dédalo",aa:["dedalo"]},
+{id:"mi029",dk:"Mitología",q:"Con la D: Deméter, diosa griega de la agricultura",a:"Deméter",aa:["demeter"]},
+{id:"mi030",dk:"Mitología",q:"Con la D: Discordia, diosa romana equivalente a Eris griega",a:"Discordia",aa:["eris","discordia"]},
+{id:"mi031",dk:"Mitología",q:"Con la E: Edipo, rey que sin saberlo mató a su padre y se casó con su madre",a:"Edipo",aa:["edipo"]},
+{id:"mi032",dk:"Mitología",q:"Con la E: Electra, hija de Agamenón que vengó a su padre",a:"Electra",aa:["electra"]},
+{id:"mi033",dk:"Mitología",q:"Con la E: Eolo, dios griego de los vientos",a:"Eolo",aa:["eolo"]},
+{id:"mi034",dk:"Mitología",q:"Con la E: Eros, dios griego del amor equivalente al Cupido romano",a:"Eros",aa:["eros"]},
+{id:"mi035",dk:"Mitología",q:"Con la E: Escila, monstruo marino de seis cabezas que amenazaba a los marineros",a:"Escila",aa:["escila"]},
+{id:"mi036",dk:"Mitología",q:"Con la F: Faetón, hijo del Sol que intentó conducir el carro solar y murió",a:"Faetón",aa:["faeton"]},
+{id:"mi037",dk:"Mitología",q:"Con la F: Fénix, ave que renace de sus propias cenizas",a:"Fénix",aa:["fenix"]},
+{id:"mi038",dk:"Mitología",q:"Con la F: Furias, diosas de la venganza que perseguían a los culpables",a:"Furias",aa:["furias","erinias"]},
+{id:"mi039",dk:"Mitología",q:"Con la F: Fortuna, diosa romana de la suerte",a:"Fortuna",aa:["fortuna"]},
+{id:"mi040",dk:"Mitología",q:"Con la F: Filoctetes, héroe que tenía el arco de Hércules",a:"Filoctetes",aa:["filoctetes"]},
+{id:"mi041",dk:"Mitología",q:"Con la G: Gea, diosa primordial de la Tierra en la mitología griega",a:"Gea",aa:["gea"]},
+{id:"mi042",dk:"Mitología",q:"Con la G: Gorgonas, criaturas con serpientes en el pelo que petrificaban",a:"Gorgonas",aa:["gorgonas","medusa"]},
+{id:"mi043",dk:"Mitología",q:"Con la G: Ganimedes, joven raptado por Zeus para ser copero de los dioses",a:"Ganimedes",aa:["ganimedes"]},
+{id:"mi044",dk:"Mitología",q:"Con la G: Graeae, tres viejas brujas que compartían un solo ojo",a:"Graeae",aa:["grayas"]},
+{id:"mi045",dk:"Mitología",q:"Con la G: Griffon, criatura mitológica mitad águila mitad león",a:"Grifo",aa:["grifo"]},
+{id:"mi046",dk:"Mitología",q:"Con la H: Hades, dios griego del inframundo",a:"Hades",aa:["hades"]},
+{id:"mi047",dk:"Mitología",q:"Con la H: Hera, reina de los dioses y esposa de Zeus",a:"Hera",aa:["hera"]},
+{id:"mi048",dk:"Mitología",q:"Con la H: Hefesto, dios del fuego y la forja",a:"Hefesto",aa:["hefesto"]},
+{id:"mi049",dk:"Mitología",q:"Con la H: Hermes, mensajero de los dioses con alas en los talones",a:"Hermes",aa:["hermes"]},
+{id:"mi050",dk:"Mitología",q:"Con la H: Hidra, serpiente de múltiples cabezas que volvían a crecer",a:"Hidra",aa:["hidra"]},
+{id:"mi051",dk:"Mitología",q:"Con la H: Hércules, semidiós griego famoso por sus doce trabajos",a:"Hércules",aa:["hercules","heracles"]},
+{id:"mi052",dk:"Mitología",q:"Con la H: Helena de Troya, mujer cuya belleza desencadenó la guerra",a:"Helena",aa:["elena de troya"]},
+{id:"mi053",dk:"Mitología",q:"Con la H: Hécate, diosa de la magia y la luna",a:"Hécate",aa:["hecate"]},
+{id:"mi054",dk:"Mitología",q:"Con la H: Helios, titán que conducía el carro del Sol",a:"Helios",aa:["helios"]},
+{id:"mi055",dk:"Mitología",q:"Con la H: Hipnos, dios griego del sueño hermano de Tánatos",a:"Hipnos",aa:["hipnos"]},
+{id:"mi056",dk:"Mitología",q:"Con la I: Ícaro, joven que voló demasiado cerca del Sol con alas de cera",a:"Ícaro",aa:["icaro"]},
+{id:"mi057",dk:"Mitología",q:"Con la I: Iris, diosa del arco iris mensajera de los dioses",a:"Iris",aa:["iris"]},
+{id:"mi058",dk:"Mitología",q:"Con la I: Ino, ninfa marina que ayudó a Ulises a sobrevivir",a:"Ino",aa:["ino"]},
+{id:"mi059",dk:"Mitología",q:"Con la I: Ixión, primer hombre que mató a su suegro según la mitología griega",a:"Ixión",aa:["ixion"]},
+{id:"mi060",dk:"Mitología",q:"Con la I: Ilitía, diosa griega del parto",a:"Ilitía",aa:["ilitia"]},
+{id:"mi061",dk:"Mitología",q:"Con la J: Jano, dios romano de las puertas y los comienzos con dos caras",a:"Jano",aa:["jano"]},
+{id:"mi062",dk:"Mitología",q:"Con la J: Jasón, héroe que lideró a los Argonautas en busca del Vellocino",a:"Jasón",aa:["jason"]},
+{id:"mi063",dk:"Mitología",q:"Con la J: Júpiter, nombre romano del dios Zeus",a:"Júpiter",aa:["jupiter"]},
+{id:"mi064",dk:"Mitología",q:"Con la J: Juno, nombre romano de la diosa Hera",a:"Juno",aa:["juno"]},
+{id:"mi065",dk:"Mitología",q:"Con la J: Jacinto, joven amado por Apolo transformado en flor",a:"Jacinto",aa:["jacinto"]},
+{id:"mi066",dk:"Mitología",q:"Con la L: Laocoonte, sacerdote troyano que advirtió del caballo de Troya",a:"Laocoonte",aa:["laocoonte"]},
+{id:"mi067",dk:"Mitología",q:"Con la L: Leteo, río del olvido en el inframundo griego",a:"Leteo",aa:["leteo"]},
+{id:"mi068",dk:"Mitología",q:"Con la L: Laberinto, construcción de Dédalo donde vivía el Minotauro",a:"Laberinto",aa:["laberinto"]},
+{id:"mi069",dk:"Mitología",q:"Con la L: Leda, reina espartana seducida por Zeus convertido en cisne",a:"Leda",aa:["leda"]},
+{id:"mi070",dk:"Mitología",q:"Con la L: Licaón, rey convertido en lobo por Zeus como castigo",a:"Licaón",aa:["licaon"]},
+{id:"mi071",dk:"Mitología",q:"Con la M: Medusa, gorgona con serpientes en la cabeza cuya mirada petrificaba",a:"Medusa",aa:["medusa"]},
+{id:"mi072",dk:"Mitología",q:"Con la M: Marte, dios romano de la guerra equivalente al Ares griego",a:"Marte",aa:["marte"]},
+{id:"mi073",dk:"Mitología",q:"Con la M: Minotauro, criatura mitad hombre mitad toro del laberinto",a:"Minotauro",aa:["minotauro"]},
+{id:"mi074",dk:"Mitología",q:"Con la M: Medea, hechicera que mató a sus propios hijos para vengarse de Jasón",a:"Medea",aa:["medea"]},
+{id:"mi075",dk:"Mitología",q:"Con la M: Mercurio, mensajero romano equivalente al Hermes griego",a:"Mercurio",aa:["mercurio"]},
+{id:"mi076",dk:"Mitología",q:"Con la N: Narciso, joven que se enamoró de su propio reflejo",a:"Narciso",aa:["narciso"]},
+{id:"mi077",dk:"Mitología",q:"Con la N: Náyades, ninfas de las aguas dulces",a:"Náyades",aa:["nayades"]},
+{id:"mi078",dk:"Mitología",q:"Con la N: Nemesis, diosa griega de la venganza y la justicia",a:"Nemesis",aa:["nemesis"]},
+{id:"mi079",dk:"Mitología",q:"Con la N: Nereidas, ninfas marinas hijas del dios Nereo",a:"Nereidas",aa:["nereidas"]},
+{id:"mi080",dk:"Mitología",q:"Con la N: Niobe, reina que se jactó de ser mejor madre que Leto y perdió a sus hijos",a:"Niobe",aa:["niobe"]},
+{id:"mi081",dk:"Mitología",q:"Con la O: Odiseo, nombre griego del héroe Ulises",a:"Odiseo",aa:["odiseo","ulises"]},
+{id:"mi082",dk:"Mitología",q:"Con la O: Olimpo, morada de los dioses griegos",a:"Olimpo",aa:["olimpo"]},
+{id:"mi083",dk:"Mitología",q:"Con la O: Orfeo, músico cuya lira encantaba a los animales",a:"Orfeo",aa:["orfeo"]},
+{id:"mi084",dk:"Mitología",q:"Con la O: Orión, cazador gigante convertido en constelación",a:"Orión",aa:["orion"]},
+{id:"mi085",dk:"Mitología",q:"Con la O: Océano, titán que representa el río primordial que rodeaba el mundo",a:"Océano",aa:["oceano"]},
+{id:"mi086",dk:"Mitología",q:"Con la P: Pandora, primera mujer que abrió la caja con todos los males",a:"Pandora",aa:["pandora"]},
+{id:"mi087",dk:"Mitología",q:"Con la P: Perseo, héroe que mató a Medusa y rescató a Andrómeda",a:"Perseo",aa:["perseo"]},
+{id:"mi088",dk:"Mitología",q:"Con la P: Prometeo, titán que robó el fuego a los dioses para dárselo a los hombres",a:"Prometeo",aa:["prometeo"]},
+{id:"mi089",dk:"Mitología",q:"Con la P: Poseidón, dios griego del mar",a:"Poseidón",aa:["poseidon"]},
+{id:"mi090",dk:"Mitología",q:"Con la P: Pegaso, caballo alado nacido de la sangre de Medusa",a:"Pegaso",aa:["pegaso"]},
+{id:"mi091",dk:"Mitología",q:"Con la Q: Quimera, monstruo con cabeza de león cola de dragón y cuerpo de cabra",a:"Quimera",aa:["quimera"]},
+{id:"mi092",dk:"Mitología",q:"Con la Q: Quirón, centauro sabio maestro de Aquiles y Jasón",a:"Quirón",aa:["quiron"]},
+{id:"mi093",dk:"Mitología",q:"Con la Q: Querubín, ángel de la tradición judeocristiana relacionado con el amor",a:"Querubín",aa:["querubin"]},
+{id:"mi094",dk:"Mitología",q:"Con la Q: Quirites, ciudadanos romanos libres en la mitología de Roma",a:"Quirites",aa:["quirites"]},
+{id:"mi095",dk:"Mitología",q:"Con la Q: Quetzalcóatl, dios serpiente emplumada de los aztecas",a:"Quetzalcóatl",aa:["quetzalcoatl"]},
+{id:"mi096",dk:"Mitología",q:"Con la R: Rómulo, fundador legendario de Roma junto a su hermano Remo",a:"Rómulo",aa:["romulo"]},
+{id:"mi097",dk:"Mitología",q:"Con la R: Rea, madre de los dioses olímpicos en la mitología griega",a:"Rea",aa:["rea"]},
+{id:"mi098",dk:"Mitología",q:"Con la R: Radamantis, juez del inframundo griego",a:"Radamantis",aa:["radamantis"]},
+{id:"mi099",dk:"Mitología",q:"Con la R: Rumina, diosa romana que protegía a las madres lactantes",a:"Rumina",aa:["rumina"]},
+{id:"mi100",dk:"Mitología",q:"Con la R: Rapsodas, aedos griegos que recitaban poemas épicos",a:"Rapsodas",aa:["rapsodas"]},
+{id:"mi101",dk:"Mitología",q:"Con la S: Saturno, dios romano del tiempo equivalente al Cronos griego",a:"Saturno",aa:["saturno"]},
+{id:"mi102",dk:"Mitología",q:"Con la S: Sísifo, condenado a empujar una roca cuesta arriba eternamente",a:"Sísifo",aa:["sisifo"]},
+{id:"mi103",dk:"Mitología",q:"Con la S: Selene, diosa griega de la luna",a:"Selene",aa:["selene"]},
+{id:"mi104",dk:"Mitología",q:"Con la S: Sirenas, criaturas que atraían a los marineros con su canto",a:"Sirenas",aa:["sirenas"]},
+{id:"mi105",dk:"Mitología",q:"Con la S: Scila, monstruo marino de seis cabezas",a:"Scila",aa:["escila"]},
+{id:"mi106",dk:"Mitología",q:"Con la T: Tánatos, dios griego de la muerte hermano de Hipnos",a:"Tánatos",aa:["tanatos"]},
+{id:"mi107",dk:"Mitología",q:"Con la T: Teseo, héroe ateniense que mató al Minotauro",a:"Teseo",aa:["teseo"]},
+{id:"mi108",dk:"Mitología",q:"Con la T: Titanes, generación de dioses que precedió a los olímpicos",a:"Titanes",aa:["titanes"]},
+{id:"mi109",dk:"Mitología",q:"Con la T: Tifón, monstruo más poderoso enfrentado a Zeus",a:"Tifón",aa:["tifon"]},
+{id:"mi110",dk:"Mitología",q:"Con la T: Tánato, personificación de la muerte en la mitología griega",a:"Tánato",aa:["tanato","tanatos"]},
+{id:"mi111",dk:"Mitología",q:"Con la U: Urano, dios primordial del cielo en la mitología griega",a:"Urano",aa:["urano"]},
+{id:"mi112",dk:"Mitología",q:"Con la U: Ulises, nombre romano del héroe griego Odiseo",a:"Ulises",aa:["ulises"]},
+{id:"mi113",dk:"Mitología",q:"Con la U: Underworld, inframundo donde gobernaba Hades",a:"Underworld",aa:["hades","inframundo"]},
+{id:"mi114",dk:"Mitología",q:"Con la U: Urania, musa de la astronomía",a:"Urania",aa:["urania"]},
+{id:"mi115",dk:"Mitología",q:"Con la U: Upis, epíteto de Artemisa como diosa de los partos",a:"Upis",aa:["artemisa"]},
+{id:"mi116",dk:"Mitología",q:"Con la V: Venus, diosa romana del amor equivalente a Afrodita",a:"Venus",aa:["venus"]},
+{id:"mi117",dk:"Mitología",q:"Con la V: Vulcano, dios romano del fuego equivalente a Hefesto",a:"Vulcano",aa:["vulcano"]},
+{id:"mi118",dk:"Mitología",q:"Con la V: Vesta, diosa romana del hogar equivalente a Hestia",a:"Vesta",aa:["vesta"]},
+{id:"mi119",dk:"Mitología",q:"Con la V: Victoria, diosa romana de la victoria equivalente a Niké griega",a:"Victoria",aa:["victoria","nike"]},
+{id:"mi120",dk:"Mitología",q:"Con la V: Vertumno, dios romano de las estaciones y los jardines",a:"Vertumno",aa:["vertumno"]},
+{id:"mi121",dk:"Mitología",q:"Con la W: Wotan, nombre germánico del dios nórdico Odín",a:"Wotan",aa:["odin","wotan"]},
+{id:"mi122",dk:"Mitología",q:"Con la W: Walhalla, paraíso guerrero de la mitología nórdica",a:"Walhalla",aa:["valhalla"]},
+{id:"mi123",dk:"Mitología",q:"Con la W: Wakahiru-me, diosa japonesa del amanecer",a:"Wakahiru",aa:["amaterasu"]},
+{id:"mi124",dk:"Mitología",q:"Con la W: Wepwawet, dios lobo egipcio de la guerra",a:"Wepwawet",aa:["anubis"]},
+{id:"mi125",dk:"Mitología",q:"Con la W: Weneg-nebty, divinidad egipcia antigua",a:"Weneg",aa:["osiris"]},
+{id:"mi126",dk:"Mitología",q:"Con la X: Xochiquetzal, diosa azteca del amor y la belleza",a:"Xochiquetzal",aa:["xochiquetzal"]},
+{id:"mi127",dk:"Mitología",q:"Con la X: Xipe Totec, dios azteca de la renovación y la agricultura",a:"Xipe",aa:["xipe totec"]},
+{id:"mi128",dk:"Mitología",q:"Con la X: Xibalba, inframundo de la mitología maya",a:"Xibalba",aa:["xibalba"]},
+{id:"mi129",dk:"Mitología",q:"Con la X: Xólotl, dios azteca con cabeza de perro guía de los muertos",a:"Xólotl",aa:["xolotl"]},
+{id:"mi130",dk:"Mitología",q:"Con la X: Xochipilli, dios azteca de las flores y la alegría",a:"Xochipilli",aa:["xochipilli"]},
+{id:"mi131",dk:"Mitología",q:"Con la Y: Ymir, gigante de hielo primordial de la mitología nórdica",a:"Ymir",aa:["ymir"]},
+{id:"mi132",dk:"Mitología",q:"Con la Y: Yahvé, nombre del dios hebreo en el Antiguo Testamento",a:"Yahvé",aa:["yahve","dios"]},
+{id:"mi133",dk:"Mitología",q:"Con la Y: Yacumama, espíritu serpiente del agua en la mitología amazónica",a:"Yacumama",aa:["yacumama"]},
+{id:"mi134",dk:"Mitología",q:"Con la Y: Yoruba, tradición religiosa africana con dioses llamados orishas",a:"Yoruba",aa:["orishas"]},
+{id:"mi135",dk:"Mitología",q:"Con la Y: Yggdrasil, árbol cósmico de la mitología nórdica",a:"Yggdrasil",aa:["yggdrasil"]},
+{id:"mi136",dk:"Mitología",q:"Con la Z: Zeus, dios supremo del Olimpo griego",a:"Zeus",aa:["zeus"]},
+{id:"mi137",dk:"Mitología",q:"Con la Z: Zefiro, dios griego del viento del oeste",a:"Zéfiro",aa:["zefiro"]},
+{id:"mi138",dk:"Mitología",q:"Con la Z: Zagreo, primera forma de Dioniso hijo de Zeus y Perséfone",a:"Zagreo",aa:["zagreo"]},
+{id:"mi139",dk:"Mitología",q:"Con la Z: Zelos, dios de la rivalidad y los celos en la mitología griega",a:"Zelos",aa:["zelos"]},
+{id:"mi140",dk:"Mitología",q:"Con la Z: Zeus Ammón, forma sincrética de Zeus con el dios egipcio Amón",a:"Zeus Ammón",aa:["zeus ammon"]}
+];
+
+
 
 // ═══ STATE ═══
 const SK='ppro5';
@@ -934,19 +1440,37 @@ function getSRS(id){return S.srs[id]||{iv:1,ease:2.5,due:0,reps:0,lap:0};}
 function rateSRS(id,r){
   let c=getSRS(id);
   let{iv,ease,reps,lap}=c;
-  let days;
-  if(r===0){days=1;lap++;reps=0;ease=Math.max(1.3,ease-0.2);}
-  else if(r===1){days=3;ease=Math.max(1.3,ease-0.15);}
-  else if(r===2){days=reps<2?15:Math.max(15,Math.round(iv*ease));reps++;ease=Math.min(2.8,ease+0.05);}
-  else{days=reps<2?30:Math.max(30,Math.round(iv*ease*1.3));reps++;ease=Math.min(3.0,ease+0.15);}
-  S.srs[id]={iv:days,ease,due:Date.now()+days*86400000,reps,lap};
-  S.todaySeen.add(id);
+  let dueMs;
+  if(r===0){
+    // Otra vez: vuelve en 10 minutos
+    dueMs=Date.now()+10*60*1000;
+    lap++;reps=0;ease=Math.max(1.3,ease-0.2);iv=0;
+  } else if(r===1){
+    // Difícil: mañana
+    dueMs=Date.now()+86400000;
+    ease=Math.max(1.3,ease-0.15);iv=1;
+  } else if(r===2){
+    // Bien: 14 días mínimo
+    const days=reps<2?14:Math.max(14,Math.round(iv*ease));
+    dueMs=Date.now()+days*86400000;
+    iv=days;reps++;ease=Math.min(2.8,ease+0.05);
+  } else {
+    // Fácil: 60 días mínimo (2 meses)
+    const days=reps<2?60:Math.max(60,Math.round(iv*ease*1.3));
+    dueMs=Date.now()+days*86400000;
+    iv=days;reps++;ease=Math.min(3.0,ease+0.15);
+  }
+  S.srs[id]={iv,ease,due:dueMs,reps,lap};
+  // Solo añadir a todaySeen si no es "Otra vez"
+  if(r>0)S.todaySeen.add(id);
   save();
 }
 
 function allQ(){
   return[
     ...QQ,
+    ...QQ_EXTRA,
+    ...QQ_EXTRA2,
     ...CERROJOS,
     ...S.custom.filter(v=>v.a&&v.q),
     ...Object.values(S.aiDecks).flat().filter(v=>v.a&&v.q)
@@ -977,6 +1501,43 @@ function lev(a,b){if(Math.abs(a.length-b.length)>2)return 99;const m=[];for(let 
 function chk(inp,q){const n=norm(inp);if(!n)return false;for(const t of[q.a,...(q.aa||[])].map(norm)){if(n===t||t.length>4&&lev(n,t)<=1)return true;}return false;}
 function shuf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function rnd(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+
+function updateAnkiLabels(){
+  const btns=document.querySelectorAll('.anki-btn');
+  const labels=['10 min','1 día','14 días','60 días'];
+  btns.forEach((b,i)=>{const s=b.querySelector('small');if(s)s.textContent=labels[i];});
+}
+
+
+// ═══ IMPORT TEXT DECK ═══
+function importTextDeck(){
+  const name=document.getElementById('ai-deck-name-upload').value.trim();
+  const text=document.getElementById('ai-deck-text').value.trim();
+  if(!name){alert('Ponle un nombre al mazo');return;}
+  if(!text){alert('Añade alguna pregunta');return;}
+  const lines=text.split('\n').filter(l=>l.trim());
+  const qs=[];
+  let errors=0;
+  lines.forEach((line,i)=>{
+    const parts=line.split('|').map(s=>s.trim());
+    if(parts.length<2){errors++;return;}
+    const q=parts[0],a=parts[1];
+    const aa=parts[2]?parts[2].split(',').map(s=>s.trim()):[];
+    if(q&&a)qs.push({id:'imp_'+Date.now()+'_'+i,dk:name,q,a,aa});
+    else errors++;
+  });
+  if(!qs.length){alert('No se encontraron preguntas válidas');return;}
+  if(!S.aiDecks)S.aiDecks={};
+  if(!S.aiDecks[name])S.aiDecks[name]=[];
+  S.aiDecks[name]=[...S.aiDecks[name],...qs];
+  save();
+  renderAIDecks();
+  document.getElementById('ai-deck-text').value='';
+  document.getElementById('ai-deck-name-upload').value='';
+  alert('✅ '+qs.length+' preguntas importadas'+(errors?' ('+errors+' líneas ignoradas)':''));
+  renderHome();
+}
 
 // ═══ GAGS NOEMI — dinámicos, con gracia real ═══
 const GAGS={
@@ -1075,7 +1636,7 @@ function renderHome(){
   for(const[name,info]of Object.entries(DECKS)){
     const sel=S.selectedDecks.includes(name);
     const isNivelBote=name==='Nivel Bote';
-    const cnt=isNivelBote?CERROJOS.length:QQ.filter(q=>q.dk===name).length;
+    const cnt=isNivelBote?CERROJOS.length:[...QQ,...QQ_EXTRA].filter(q=>q.dk===name).length;
     const d=document.createElement('div');
     d.className='di'+(sel?' sel':'')+(isNivelBote?' bote':'');
     d.innerHTML='<div class="di-icon">'+info.icon+'</div><div style="flex:1"><div class="di-name">'+name+(isNivelBote?' 🔥':'')+'</div><div class="di-ct">'+cnt+' preguntas'+(isNivelBote?' · Dificultad máxima':'')+'</div></div><div class="di-chk">'+(sel?'✓':'')+'</div>';
@@ -1170,6 +1731,7 @@ function subAns(){
   S.todaySeen.add(q.id);
   save();
   document.getElementById('t-anki').className='anki-row show';
+  updateAnkiLabels();
 }
 
 function rateQ(r){rateSRS(tQ[tI].id,r);tI++;loadQ();}
@@ -1519,14 +2081,50 @@ function generateForManual(){
 
 // ═══ AI DECK GENERATOR ═══
 function renderAIDecks(){
-  const el=document.getElementById('ai-deck-list');el.innerHTML='';
-  for(const[name,qs]of Object.entries(S.aiDecks)){
-    const d=document.createElement('div');d.className='ai-deck-item';
-    d.innerHTML=`<div style="flex:1"><div style="font-weight:600">${name}</div><div style="font-size:12px;color:var(--text2)">${qs.length} preguntas · IA</div></div><button class="ai-more-btn" onclick="generateMore('${name}',event)">+50 más</button><button class="ai-del-btn" onclick="deleteDeck('${name}')">🗑️</button>`;
-    el.appendChild(d);
+  const el=document.getElementById('ai-deck-list');
+  el.innerHTML='';
+  const decks=Object.entries(S.aiDecks);
+  if(!decks.length){
+    el.innerHTML='<div style="color:var(--text2);font-size:13px;text-align:center;padding:20px">Aún no hay mazos IA. ¡Crea el primero!</div>';
+    return;
   }
-  if(!Object.keys(S.aiDecks).length)
-    el.innerHTML='<div style="color:var(--text2);font-size:13px;text-align:center;padding:20px">Aún no hay mazos IA. ¡Crea el primero, Noemi Folgado Molina!</div>';
+  for(const[name,qs]of decks){
+    const wrap=document.createElement('div');
+    wrap.style.cssText='background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;';
+    const hdr=document.createElement('div');
+    hdr.className='ai-deck-item';
+    hdr.style.borderBottom='1px solid var(--border)';
+    const safeN=name.replace(/'/g,"\'");
+    hdr.innerHTML='<div style="flex:1"><div style="font-weight:600">'+name+'</div><div style="font-size:12px;color:var(--text2)">'+qs.length+' preguntas</div></div>'
+      +'<button class="ai-more-btn" onclick="generateMore(\''+safeN+'\',event)">+20</button>'
+      +'<button class="ai-del-btn" onclick="deleteDeck(\''+safeN+'\')">🗑️</button>';
+    wrap.appendChild(hdr);
+    const qlist=document.createElement('div');
+    qlist.style.cssText='display:none;max-height:280px;overflow-y:auto;';
+    qs.forEach(function(q,i){
+      const row=document.createElement('div');
+      row.style.cssText='padding:8px 12px;border-bottom:1px solid var(--border);font-size:12px;display:flex;gap:8px;align-items:flex-start;';
+      const txt=q.q||q.d||'';
+      row.innerHTML='<div style="flex:1"><div style="color:var(--text)">'+txt+'</div><div style="color:var(--gold);margin-top:2px">→ '+q.a+'</div></div>'
+        +'<button class="ai-del-btn" style="font-size:10px;padding:4px 7px" onclick="deleteAIQ(\''+safeN+'\','+i+')">✕</button>';
+      qlist.appendChild(row);
+    });
+    wrap.appendChild(qlist);
+    const tog=document.createElement('button');
+    tog.className='btn-act';
+    tog.style.cssText='margin:8px 12px;font-size:11px;padding:6px;width:calc(100% - 24px)';
+    tog.textContent='Ver / editar preguntas ▾';
+    (function(ql,t){tog.onclick=function(){var open=ql.style.display!=='none';ql.style.display=open?'none':'block';t.textContent=open?'Ver / editar preguntas ▾':'Ocultar ▴';};})(qlist,tog);
+    wrap.appendChild(tog);
+    el.appendChild(wrap);
+  }
+}
+
+function deleteAIQ(deckName,idx){
+  if(!S.aiDecks[deckName])return;
+  S.aiDecks[deckName].splice(idx,1);
+  save();
+  renderAIDecks();
 }
 function setTopic(t){const inp=document.getElementById('ai-topic');if(inp)inp.value=t;}
 
@@ -1551,12 +2149,12 @@ async function generateMore(topic,ev){
   const btn=ev.target;btn.textContent='⏳...';btn.disabled=true;
   try{
     const existing=S.aiDecks[topic]||[];
-    const qs=await generateQuestions(topic,50,existing);
+    const qs=await generateQuestions(topic,20,existing);
     S.aiDecks[topic]=existing.concat(qs);
     save();renderAIDecks();
     alert('✅ +'+qs.length+' preguntas añadidas a "'+topic+'"');
   }catch(e){alert('Error: '+e.message);}
-  finally{btn.textContent='+50 más';btn.disabled=false;}
+  finally{btn.textContent='+20 más';btn.disabled=false;}
 }
 function deleteDeck(name){
   if(!confirm('¿Borrar el mazo "'+name+'"?'))return;
@@ -1582,11 +2180,20 @@ REGLAS ESTRICTAS — NIVEL BOTE:
 
 [{"id":"x1","dk":"${topic}","q":"Con la A: Dicho de una planta: Que carece de tallo.","a":"acaule","aa":[]},{"id":"x2","dk":"${topic}","q":"¿Qué instrumento...?","a":"respuesta","aa":["alt"]}]`;
 
-  const response=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:6000,messages:[{role:'user',content:prompt}]})
-  });
+  // Use cors-anywhere or direct — try direct first, fallback to proxy
+  let response;
+  const body=JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:6000,messages:[{role:'user',content:prompt}]});
+  try{
+    response=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body
+    });
+  }catch(e){
+    // CORS fallback for iOS Safari — use allorigins proxy
+    const encoded=encodeURIComponent(JSON.stringify({url:'https://api.anthropic.com/v1/messages',method:'POST',headers:{'Content-Type':'application/json'},body}));
+    throw new Error('El generador de IA no está disponible en Safari/iOS debido a restricciones de seguridad del navegador.\n\nSolución: Abre la app en Chrome o Firefox, o usa el modo Mazo Manual para añadir preguntas tú misma.');
+  }
   if(!response.ok)throw new Error('API '+response.status);
   const data=await response.json();
   const text=data.content?.[0]?.text||'';
