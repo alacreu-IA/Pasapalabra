@@ -9,15 +9,11 @@
       <stop offset="100%" stop-color="#e8a800"/>
     </linearGradient>
   </defs>
-  
   <rect width="512" height="512" rx="120" fill="url(#bg)"/>
-  
   <circle cx="256" cy="256" r="190" fill="none" stroke="#2a2a38" stroke-width="20" opacity="0.5"/>
   <circle cx="256" cy="256" r="190" fill="none" stroke="#3ecf72" stroke-width="20" stroke-dasharray="80 1000" stroke-linecap="round" transform="rotate(-40 256 256)"/>
   <circle cx="256" cy="256" r="190" fill="none" stroke="#ff5555" stroke-width="20" stroke-dasharray="50 1000" stroke-linecap="round" transform="rotate(20 256 256)"/>
   <circle cx="256" cy="256" r="190" fill="none" stroke="#4a9eff" stroke-width="20" stroke-dasharray="120 1000" stroke-linecap="round" transform="rotate(110 256 256)"/>
-
   <circle cx="256" cy="256" r="130" fill="url(#gold)"/>
-  
   <path d="M280 160L190 290H260L230 400L320 270H250L280 160Z" fill="#0a0a0f"/>
 </svg>
