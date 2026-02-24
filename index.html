@@ -1085,14 +1085,14 @@ function startMode(mode){
   const sel=new Set(S.selectedDecks);
   let qs;
   if(mode==='srs'){
-    qs=getDue().slice(0,50);
+    qs=getDue().slice(0,20);
     if(!qs.length){
       alert('¡Todo al día, Noemi! 🧠\n\nEl algoritmo SRS está haciendo su trabajo.\nNinguna pregunta vencida hoy.\n\n¿Pruebas el modo Rápido?');
       return;
     }
   } else {
     // Modo rápido: no repetir lo ya visto hoy
-    qs=shuf(allQ().filter(q=>sel.has(q.dk)&&!S.todaySeen.has(q.id))).slice(0,50);
+    qs=shuf(allQ().filter(q=>sel.has(q.dk)&&!S.todaySeen.has(q.id))).slice(0,20);
     if(!qs.length){
       alert('Ya has visto todas las preguntas disponibles hoy, Noemi Folgado Molina.\n¡Vuelve mañana o activa más mazos! 💪');
       return;
@@ -1219,7 +1219,7 @@ function startVocab(){
   const all=[...VOCAB,...S.custom.filter(v=>v.definition_ES)];
   vQ=shuf(all)
     .sort((a,b)=>{const o={no:0,rev:1,si:2};return(o[S.vSRS[a.id]]??1)-(o[S.vSRS[b.id]]??1);})
-    .slice(0,50);
+    .slice(0,20);
   vI=0;vFlip=false;goTo('vocab');loadV();
 }
 function loadV(){
