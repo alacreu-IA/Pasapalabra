@@ -441,6 +441,34 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
   </div>
 </div>
 
+<!-- AI DECKS SCREEN -->
+<div class="screen" id="ai-decks">
+  <div class="topbar">
+    <div class="btn-back" onclick="goTo('home')">←</div>
+    <span style="font-family:Syne,sans-serif;font-weight:700;flex:1">🤖 Mazos con IA</span>
+  </div>
+  <div style="padding:14px;overflow-y:auto;flex:1;">
+    <div class="sec-title">Nuevo mazo</div>
+    <input class="imp-field" id="ai-topic" placeholder="Tema (ej: Cine Español, Botánica, Mitología...)">
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+      <div class="vtag" style="cursor:pointer" onclick="setTopic('Historia Medieval')">Historia Medieval</div>
+      <div class="vtag" style="cursor:pointer" onclick="setTopic('Anatomía')">Anatomía</div>
+      <div class="vtag" style="cursor:pointer" onclick="setTopic('Cocina Española')">Cocina Española</div>
+      <div class="vtag" style="cursor:pointer" onclick="setTopic('Astronomía')">Astronomía</div>
+      <div class="vtag" style="cursor:pointer" onclick="setTopic('Música Clásica')">Música Clásica</div>
+      <div class="vtag" style="cursor:pointer" onclick="setTopic('Botánica y Zoología')">Botánica y Zoología</div>
+      <div class="vtag" style="cursor:pointer" onclick="setTopic('Filosofía Griega')">Filosofía Griega</div>
+      <div class="vtag" style="cursor:pointer" onclick="setTopic('Cine Español')">Cine Español</div>
+      <div class="vtag" style="cursor:pointer" onclick="setTopic('Términos en desuso')">Términos en desuso</div>
+      <div class="vtag" style="cursor:pointer" onclick="setTopic('Instrumentos musicales')">Instrumentos musicales</div>
+    </div>
+    <button class="btn-start" id="ai-create-btn" onclick="createAIDeck()">✨ Generar 20 preguntas</button>
+    <hr>
+    <div class="sec-title">Tus mazos IA</div>
+    <div id="ai-deck-list"></div>
+  </div>
+</div>
+
 <!-- MANUAL DECK -->
 <div class="screen" id="manual-deck">
   <div class="topbar">
@@ -1509,7 +1537,7 @@ async function createAIDeck(){
   const btn=document.getElementById('ai-create-btn');
   if(btn){btn.textContent='⏳ Generando...';btn.disabled=true;}
   try{
-    const qs=await generateQuestions(topic,50);
+    const qs=await generateQuestions(topic,20);
     if(!qs||!qs.length){alert('No se pudo generar. Intenta de nuevo.');return;}
     S.aiDecks[topic]=(S.aiDecks[topic]||[]).concat(qs);
     if(!S.selectedDecks.includes(topic))S.selectedDecks.push(topic);
@@ -1517,7 +1545,7 @@ async function createAIDeck(){
     renderAIDecks();renderHome();
     alert('✅ Mazo "'+topic+'" creado con '+qs.length+' preguntas.\n¡A tope, Noemi Folgado Molina! 🏆');
   }catch(e){alert('Error al generar: '+e.message);}
-  finally{if(btn){btn.textContent='✨ Generar 50 preguntas';btn.disabled=false;}}
+  finally{if(btn){btn.textContent='✨ Generar 20 preguntas';btn.disabled=false;}}
 }
 async function generateMore(topic,ev){
   const btn=ev.target;btn.textContent='⏳...';btn.disabled=true;
