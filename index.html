@@ -536,7 +536,7 @@ const QQ=[
 {id:"cg17",dk:"Cultura General",q:"Con la M: suspensión o paralización total en lo moral o físico",a:"marasmo",aa:[]},
 {id:"cg18",dk:"Cultura General",q:"Con la R: capacidad de adaptación frente a un agente perturbador",a:"resiliencia",aa:[]},
 {id:"cg19",dk:"Cultura General",q:"Con la C: pupa de los lepidópteros envuelta en capullo",a:"crisálida",aa:["crisalida"]},
-{id:"cg20",dk:"Cultura General",q:"Con la N: sin cabeza o sin jefe (adjetivo)",a:"acéfalo",aa:["acefalo"]},
+{id:"cg20",dk:"Cultura General",q:"Con la A: Sin cabeza o sin jefe (adjetivo)",a:"acéfalo",aa:["acefalo"]},
 {id:"lit01",dk:"Literatura",q:"¿Quién escribió el Quijote?",a:"Cervantes",aa:["miguel de cervantes"]},
 {id:"lit02",dk:"Literatura",q:"¿Cómo se llama el escudero de Don Quijote?",a:"Sancho Panza",aa:["sancho"]},
 {id:"lit03",dk:"Literatura",q:"¿Quién escribió Romeo y Julieta?",a:"Shakespeare",aa:["william shakespeare"]},
@@ -773,11 +773,11 @@ Z:{d:"Con la Z: Bruto y tonto (coloquial)",a:"zopenco"},
 // Pool de definiciones por letra para rotar entre partidas
 const RQ_POOL={
   A:[{d:"Con la A: Sin cabeza o sin jefe",a:"acéfalo"},{d:"Con la A: Dicho de una planta: Que carece de tallo",a:"acaule"},{d:"Con la A: Que no tiene dueño",a:"abacero"},{d:"Con la A: Privación del habla",a:"afasia"}],
-  B:[{d:"Con la B: Anfibio, según la RAE",a:"batracio"},{d:"Con la B: Adorno de hilos colgantes en telas",a:"borla"},{d:"Con la B: Relativo a la boca",a:"bucal"},{d:"Con la B: Engaño o fraude en tratos",a:"camama"}],
-  C:[{d:"Con la C: Purificación ritual o liberación interior",a:"catarsis"},{d:"Con la C: Arte de cocinar",a:"culinaria"},{d:"Con la C: Figura retórica de repetición al inicio",a:"anáfora"}],
+  B:[{d:"Con la B: Anfibio, según la RAE",a:"batracio"},{d:"Con la B: Adorno de hilos colgantes en telas",a:"borla"},{d:"Con la B: Relativo a la boca",a:"bucal"},{d:"Con la B: Anfibio de piel húmeda sin escamas",a:"batracio"}],
+  C:[{d:"Con la C: Purificación ritual o liberación interior",a:"catarsis"},{d:"Con la C: Arte de cocinar",a:"culinaria"},{d:"Con la C: Purificación ritual o liberación interior",a:"catarsis"}],
   D:[{d:"Con la D: Laberinto del que es difícil salir",a:"dédalo"},{d:"Con la D: Relativo a los dientes",a:"dental"},{d:"Con la D: Perteneciente al día",a:"diurno"}],
   E:[{d:"Con la E: Insigne, ilustre",a:"egregio"},{d:"Con la E: Vago, sutil, vaporoso",a:"etéreo"},{d:"Con la E: Que padece insomnio",a:"estoico"}],
-  F:[{d:"Con la F: Ídolo con poderes sobrenaturales",a:"fetiche"},{d:"Con la F: Instrumento de viento grave de madera",a:"fagot"},{d:"Con la F: Corriente de lava solidificada",a:"colada"}],
+  F:[{d:"Con la F: Ídolo con poderes sobrenaturales",a:"fetiche"},{d:"Con la F: Instrumento de viento grave de madera",a:"fagot"},{d:"Con la F: Instrumento de viento grave de madera",a:"fagot"}],
   G:[{d:"Con la G: Que sigue las ideas ajenas",a:"gregario"},{d:"Con la G: Conjunto de personas que comparten algo",a:"gremio"}],
   H:[{d:"Con la H: Doctrina que proclama el placer como fin",a:"hedonismo"},{d:"Con la H: Persona con siete dedos en cada mano",a:"heptadáctilo"},{d:"Con la H: Relativo a la sangre",a:"hematológico"}],
   I:[{d:"Con la I: Que rechaza la autoridad y las normas",a:"iconoclasta"},{d:"Con la I: Sin instrucción ni conocimientos",a:"ignaro"},{d:"Con la I: Que no se puede borrar",a:"imborrable"}],
@@ -795,10 +795,10 @@ const RQ_POOL={
   U:[{d:"Con la U: Muy abundante y fértil",a:"ubérrimo"},{d:"Con la U: Que está en todas partes al mismo tiempo",a:"ubicuo"}],
   V:[{d:"Con la V: Que causa humillación o vergüenza",a:"vejatorio"},{d:"Con la V: Que se puede vender",a:"vendible"},{d:"Con la V: Relativo a la vejez",a:"vetusto"}],
   W:[{d:"Con la W: Bebida alcohólica de origen escocés o irlandés",a:"whisky"},{d:"Con la W: Red informática mundial (anglicismo)",a:"web"}],
-  X:[{d:"Con la X: Arte de grabar en madera",a:"xilografía"},{d:"Con la X: Planta acuática de hojas flotantes",a:"nenúfar"}],
+  X:[{d:"Con la X: Arte de grabar en madera",a:"xilografía"},{d:"Con la X: Arte de grabar en madera",a:"xilografía"}],
   Y:[{d:"Con la Y: Inhabitado, despoblado o sin cultivar",a:"yermo"},{d:"Con la Y: Relativo al yo filosófico",a:"yoísmo"}],
   Z:[{d:"Con la Z: Bruto y tonto (coloquial)",a:"zopenco"},{d:"Con la Z: Calzado de cuero que cubre pie y pierna",a:"zapatón"},{d:"Con la Z: Planta con flores típica de jardines",a:"zinnia"}],
-  Ñ:[{d:"Con la Ñ: Soso, aburrido o sensiblero",a:"ñoño"},{d:"Con la Ñ: Tiempo del trabajo de un día",a:"peonada"}]
+  Ñ:[{d:"Con la Ñ: Soso, aburrido o sensiblero",a:"ñoño"},{d:"Contiene la Ñ: Trampa o engaño para cazar o atraer",a:"añagaza"},{d:"Contiene la Ñ: Tela que cubre la cabeza o el cuello",a:"pañuelo"},{d:"Contiene la Ñ: Tristeza por la ausencia de algo querido",a:"añoranza"}]
 };
 
 // Índices actuales por letra
@@ -840,7 +840,7 @@ const CERROJOS=[
 {id:"cz12",dk:"Nivel Bote",q:"Con la L: Dicho de una persona: Que siente inclinación excesiva por los placeres sexuales.",a:"libidinoso",aa:[]},
 {id:"cz13",dk:"Nivel Bote",q:"Con la M: Falta de luz o de claridad.",a:"mohosidad",aa:[]},
 {id:"cz14",dk:"Nivel Bote",q:"Con la N: Dicho de un fenómeno: Que ocurre durante la noche.",a:"nocturno",aa:[]},
-{id:"cz15",dk:"Nivel Bote",q:"Contiene la Ñ: Tiempo empleado en el trabajo de un día.",a:"peonada",aa:[]},
+{id:"cz15",dk:"Nivel Bote",q:"Contiene la Ñ: Trampa o engaño para cazar o atraer a alguien.",a:"añagaza",aa:[]},
 {id:"cz16",dk:"Nivel Bote",q:"Con la O: Piedra preciosa, variedad del cuarzo, de colores cambiantes.",a:"ópalo",aa:["opalo"]},
 {id:"cz17",dk:"Nivel Bote",q:"Con la P: Dicho de un pájaro: Que tiene el pico en forma de cruz.",a:"piquituerto",aa:[]},
 {id:"cz18",dk:"Nivel Bote",q:"Con la R: Arte de hablar con elocuencia para deleitar, conmover o persuadir.",a:"retórica",aa:["retorica"]},
