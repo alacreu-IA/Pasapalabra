@@ -3721,7 +3721,7 @@ MAZOS.push({
     {q: "Contiene la X: Autor británico de 'Un mundo feliz'.", a: "Huxley", letra: "X"},
     {q: "Con la Y: Poeta irlandés y Nobel de 1923.", a: "Yeats", letra: "Y"},
     {q: "Con la Z: Autor naturalista de 'La bestia humana'.", a: "Zola", letra: "Z"},
-/ ROSCO 16 - EL GRAN FINAL LITERARIO (MISCELÁNEA)
+// ROSCO 16 - EL GRAN FINAL LITERARIO (MISCELÁNEA)
     {q: "Con la A: Seudónimo de José Martínez Ruiz, escritor de la generación del 98.", a: "Azorín", letra: "A"},
     {q: "Con la B: Escritor de la generación del 98, autor de 'La busca'.", a: "Baroja", letra: "B"},
     {q: "Con la C: Estilo literario del Barroco español caracterizado por la abundancia de cultismos y neologismos, así como por un lenguaje metafórico y una sintaxis compleja.", a: "Culteranismo", letra: "C"},
@@ -9968,7 +9968,7 @@ const LETRAS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O'
 let roscoData      = {};
 let roscoOrder     = [];
 let roscoCurrentIdx = 0;
-let roscoTimerVal  = 210;
+let roscoTimerVal  = 230;
 let roscoTimerInterval = null;
 let voiceEnabled   = false;
 let recognition    = null;
@@ -10014,7 +10014,7 @@ function buildRosco() {
 function startRosco() {
     clearInterval(roscoTimerInterval);
     buildRosco();
-    roscoTimerVal = 210;
+    roscoTimerVal = 230;
     document.getElementById('rosco-fail-btn').style.display = 'none';
     drawRoscoWheel();
     showRoscoQuestion();
@@ -10146,7 +10146,7 @@ function repetirFallos() {
     roscoCurrentIdx = 0;
     document.getElementById('rosco-fail-btn').style.display = 'none';
     clearInterval(roscoTimerInterval);
-    roscoTimerVal = 210;
+    roscoTimerVal = 230;
     drawRoscoWheel();
     showRoscoQuestion();
     roscoTimerInterval = setInterval(tickRosco, 1000);
@@ -10301,7 +10301,8 @@ function startVoice() {
         // "Pasapalabra" o variantes → pasar, no responder
         const pasaVariants = ['pasapalabra', 'pasa palabra', 'paso', 'paso la palabra', 'siguiente'];
         if (pasaVariants.some(function(v){ return normalized.includes(v); })) {
-            speakText('Pasapalabra');
+            // Parar micro inmediatamente para que no se oiga el eco
+            try { recognition.stop(); } catch(e) {}
             pasarRosco();
             return;
         }
@@ -10399,10 +10400,21 @@ function speakText(text, onDone) {
     if (!window.speechSynthesis) { if (onDone) onDone(); return; }
     window.speechSynthesis.cancel();
 
-    var utt = new SpeechSynthesisUtterance(text);
+    // Pequeñas transformaciones para sonar más natural:
+    // - Los dos puntos y punto y coma generan pausa automática en TTS
+    // - Sustituir abreviaturas que el TTS lee mal
+    var processed = text
+        .replace(/\bDr\./g, 'Doctor')
+        .replace(/\bSr\./g, 'Señor')
+        .replace(/\bs\.\.?\s*[Xx][Xx][Xx]/g, 'siglo')
+        .replace(/\bs\.\.?\s*([IVXivx]+)/g, 'siglo $1')
+        .replace(/'/g, '')   // comillas tipográficas que confunden al TTS
+        .replace(/'/g, '');
+
+    var utt = new SpeechSynthesisUtterance(processed);
     utt.lang   = 'es-ES';
-    utt.rate   = 0.82;   // más lento = más natural y entendible
-    utt.pitch  = 1.0;
+    utt.rate   = 0.78;
+    utt.pitch  = 1.02;   // ligerísimo tono más alto = más cálido, menos robótico
     utt.volume = 1.0;
 
     var bestVoice = getBestSpanishVoice();
@@ -10423,11 +10435,11 @@ function speakAndListen(text) {
     if (recognition) { try { recognition.stop(); } catch(e) {} }
 
     speakText(text, function() {
-        // Cuando termina de leer, activar el micrófono
+        // Esperar más tiempo antes de reactivar — evita que el micro capte el eco de la voz
         if (voiceEnabled) {
             setTimeout(function() {
                 try { recognition.start(); } catch(e) {}
-            }, 400);
+            }, 900);
         }
     });
 }
